@@ -5,6 +5,15 @@ namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a responsive image with optional link, alt text, and border radius.
+ *
+ * Uses max-width:100% with a fixed width attribute for responsive scaling.
+ * Alt text is required for accessibility and displayed when images are blocked.
+ * Border radius has limited support in Outlook (falls back to square).
+ *
+ * @see https://www.caniemail.com/features/css-border-radius/
+ */
 class ImageBlock extends AbstractEmailBlock
 {
     public static function type(): string

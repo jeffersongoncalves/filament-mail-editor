@@ -5,9 +5,11 @@ namespace JeffersonGoncalves\FilamentMailEditor;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\AlertBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\ButtonBlock;
+use JeffersonGoncalves\FilamentMailEditor\Blocks\CountdownBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\CouponBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\DataTableBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\DividerBlock;
@@ -27,8 +29,11 @@ use JeffersonGoncalves\FilamentMailEditor\Blocks\TestimonialBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\ThreeColumnsBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\TwoColumnsBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\VideoThumbBlock;
+use JeffersonGoncalves\FilamentMailEditor\Commands\MakeTemplateCommand;
+use JeffersonGoncalves\FilamentMailEditor\Http\Controllers\CountdownController;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\FilamentMailEditor\Support\TemplateMailableBridge;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -43,7 +48,10 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_email_templates_table');
+            ->hasMigration('create_email_templates_table')
+            ->hasMigration('create_saved_email_blocks_table')
+            ->hasMigration('create_email_template_variants_table')
+            ->hasCommand(MakeTemplateCommand::class);
     }
 
     public function packageRegistered(): void
@@ -72,7 +80,8 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
                 ->register(RatingBlock::class)
                 ->register(DataTableBlock::class)
                 ->register(CouponBlock::class)
-                ->register(LogoGridBlock::class);
+                ->register(LogoGridBlock::class)
+                ->register(CountdownBlock::class);
 
             foreach (config('filament-mail-editor.blocks', []) as $blockClass) {
                 $registry->register($blockClass);
@@ -92,6 +101,7 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
         ], 'jeffersongoncalves/filament-mail-editor');
 
         $this->registerRoutes();
+        $this->registerMailMacro();
     }
 
     protected function registerRoutes(): void
@@ -125,6 +135,18 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
                         'mediaQueries' => $mediaQueries,
                     ]);
                 })->name('filament-mail-editor.preview');
+
+                Route::get('/countdown', [CountdownController::class, 'generate'])
+                    ->name('filament-mail-editor.countdown');
             });
+    }
+
+    protected function registerMailMacro(): void
+    {
+        if (! Mail::hasMacro('template')) {
+            Mail::macro('template', function (string $slug, array $variables = []) {
+                return new TemplateMailableBridge($slug, $variables);
+            });
+        }
     }
 }

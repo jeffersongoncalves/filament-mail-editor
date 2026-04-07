@@ -7,6 +7,13 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a star rating display using Unicode characters.
+ *
+ * Uses Unicode filled star (U+2605) and empty star (U+2606) for maximum
+ * email client compatibility without requiring images. Supports 1-5 stars
+ * with configurable color and optional review text with author attribution.
+ */
 class RatingBlock extends AbstractEmailBlock
 {
     public static function type(): string

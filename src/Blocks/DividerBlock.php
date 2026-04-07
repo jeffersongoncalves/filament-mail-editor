@@ -6,6 +6,14 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a horizontal divider line with configurable color, thickness, and style.
+ *
+ * Uses a table-based approach instead of <hr> for consistent cross-client rendering.
+ * Supports solid, dashed, and dotted border styles.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/horizontal-rules-in-html-email/
+ */
 class DividerBlock extends AbstractEmailBlock
 {
     public static function type(): string

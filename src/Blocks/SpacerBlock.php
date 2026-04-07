@@ -4,6 +4,14 @@ namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
 
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders vertical spacing between blocks with separate desktop and mobile heights.
+ *
+ * Uses a table cell with explicit height for consistent rendering. Mobile height
+ * is applied via media query to reduce excessive spacing on small screens.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/spacing-in-html-email/
+ */
 class SpacerBlock extends AbstractEmailBlock
 {
     public static function type(): string

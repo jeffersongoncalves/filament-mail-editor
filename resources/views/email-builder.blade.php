@@ -22,14 +22,27 @@
                 placeholder="Email subject..."
                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-sm"
             />
-            <select
-                wire:model.live="category"
-                class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-sm"
-            >
-                <option value="transactional">Transactional</option>
-                <option value="marketing">Marketing</option>
-                <option value="notification">Notification</option>
-            </select>
+            <div class="flex gap-2">
+                <select
+                    wire:model.live="category"
+                    class="block flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-sm"
+                >
+                    <option value="transactional">Transactional</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="notification">Notification</option>
+                </select>
+                {{-- Theme Selector --}}
+                <select
+                    wire:model.live="activeTheme"
+                    x-on:change="$wire.applyTheme($event.target.value)"
+                    class="block w-28 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-sm"
+                    title="Apply Theme"
+                >
+                    @foreach ($themes as $themeKey)
+                        <option value="{{ $themeKey }}">{{ ucfirst($themeKey) }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <div class="flex items-center gap-2">
             {{-- Undo/Redo --}}
@@ -54,6 +67,16 @@
 
             <div class="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
 
+            {{-- Quality Check --}}
+            <button
+                wire:click="runQualityCheck"
+                type="button"
+                class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                title="Quality Check"
+            >
+                <x-filament::icon icon="heroicon-m-clipboard-document-check" class="h-4 w-4" />
+            </button>
+
             <button
                 wire:click="save"
                 type="button"
@@ -66,47 +89,97 @@
                 wire:click="export"
                 type="button"
                 class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                title="Export HTML (Ctrl+E)"
             >
                 <x-filament::icon icon="heroicon-m-arrow-down-tray" class="h-4 w-4" />
-                Export
+                HTML
+            </button>
+            <button
+                wire:click="exportPlaintext"
+                type="button"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                title="Export Plaintext"
+            >
+                <x-filament::icon icon="heroicon-m-document-text" class="h-4 w-4" />
+                TXT
             </button>
         </div>
     </div>
 
     {{-- Main Layout --}}
     <div class="email-builder__main flex flex-1 overflow-hidden">
-        {{-- Sidebar Left: Block Palette --}}
-        <div class="email-builder__sidebar-left w-[180px] flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 overflow-y-auto p-3">
-            <h3 class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-3">Blocks</h3>
+        {{-- Sidebar Left: Block Palette + Library --}}
+        <div class="email-builder__sidebar-left w-[200px] flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
+            {{-- Tabs --}}
+            <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <button
+                    type="button"
+                    x-on:click="sidebarTab = 'blocks'"
+                    :class="sidebarTab === 'blocks' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500'"
+                    class="flex-1 px-2 py-2 text-xs font-medium border-b-2 transition"
+                >
+                    Blocks
+                </button>
+                <button
+                    type="button"
+                    x-on:click="sidebarTab = 'library'"
+                    :class="sidebarTab === 'library' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500'"
+                    class="flex-1 px-2 py-2 text-xs font-medium border-b-2 transition"
+                >
+                    Library
+                </button>
+            </div>
 
-            @php
-                $categories = [
-                    'structure' => 'Structure',
-                    'content' => 'Content',
-                    'marketing' => 'Marketing',
-                ];
-            @endphp
+            {{-- Blocks Tab --}}
+            <div x-show="sidebarTab === 'blocks'" class="p-3">
+                @php
+                    $categories = [
+                        'structure' => 'Structure',
+                        'content' => 'Content',
+                        'marketing' => 'Marketing',
+                    ];
+                @endphp
 
-            @foreach ($categories as $catKey => $catLabel)
-                <div class="mb-4">
-                    <h4 class="text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1.5 tracking-wider">{{ $catLabel }}</h4>
-                    <div class="space-y-1">
-                        @foreach ($availableBlocks as $type => $block)
-                            @if ($block['category'] === $catKey)
-                                <button
-                                    type="button"
-                                    x-on:click="addBlock('{{ $type }}')"
-                                    class="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-                                    title="{{ $block['label'] }}"
-                                >
-                                    <x-filament::icon :icon="$block['icon']" class="h-4 w-4 text-gray-400" />
-                                    <span class="truncate">{{ $block['label'] }}</span>
-                                </button>
-                            @endif
-                        @endforeach
+                @foreach ($categories as $catKey => $catLabel)
+                    <div class="mb-4">
+                        <h4 class="text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1.5 tracking-wider">{{ $catLabel }}</h4>
+                        <div class="space-y-1">
+                            @foreach ($availableBlocks as $type => $block)
+                                @if ($block['category'] === $catKey)
+                                    <button
+                                        type="button"
+                                        x-on:click="addBlock('{{ $type }}')"
+                                        class="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                                        title="{{ $block['label'] }}"
+                                    >
+                                        <x-filament::icon :icon="$block['icon']" class="h-4 w-4 text-gray-400" />
+                                        <span class="truncate">{{ $block['label'] }}</span>
+                                    </button>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+
+            {{-- Library Tab --}}
+            <div x-show="sidebarTab === 'library'" class="p-3">
+                <h4 class="text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-2 tracking-wider">Saved Components</h4>
+                @forelse ($savedBlocks as $saved)
+                    <button
+                        type="button"
+                        wire:click="addSavedBlock({{ $saved->id }})"
+                        class="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition mb-1"
+                        title="{{ $saved->description ?? $saved->name }}"
+                    >
+                        <x-filament::icon icon="heroicon-o-bookmark" class="h-4 w-4 text-gray-400" />
+                        <span class="truncate">{{ $saved->name }}</span>
+                        <span class="text-[9px] text-gray-400 ml-auto">{{ $saved->type }}</span>
+                    </button>
+                @empty
+                    <p class="text-xs text-gray-400 text-center py-4">No saved components yet.</p>
+                @endforelse
+            </div>
         </div>
 
         {{-- Canvas --}}
@@ -141,15 +214,23 @@
                                 type="button"
                                 x-on:click.stop="duplicateBlock(block.id)"
                                 class="p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                                title="Duplicate"
+                                title="Duplicate (Ctrl+D)"
                             >
                                 <x-filament::icon icon="heroicon-m-document-duplicate" class="h-3.5 w-3.5" />
                             </button>
                             <button
                                 type="button"
+                                x-on:click.stop="$wire.saveBlockAsComponent(block.id, blockCatalog[block.type]?.label ?? block.type)"
+                                class="p-0.5 text-yellow-500 hover:text-yellow-600"
+                                title="Save to library"
+                            >
+                                <x-filament::icon icon="heroicon-m-bookmark" class="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                                type="button"
                                 x-on:click.stop="removeBlock(block.id)"
                                 class="p-0.5 text-red-400 hover:text-red-600"
-                                title="Delete"
+                                title="Delete (Del)"
                             >
                                 <x-filament::icon icon="heroicon-m-trash" class="h-3.5 w-3.5" />
                             </button>
@@ -178,6 +259,9 @@
                                 </template>
                                 <template x-if="block.type === 'product-card'">
                                     <span class="text-gray-400 truncate max-w-[300px]" x-text="block.props?.name || ''"></span>
+                                </template>
+                                <template x-if="block.type === 'countdown'">
+                                    <span class="text-gray-400" x-text="block.props?.end_date || 'No date set'"></span>
                                 </template>
                             </div>
                         </div>
@@ -342,6 +426,24 @@
                         Send
                     </button>
                 </div>
+            </div>
+
+            {{-- Keyboard Shortcuts --}}
+            <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+                <details class="text-xs text-gray-400 dark:text-gray-500">
+                    <summary class="cursor-pointer font-semibold uppercase tracking-wider">Shortcuts</summary>
+                    <div class="mt-2 space-y-1">
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+Z</kbd> Undo</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+Y</kbd> Redo</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+S</kbd> Save</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+D</kbd> Duplicate</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+E</kbd> Export</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Ctrl+P</kbd> Preview</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Del</kbd> Remove block</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">&uarr;&darr;</kbd> Move block</div>
+                        <div><kbd class="font-mono bg-gray-100 dark:bg-gray-700 px-1 rounded">Esc</kbd> Deselect</div>
+                    </div>
+                </details>
             </div>
         </div>
     </div>

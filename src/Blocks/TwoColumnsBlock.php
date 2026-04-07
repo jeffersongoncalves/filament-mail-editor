@@ -8,6 +8,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
+/**
+ * Renders a responsive two-column layout with configurable ratio and mobile stacking.
+ *
+ * Uses MSO conditional comments for Outlook table layout since Outlook ignores
+ * display:inline-block. Columns stack vertically on mobile via media query.
+ * Supports 50/50, 60/40, and 40/60 column ratios.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/multi-column-email-layouts/
+ */
 class TwoColumnsBlock extends AbstractEmailBlock
 {
     public function getMediaQueries(): string

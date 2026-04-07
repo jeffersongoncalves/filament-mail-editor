@@ -6,6 +6,13 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a coupon/promo code block with a dashed border and monospace code.
+ *
+ * Uses Courier New monospace font for the code display to visually distinguish
+ * it from regular text. Supports configurable border style (dashed/solid),
+ * discount text, and expiration message.
+ */
 class CouponBlock extends AbstractEmailBlock
 {
     public static function type(): string

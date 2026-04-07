@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
         selectedId: null,
         blockCatalog: {},
         _sortable: null,
+        sidebarTab: 'blocks',
 
         // Undo/Redo
         history: [],
@@ -40,30 +41,92 @@ document.addEventListener('alpine:init', () => {
             });
 
             // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-                    e.preventDefault();
-                    this.undo();
-                }
-                if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
-                    e.preventDefault();
-                    this.redo();
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    if (this.$wire) this.$wire.save();
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-                    e.preventDefault();
-                    if (this.selectedId) this.duplicateBlock(this.selectedId);
-                }
-                if (e.key === 'Delete' || e.key === 'Backspace') {
-                    if (this.selectedId && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT') {
+            document.addEventListener('keydown', (e) => this.handleKeydown(e));
+        },
+
+        handleKeydown(e) {
+            const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+
+            // Ctrl/Cmd shortcuts (work even in inputs)
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'z':
+                        if (e.shiftKey) {
+                            e.preventDefault();
+                            this.redo();
+                        } else {
+                            e.preventDefault();
+                            this.undo();
+                        }
+                        return;
+                    case 'y':
                         e.preventDefault();
-                        this.removeBlock(this.selectedId);
-                    }
+                        this.redo();
+                        return;
+                    case 's':
+                        e.preventDefault();
+                        if (this.$wire) this.$wire.save();
+                        return;
+                    case 'd':
+                        e.preventDefault();
+                        if (this.selectedId) this.duplicateBlock(this.selectedId);
+                        return;
+                    case 'a':
+                        if (!isInput) {
+                            e.preventDefault();
+                            this.selectAll();
+                        }
+                        return;
+                    case 'e':
+                        if (!isInput) {
+                            e.preventDefault();
+                            if (this.$wire) this.$wire.export();
+                        }
+                        return;
+                    case 'p':
+                        if (!isInput) {
+                            e.preventDefault();
+                            this.openPreviewTab();
+                        }
+                        return;
                 }
-            });
+            }
+
+            // Non-modifier shortcuts (only when not in inputs)
+            if (isInput) return;
+
+            switch (e.key) {
+                case 'Delete':
+                case 'Backspace':
+                    e.preventDefault();
+                    if (this.selectedId) this.removeBlock(this.selectedId);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (this.selectedId) this.moveBlock(this.selectedId, -1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (this.selectedId) this.moveBlock(this.selectedId, 1);
+                    break;
+                case 'Escape':
+                    this.selectedId = null;
+                    break;
+            }
+        },
+
+        selectAll() {
+            // Select first block (for batch operations in future)
+            if (this.blocks.length > 0) {
+                this.selectedId = this.blocks[0].id;
+            }
+        },
+
+        openPreviewTab() {
+            const iframe = this.$refs?.previewIframe ?? document.getElementById('preview-iframe');
+            if (iframe?.src) {
+                window.open(iframe.src, '_blank');
+            }
         },
 
         pushHistory() {
@@ -361,6 +424,17 @@ document.addEventListener('alpine:init', () => {
                 ]},
                 { key: 'grayscale', label: 'Grayscale', type: 'toggle', default: true },
                 { key: 'cell_padding', label: 'Cell Padding (px)', type: 'number', default: 16, min: 0, max: 40 },
+            ],
+            countdown: [
+                { key: 'end_date', label: 'End Date (ISO 8601)', type: 'text', placeholder: '2025-12-31T23:59:59' },
+                { key: 'timezone', label: 'Timezone', type: 'text', default: 'America/Sao_Paulo' },
+                { key: 'label', label: 'Label', type: 'text', default: 'Offer ends in' },
+                { key: 'style', label: 'Style', type: 'select', default: 'default', options: [
+                    { value: 'default', label: 'Default' }, { value: 'dark', label: 'Dark' }, { value: 'minimal', label: 'Minimal' },
+                ]},
+                { key: 'width', label: 'Width (px)', type: 'number', default: 500, min: 200, max: 600 },
+                { key: 'height', label: 'Height (px)', type: 'number', default: 80, min: 40, max: 200 },
+                { key: 'expired_text', label: 'Expired Text', type: 'text', default: 'Offer expired' },
             ],
             footer: [
                 { key: 'address', label: 'Address', type: 'textarea' },

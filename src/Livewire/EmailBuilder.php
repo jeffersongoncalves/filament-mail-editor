@@ -3,12 +3,17 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Livewire;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
+use JeffersonGoncalves\FilamentMailEditor\Support\PlaintextGenerator;
+use JeffersonGoncalves\FilamentMailEditor\Support\QualityChecker;
+use JeffersonGoncalves\FilamentMailEditor\Support\ThemeApplier;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -42,6 +47,8 @@ class EmailBuilder extends Component
     public array $testVariables = [];
 
     public bool $previewWithVariables = false;
+
+    public string $activeTheme = 'default';
 
     public function mount(?int $templateId = null): void
     {
@@ -120,6 +127,17 @@ class EmailBuilder extends Component
         );
     }
 
+    public function exportPlaintext(): StreamedResponse
+    {
+        $plaintext = (new PlaintextGenerator)->generate($this->blocks);
+
+        return response()->streamDownload(
+            fn () => print ($plaintext),
+            Str::slug($this->name ?: 'email-template').'.txt',
+            ['Content-Type' => 'text/plain']
+        );
+    }
+
     /** @return array{url: string, filename: string} */
     public function uploadImage(): array
     {
@@ -171,11 +189,83 @@ class EmailBuilder extends Component
         return app(HtmlExporter::class)->validate($this->blocks);
     }
 
+    /**
+     * @return list<array{label: string, status: string, message: string}>
+     */
+    public function runQualityCheck(): array
+    {
+        $template = new EmailTemplate;
+        $template->blocks = $this->blocks;
+        $template->subject = $this->subject;
+
+        return (new QualityChecker)->check($template);
+    }
+
+    public function applyTheme(string $themeKey): void
+    {
+        $theme = config("filament-mail-editor.themes.{$themeKey}");
+        if (! $theme) {
+            return;
+        }
+
+        $this->activeTheme = $themeKey;
+        $this->settings = array_merge($this->settings, $theme);
+
+        $applier = new ThemeApplier;
+        $this->blocks = $applier->apply($this->blocks, $theme);
+
+        $this->dispatch('theme-applied', theme: $themeKey);
+    }
+
+    public function saveBlockAsComponent(string $blockId, string $name, string $description = '', string $componentCategory = ''): void
+    {
+        $block = collect($this->blocks)->firstWhere('id', $blockId);
+        if (! $block) {
+            return;
+        }
+
+        SavedEmailBlock::create([
+            'name' => $name,
+            'description' => $description,
+            'type' => $block['type'],
+            'props' => $block['props'],
+            'is_global' => true,
+            'category' => $componentCategory ?: $block['type'],
+        ]);
+
+        $this->dispatch('notify', type: 'success', message: 'Block saved to library.');
+    }
+
+    /** @return Collection<int, SavedEmailBlock> */
+    public function getSavedBlocks(): Collection
+    {
+        return SavedEmailBlock::orderBy('name')->get();
+    }
+
+    public function addSavedBlock(int $savedBlockId): void
+    {
+        $saved = SavedEmailBlock::find($savedBlockId);
+        if (! $saved) {
+            return;
+        }
+
+        $newBlock = [
+            'id' => 'b_'.Str::random(7),
+            'type' => $saved->type,
+            'props' => $saved->props,
+        ];
+
+        $this->blocks[] = $newBlock;
+        $this->dispatch('block-added', block: $newBlock);
+    }
+
     public function render(): View
     {
         return view('filament-mail-editor::email-builder', [
             'availableBlocks' => app(BlockRegistry::class)->catalog(),
             'detectedVariables' => HtmlExporter::extractVariables($this->blocks),
+            'themes' => array_keys(config('filament-mail-editor.themes', [])),
+            'savedBlocks' => $this->getSavedBlocks(),
         ]);
     }
 

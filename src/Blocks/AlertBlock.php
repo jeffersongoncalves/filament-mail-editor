@@ -6,6 +6,13 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 
+/**
+ * Renders an alert/notification box with type-based color presets.
+ *
+ * Supports info, warning, error, and success types with automatic
+ * color selection. Custom colors override the type defaults.
+ * Uses a left border accent for visual distinction.
+ */
 class AlertBlock extends AbstractEmailBlock
 {
     public static function type(): string

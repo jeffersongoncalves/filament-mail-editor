@@ -6,6 +6,15 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders the email header with logo and optional "view in browser" link.
+ *
+ * Provides a consistent top section with configurable background color,
+ * logo image, and alignment. The logo uses max-width constraints for
+ * responsive scaling on mobile clients.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/email-header-best-practices/
+ */
 class HeaderBlock extends AbstractEmailBlock
 {
     public static function type(): string

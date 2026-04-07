@@ -12,6 +12,9 @@ class HtmlExporter
 
     public function export(array $blocks, array $settings = []): string
     {
+        $themeApplier = new ThemeApplier;
+        $settings = $themeApplier->resolveReferences($settings);
+
         $mediaQueries = collect($blocks)
             ->map(fn (array $b) => $this->registry->find($b['type'] ?? '')?->getMediaQueries())
             ->filter()
@@ -33,6 +36,19 @@ class HtmlExporter
         ])->render();
 
         return (new CssToInlineStyles)->convert($html);
+    }
+
+    /**
+     * Export both HTML and plaintext versions.
+     *
+     * @return array{html: string, plaintext: string}
+     */
+    public function exportWithPlaintext(array $blocks, array $settings = []): array
+    {
+        return [
+            'html' => $this->export($blocks, $settings),
+            'plaintext' => (new PlaintextGenerator)->generate($blocks),
+        ];
     }
 
     /** @return list<string> */
@@ -67,7 +83,7 @@ class HtmlExporter
                 }
             });
 
-        $estimatedSize = strlen(json_encode($blocks)) * 1.5;
+        $estimatedSize = strlen((string) json_encode($blocks)) * 1.5;
         if ($estimatedSize > 102400) {
             $warnings[] = 'Template may exceed 100KB. Some clients clip larger emails.';
         }

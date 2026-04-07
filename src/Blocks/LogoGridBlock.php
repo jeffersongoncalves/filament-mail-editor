@@ -7,6 +7,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
+/**
+ * Renders a grid of logos with configurable columns and optional grayscale filter.
+ *
+ * Uses a table-based grid layout for cross-client compatibility. Each logo
+ * can optionally link to a URL. The grayscale CSS filter works in modern
+ * clients but is ignored in Outlook (logos appear in full color).
+ *
+ * @see https://www.caniemail.com/features/css-filter/
+ */
 class LogoGridBlock extends AbstractEmailBlock
 {
     public static function type(): string

@@ -5,6 +5,16 @@ namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a video thumbnail image that links to the video URL.
+ *
+ * Email clients do not support embedded video (<video> tag). This block
+ * displays a thumbnail with a play icon overlay that links to the video
+ * URL (YouTube, Vimeo, etc.). Falls back to a gray placeholder with a
+ * centered play triangle when no thumbnail is provided.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/video-in-email/
+ */
 class VideoThumbBlock extends AbstractEmailBlock
 {
     public static function type(): string

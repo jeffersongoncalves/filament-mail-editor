@@ -6,6 +6,15 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders the email footer with address, unsubscribe link, and copyright.
+ *
+ * The unsubscribe link is legally required in marketing emails (CAN-SPAM, LGPD, GDPR).
+ * Footer includes optional social links and "view in browser" URL.
+ * Uses small font size and muted colors per email design conventions.
+ *
+ * @see https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business
+ */
 class FooterBlock extends AbstractEmailBlock
 {
     public static function type(): string

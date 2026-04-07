@@ -6,6 +6,16 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a large hero section with title, subtitle, CTA button, and optional background image.
+ *
+ * Uses VML (Vector Markup Language) for Outlook background image support,
+ * since Outlook does not support CSS background-image on table cells.
+ * Falls back to solid color on clients that don't support VML.
+ *
+ * @see https://backgrounds.cm — Bulletproof Email Backgrounds
+ * @see https://www.campaignmonitor.com/blog/email-marketing/background-images-in-html-email/
+ */
 class HeroBlock extends AbstractEmailBlock
 {
     public static function type(): string

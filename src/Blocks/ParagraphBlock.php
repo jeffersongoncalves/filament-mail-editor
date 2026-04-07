@@ -7,6 +7,15 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders rich text content with configurable typography settings.
+ *
+ * Supports HTML content with inline formatting (bold, italic, links).
+ * Line height, font size, and color are applied via inline styles
+ * for consistent rendering across email clients.
+ *
+ * @see https://www.caniemail.com/features/css-line-height/
+ */
 class ParagraphBlock extends AbstractEmailBlock
 {
     public static function type(): string

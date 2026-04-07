@@ -6,6 +6,13 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a customer testimonial with quote, author, role, and optional avatar.
+ *
+ * Uses a left border accent and italic quote styling for visual distinction.
+ * The avatar image is circular (border-radius:50%) with fallback to square
+ * in Outlook. Supports configurable accent color for brand consistency.
+ */
 class TestimonialBlock extends AbstractEmailBlock
 {
     public static function type(): string

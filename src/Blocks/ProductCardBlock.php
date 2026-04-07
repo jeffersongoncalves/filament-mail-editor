@@ -6,6 +6,15 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a product card with image, badge, pricing, and CTA button.
+ *
+ * Supports old/new price display with strikethrough, image badges (SALE, NEW),
+ * and a VML-based CTA button for Outlook compatibility. The card layout uses
+ * a bordered table container for consistent rendering.
+ *
+ * @see https://buttons.cm — Bulletproof Email Buttons for the CTA
+ */
 class ProductCardBlock extends AbstractEmailBlock
 {
     public static function type(): string

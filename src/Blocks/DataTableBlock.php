@@ -6,6 +6,13 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
+/**
+ * Renders an HTML data table with headers and optional striped rows.
+ *
+ * Uses native HTML <table> with thead/tbody for structured data display.
+ * Supports configurable header colors, striping, and border styles.
+ * Ideal for order summaries, pricing tables, and comparison charts.
+ */
 class DataTableBlock extends AbstractEmailBlock
 {
     public static function type(): string

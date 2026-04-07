@@ -7,6 +7,15 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
+/**
+ * Renders a list using table rows instead of HTML list elements.
+ *
+ * Email clients have inconsistent support for <ul>/<ol>/<li> and CSS list-style.
+ * This block uses a table where each row has a bullet cell and a text cell,
+ * ensuring consistent rendering across Gmail, Outlook, and Apple Mail.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/html-lists-in-email/
+ */
 class ListBlock extends AbstractEmailBlock
 {
     public static function type(): string

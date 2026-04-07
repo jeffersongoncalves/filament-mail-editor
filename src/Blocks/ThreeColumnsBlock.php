@@ -6,6 +6,14 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
+/**
+ * Renders a responsive three-column layout with mobile stacking.
+ *
+ * Uses MSO conditional comments for Outlook table layout. Each column takes
+ * 33.33% width on desktop and stacks to 100% width on mobile via media query.
+ *
+ * @see https://www.emailonacid.com/blog/article/email-development/multi-column-email-layouts/
+ */
 class ThreeColumnsBlock extends AbstractEmailBlock
 {
     public static function type(): string

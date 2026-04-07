@@ -24,6 +24,9 @@ class TestCase extends Orchestra
 
         // Livewire v4 requires errors to be shared with views
         $this->app['view']->share('errors', new ViewErrorBag);
+
+        // Ensure config is available for tests
+        config(['filament-mail-editor.app_url' => 'http://localhost']);
     }
 
     protected function getPackageProviders($app): array
