@@ -4,3 +4,5 @@
 /build
 .phpunit.result.cache
 composer.lock
+.idea
+.claude/settings.local.json
