@@ -11,17 +11,14 @@
             background-color: #ffffff;
         }
 
-        /* Client simulation styles */
         @php
             $client = $client ?? 'gmail';
         @endphp
 
         @if ($client === 'gmail')
-        /* Gmail strips <style> tags, so we simulate that by keeping it minimal */
         body { background-color: #ffffff; }
         .email-wrapper { max-width: 600px; margin: 0 auto; }
         @elseif ($client === 'outlook')
-        /* Outlook: simulate word-rendering quirks */
         body { background-color: #f5f5f5; }
         .email-wrapper {
             max-width: 600px;
@@ -31,7 +28,6 @@
         img { -ms-interpolation-mode: bicubic; }
         table { border-collapse: collapse; }
         @elseif ($client === 'apple')
-        /* Apple Mail: supports dark mode */
         body { background-color: #ffffff; }
         .email-wrapper { max-width: 600px; margin: 0 auto; }
         @media (prefers-color-scheme: dark) {
@@ -39,14 +35,14 @@
             .email-wrapper { background-color: #1a1a1a !important; }
         }
         @elseif ($client === 'mobile')
-        /* Mobile: constrained width */
         body { background-color: #ffffff; max-width: 375px; margin: 0 auto; }
         .email-wrapper { max-width: 375px; margin: 0 auto; }
         table { max-width: 100% !important; }
         img { max-width: 100% !important; height: auto !important; }
-        /* Force stacking */
-        .email-col { width: 100% !important; display: block !important; }
+        .email-col, .two-col-td, .three-col-td { width: 100% !important; display: block !important; }
         @endif
+
+        {!! $mediaQueries ?? '' !!}
     </style>
 </head>
 <body>
@@ -67,17 +63,14 @@
     </div>
 
     <script>
-        // Listen for postMessage updates from parent
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'blocks-update') {
-                // Reload with new data
                 window.location.reload();
             }
         });
 
-        // Auto-resize iframe
         function notifyParentHeight() {
-            const height = document.documentElement.scrollHeight;
+            var height = document.documentElement.scrollHeight;
             window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
         }
 

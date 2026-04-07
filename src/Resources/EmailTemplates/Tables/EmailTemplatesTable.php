@@ -5,6 +5,9 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Tables;
 use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
 
 class EmailTemplatesTable
 {
@@ -28,6 +31,10 @@ class EmailTemplatesTable
                         default => 'gray',
                     })
                     ->sortable(),
+                Tables\Columns\TextColumn::make('blocks_count')
+                    ->label('Blocks')
+                    ->state(fn (EmailTemplate $record): string => count($record->blocks ?? []).' blocks')
+                    ->sortable(false),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
@@ -47,6 +54,17 @@ class EmailTemplatesTable
             ])
             ->recordActions([
                 Actions\EditAction::make(),
+                Actions\Action::make('duplicate')
+                    ->icon('heroicon-m-document-duplicate')
+                    ->requiresConfirmation()
+                    ->action(function (EmailTemplate $record) {
+                        $clone = $record->replicate();
+                        $clone->name = $clone->name.' (copy)';
+                        $clone->slug = Str::slug($clone->name).'-'.time();
+                        $clone->save();
+
+                        return redirect(EmailTemplateResource::getUrl('edit', ['record' => $clone]));
+                    }),
             ])
             ->toolbarActions([
                 Actions\BulkActionGroup::make([

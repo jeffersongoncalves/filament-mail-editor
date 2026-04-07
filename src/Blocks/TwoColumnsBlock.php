@@ -10,6 +10,11 @@ use Filament\Forms\Components\Toggle;
 
 class TwoColumnsBlock extends AbstractEmailBlock
 {
+    public function getMediaQueries(): string
+    {
+        return '@media only screen and (max-width: 600px) { .two-col-td { display: block !important; width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; } }';
+    }
+
     public static function type(): string
     {
         return 'two-columns';

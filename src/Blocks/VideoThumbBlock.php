@@ -1,0 +1,62 @@
+<?php
+
+namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
+
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\TextInput;
+
+class VideoThumbBlock extends AbstractEmailBlock
+{
+    public static function type(): string
+    {
+        return 'video-thumb';
+    }
+
+    public static function label(): string
+    {
+        return 'Video Thumbnail';
+    }
+
+    public static function icon(): string
+    {
+        return 'heroicon-o-play-circle';
+    }
+
+    public static function category(): string
+    {
+        return 'marketing';
+    }
+
+    public static function defaultProps(): array
+    {
+        return [
+            'thumb_src' => '',
+            'video_url' => '',
+            'alt' => 'Watch video',
+            'width' => '100%',
+            'play_icon_color' => 'rgba(255,255,255,0.9)',
+        ];
+    }
+
+    public static function propsSchema(): array
+    {
+        return [
+            TextInput::make('thumb_src')
+                ->label('Thumbnail Image URL')
+                ->placeholder('https://...')
+                ->required(),
+            TextInput::make('video_url')
+                ->label('Video URL')
+                ->placeholder('https://youtube.com/...')
+                ->required(),
+            TextInput::make('alt')
+                ->label('Alt Text')
+                ->default('Watch video'),
+            TextInput::make('width')
+                ->label('Width')
+                ->default('100%'),
+            ColorPicker::make('play_icon_color')
+                ->label('Play Icon Color'),
+        ];
+    }
+}

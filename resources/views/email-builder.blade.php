@@ -32,6 +32,28 @@
             </select>
         </div>
         <div class="flex items-center gap-2">
+            {{-- Undo/Redo --}}
+            <button
+                type="button"
+                x-on:click="undo()"
+                :disabled="!history.length"
+                class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition"
+                title="Undo (Ctrl+Z)"
+            >
+                <x-filament::icon icon="heroicon-m-arrow-uturn-left" class="h-4 w-4" />
+            </button>
+            <button
+                type="button"
+                x-on:click="redo()"
+                :disabled="!future.length"
+                class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition"
+                title="Redo (Ctrl+Y)"
+            >
+                <x-filament::icon icon="heroicon-m-arrow-uturn-right" class="h-4 w-4" />
+            </button>
+
+            <div class="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+
             <button
                 wire:click="save"
                 type="button"
@@ -46,7 +68,7 @@
                 class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
             >
                 <x-filament::icon icon="heroicon-m-arrow-down-tray" class="h-4 w-4" />
-                Export HTML
+                Export
             </button>
         </div>
     </div>
@@ -151,6 +173,12 @@
                                 <template x-if="block.type === 'image'">
                                     <span class="text-gray-400 truncate max-w-[300px]" x-text="block.props?.alt || block.props?.src || ''"></span>
                                 </template>
+                                <template x-if="block.type === 'coupon'">
+                                    <span class="text-gray-400" x-text="block.props?.code || ''"></span>
+                                </template>
+                                <template x-if="block.type === 'product-card'">
+                                    <span class="text-gray-400 truncate max-w-[300px]" x-text="block.props?.name || ''"></span>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -159,7 +187,7 @@
         </div>
 
         {{-- Sidebar Right: Props Panel --}}
-        <div class="email-builder__sidebar-right w-[260px] flex-shrink-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto">
+        <div class="email-builder__sidebar-right w-[280px] flex-shrink-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto">
             <template x-if="!selectedBlock">
                 <div class="p-4 text-sm text-gray-400 dark:text-gray-500 text-center mt-8">
                     <x-filament::icon icon="heroicon-o-cursor-arrow-ripple" class="h-8 w-8 mx-auto mb-2" />
@@ -181,7 +209,6 @@
                     </div>
 
                     <div class="space-y-3" x-data="blockPropsEditor()">
-                        {{-- Dynamic props rendered by Alpine based on block type --}}
                         <template x-for="(field, key) in getFieldsForType(selectedBlock.type)" :key="key">
                             <div>
                                 <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" x-text="field.label"></label>
@@ -266,6 +293,56 @@
                     </div>
                 </div>
             </template>
+
+            {{-- Variables Panel --}}
+            @if (count($detectedVariables ?? []) > 0)
+                <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+                    <h3 class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-3">
+                        <x-filament::icon icon="heroicon-m-variable" class="h-3.5 w-3.5 inline -mt-0.5" />
+                        Merge Variables
+                    </h3>
+                    <div class="space-y-2">
+                        @foreach ($detectedVariables as $var)
+                            <div>
+                                <label class="block text-[10px] font-mono text-gray-500 dark:text-gray-400 mb-0.5">@{{ {{ $var }} }}</label>
+                                <input
+                                    type="text"
+                                    wire:model.blur="testVariables.{{ $var }}"
+                                    placeholder="Test value..."
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-xs"
+                                />
+                            </div>
+                        @endforeach
+                    </div>
+                    <label class="flex items-center gap-2 mt-3 text-xs text-gray-500 dark:text-gray-400">
+                        <input type="checkbox" wire:model.live="previewWithVariables" class="rounded border-gray-300 dark:border-gray-600" />
+                        Preview with variables
+                    </label>
+                </div>
+            @endif
+
+            {{-- Test Email --}}
+            <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+                <h3 class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-3">
+                    <x-filament::icon icon="heroicon-m-paper-airplane" class="h-3.5 w-3.5 inline -mt-0.5" />
+                    Send Test Email
+                </h3>
+                <div class="flex gap-2">
+                    <input
+                        type="email"
+                        wire:model="testEmailAddress"
+                        placeholder="email@example.com"
+                        class="block flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white text-xs"
+                    />
+                    <button
+                        wire:click="sendTestEmail"
+                        type="button"
+                        class="inline-flex items-center rounded-md bg-gray-100 dark:bg-gray-700 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

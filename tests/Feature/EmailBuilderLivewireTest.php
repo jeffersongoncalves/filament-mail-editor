@@ -11,10 +11,10 @@ it('registers the email builder livewire component', function () {
     )->not->toBeNull();
 });
 
-it('registers all 13 blocks in the registry', function () {
+it('registers all 21 blocks in the registry', function () {
     $registry = app(BlockRegistry::class);
 
-    expect($registry->all())->toHaveCount(13);
+    expect($registry->all())->toHaveCount(21);
     expect($registry->find('preheader'))->not->toBeNull();
     expect($registry->find('header'))->not->toBeNull();
     expect($registry->find('hero'))->not->toBeNull();
@@ -27,7 +27,15 @@ it('registers all 13 blocks in the registry', function () {
     expect($registry->find('testimonial'))->not->toBeNull();
     expect($registry->find('alert'))->not->toBeNull();
     expect($registry->find('two-columns'))->not->toBeNull();
+    expect($registry->find('three-columns'))->not->toBeNull();
     expect($registry->find('footer'))->not->toBeNull();
+    expect($registry->find('list'))->not->toBeNull();
+    expect($registry->find('video-thumb'))->not->toBeNull();
+    expect($registry->find('product-card'))->not->toBeNull();
+    expect($registry->find('rating'))->not->toBeNull();
+    expect($registry->find('data-table'))->not->toBeNull();
+    expect($registry->find('coupon'))->not->toBeNull();
+    expect($registry->find('logo-grid'))->not->toBeNull();
 });
 
 it('returns null for unknown block type', function () {
@@ -40,7 +48,7 @@ it('provides block catalog with correct structure', function () {
     $registry = app(BlockRegistry::class);
     $catalog = $registry->catalog();
 
-    expect($catalog)->toHaveCount(13);
+    expect($catalog)->toHaveCount(21);
 
     foreach ($catalog as $type => $info) {
         expect($info)->toHaveKeys(['type', 'label', 'icon', 'category', 'defaultProps']);

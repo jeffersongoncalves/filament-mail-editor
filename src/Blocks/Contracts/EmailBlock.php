@@ -17,4 +17,6 @@ interface EmailBlock
     public static function propsSchema(): array;
 
     public function render(array $props): string;
+
+    public function getMediaQueries(): string;
 }

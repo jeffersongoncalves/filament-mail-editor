@@ -17,21 +17,9 @@
 
     [$leftWidth, $rightWidth] = $ratioMap[$ratio] ?? $ratioMap['50-50'];
     $halfGap = (int) $gap / 2;
-    $columnsId = 'cols-' . uniqid();
+    $mobileClass = $stackMobile ? 'two-col-td' : '';
 @endphp
-@if ($stackMobile)
-<style>
-    @media only screen and (max-width: 480px) {
-        .{{ $columnsId }} .email-col {
-            width: 100% !important;
-            display: block !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-    }
-</style>
-@endif
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:{{ $bgColor }};" class="{{ $columnsId }}">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:{{ $bgColor }};">
     <tr>
         <td style="padding:{{ $padding }};">
             <!--[if mso]>
@@ -39,7 +27,7 @@
             <tr>
             <td valign="top" width="{{ str_replace('%', '', $leftWidth) }}%" style="width:{{ $leftWidth }};">
             <![endif]-->
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="email-col" style="display:inline-block;width:{{ $leftWidth }};max-width:{{ $leftWidth }};vertical-align:top;" width="{{ $leftWidth }}">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="{{ $mobileClass }}" style="display:inline-block;width:{{ $leftWidth }};max-width:{{ $leftWidth }};vertical-align:top;" width="{{ $leftWidth }}">
                 <tr>
                     <td style="padding:0 {{ $halfGap }}px 0 0;vertical-align:top;" valign="top">
                         {!! $leftContent !!}
@@ -50,7 +38,7 @@
             </td>
             <td valign="top" width="{{ str_replace('%', '', $rightWidth) }}%" style="width:{{ $rightWidth }};">
             <![endif]-->
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="email-col" style="display:inline-block;width:{{ $rightWidth }};max-width:{{ $rightWidth }};vertical-align:top;" width="{{ $rightWidth }}">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="{{ $mobileClass }}" style="display:inline-block;width:{{ $rightWidth }};max-width:{{ $rightWidth }};vertical-align:top;" width="{{ $rightWidth }}">
                 <tr>
                     <td style="padding:0 0 0 {{ $halfGap }}px;vertical-align:top;" valign="top">
                         {!! $rightContent !!}

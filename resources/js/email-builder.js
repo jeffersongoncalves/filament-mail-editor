@@ -9,12 +9,16 @@ document.addEventListener('alpine:init', () => {
         blockCatalog: {},
         _sortable: null,
 
+        // Undo/Redo
+        history: [],
+        future: [],
+        maxHistory: 50,
+
         get selectedBlock() {
             return this.blocks.find(b => b.id === this.selectedId) ?? null;
         },
 
         init() {
-            // Load block catalog from the page data
             const catalogEl = document.getElementById('block-catalog-data');
             if (catalogEl) {
                 try {
@@ -27,15 +31,59 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            // Watch blocks for preview updates
             this.$watch('blocks', () => {
                 this.updatePreview();
             });
 
-            // Initialize SortableJS when canvas is ready
             this.$nextTick(() => {
                 this.initSortable();
             });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.undo();
+                }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+                    e.preventDefault();
+                    this.redo();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    if (this.$wire) this.$wire.save();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                    e.preventDefault();
+                    if (this.selectedId) this.duplicateBlock(this.selectedId);
+                }
+                if (e.key === 'Delete' || e.key === 'Backspace') {
+                    if (this.selectedId && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT') {
+                        e.preventDefault();
+                        this.removeBlock(this.selectedId);
+                    }
+                }
+            });
+        },
+
+        pushHistory() {
+            this.history.push(JSON.stringify(this.blocks));
+            if (this.history.length > this.maxHistory) this.history.shift();
+            this.future = [];
+        },
+
+        undo() {
+            if (!this.history.length) return;
+            this.future.push(JSON.stringify(this.blocks));
+            this.blocks = JSON.parse(this.history.pop());
+            this.syncToLivewire();
+        },
+
+        redo() {
+            if (!this.future.length) return;
+            this.history.push(JSON.stringify(this.blocks));
+            this.blocks = JSON.parse(this.future.pop());
+            this.syncToLivewire();
         },
 
         initSortable() {
@@ -49,6 +97,7 @@ document.addEventListener('alpine:init', () => {
                 draggable: '.email-builder__block',
                 onEnd: (e) => {
                     if (e.oldIndex === e.newIndex) return;
+                    this.pushHistory();
                     const moved = this.blocks.splice(e.oldIndex, 1)[0];
                     this.blocks.splice(e.newIndex, 0, moved);
                     this.syncToLivewire();
@@ -57,6 +106,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         addBlock(type) {
+            this.pushHistory();
             const defaults = window.blockDefaults[type] ?? {};
             const block = {
                 id: 'b_' + Math.random().toString(36).slice(2, 9),
@@ -72,6 +122,7 @@ document.addEventListener('alpine:init', () => {
             const source = this.blocks.find(b => b.id === id);
             if (!source) return;
 
+            this.pushHistory();
             const index = this.blocks.indexOf(source);
             const clone = {
                 id: 'b_' + Math.random().toString(36).slice(2, 9),
@@ -84,6 +135,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         removeBlock(id) {
+            this.pushHistory();
             this.blocks = this.blocks.filter(b => b.id !== id);
             if (this.selectedId === id) this.selectedId = null;
             this.syncToLivewire();
@@ -95,6 +147,7 @@ document.addEventListener('alpine:init', () => {
             const newIndex = index + direction;
             if (newIndex < 0 || newIndex >= this.blocks.length) return;
 
+            this.pushHistory();
             const moved = this.blocks.splice(index, 1)[0];
             this.blocks.splice(newIndex, 0, moved);
             this.syncToLivewire();
@@ -235,6 +288,79 @@ document.addEventListener('alpine:init', () => {
                 { key: 'bg_color_left', label: 'Left BG Color', type: 'color' },
                 { key: 'bg_color_right', label: 'Right BG Color', type: 'color' },
                 { key: 'stack_mobile', label: 'Stack on Mobile', type: 'toggle', default: true },
+            ],
+            'three-columns': [
+                { key: 'col1_content', label: 'Column 1 (HTML)', type: 'textarea' },
+                { key: 'col2_content', label: 'Column 2 (HTML)', type: 'textarea' },
+                { key: 'col3_content', label: 'Column 3 (HTML)', type: 'textarea' },
+                { key: 'gap', label: 'Gap (px)', type: 'number', default: 12, min: 0, max: 40 },
+                { key: 'stack_mobile', label: 'Stack on Mobile', type: 'toggle', default: true },
+            ],
+            list: [
+                { key: 'type', label: 'List Type', type: 'select', default: 'unordered', options: [
+                    { value: 'unordered', label: 'Unordered' }, { value: 'ordered', label: 'Ordered' },
+                ]},
+                { key: 'bullet_char', label: 'Bullet Character', type: 'text', default: '\u2022' },
+                { key: 'bullet_color', label: 'Bullet Color', type: 'color', default: '#378ADD' },
+                { key: 'indent', label: 'Indent (px)', type: 'number', default: 0, min: 0, max: 60 },
+                { key: 'color', label: 'Text Color', type: 'color', default: '#333333' },
+                { key: 'font_size', label: 'Font Size (px)', type: 'number', default: 14, min: 10, max: 24 },
+            ],
+            'video-thumb': [
+                { key: 'thumb_src', label: 'Thumbnail URL', type: 'text', placeholder: 'https://...' },
+                { key: 'video_url', label: 'Video URL', type: 'text', placeholder: 'https://youtube.com/...' },
+                { key: 'alt', label: 'Alt Text', type: 'text', default: 'Watch video' },
+                { key: 'width', label: 'Width', type: 'text', default: '100%' },
+            ],
+            'product-card': [
+                { key: 'image_src', label: 'Product Image URL', type: 'text', placeholder: 'https://...' },
+                { key: 'image_alt', label: 'Image Alt Text', type: 'text' },
+                { key: 'name', label: 'Product Name', type: 'text' },
+                { key: 'price', label: 'Price', type: 'text' },
+                { key: 'old_price', label: 'Old Price', type: 'text' },
+                { key: 'description', label: 'Description', type: 'textarea' },
+                { key: 'cta_text', label: 'CTA Text', type: 'text', default: 'Buy Now' },
+                { key: 'cta_url', label: 'CTA URL', type: 'text', placeholder: 'https://...' },
+                { key: 'cta_bg_color', label: 'CTA Background', type: 'color', default: '#378ADD' },
+                { key: 'badge_text', label: 'Badge Text', type: 'text' },
+                { key: 'badge_bg_color', label: 'Badge Background', type: 'color', default: '#e53e3e' },
+            ],
+            rating: [
+                { key: 'stars', label: 'Stars', type: 'select', default: 5, options: [
+                    { value: 1, label: '1 Star' }, { value: 2, label: '2 Stars' }, { value: 3, label: '3 Stars' },
+                    { value: 4, label: '4 Stars' }, { value: 5, label: '5 Stars' },
+                ]},
+                { key: 'text', label: 'Review Text', type: 'textarea' },
+                { key: 'author', label: 'Author', type: 'text' },
+                { key: 'star_color', label: 'Star Color', type: 'color', default: '#EF9F27' },
+            ],
+            'data-table': [
+                { key: 'headers_csv', label: 'Headers (comma-separated)', type: 'text', placeholder: 'Name, Price, Qty' },
+                { key: 'rows_csv', label: 'Rows (semicolon = row, comma = cell)', type: 'textarea', placeholder: 'A, $10, 5; B, $20, 3' },
+                { key: 'striped', label: 'Striped Rows', type: 'toggle', default: true },
+                { key: 'header_bg_color', label: 'Header Background', type: 'color', default: '#378ADD' },
+                { key: 'header_text_color', label: 'Header Text Color', type: 'color', default: '#ffffff' },
+                { key: 'stripe_color', label: 'Stripe Color', type: 'color', default: '#f8f9fa' },
+                { key: 'font_size', label: 'Font Size (px)', type: 'number', default: 13, min: 10, max: 20 },
+                { key: 'border_color', label: 'Border Color', type: 'color', default: '#e8e8e8' },
+            ],
+            coupon: [
+                { key: 'code', label: 'Coupon Code', type: 'text' },
+                { key: 'discount_text', label: 'Discount Text', type: 'text', placeholder: '20% OFF' },
+                { key: 'expires_text', label: 'Expires Text', type: 'text', placeholder: 'Valid until Dec 31' },
+                { key: 'bg_color', label: 'Background', type: 'color', default: '#fff3cd' },
+                { key: 'border_color', label: 'Border Color', type: 'color', default: '#EF9F27' },
+                { key: 'border_style', label: 'Border Style', type: 'select', default: 'dashed', options: [
+                    { value: 'dashed', label: 'Dashed' }, { value: 'solid', label: 'Solid' },
+                ]},
+                { key: 'text_color', label: 'Text Color', type: 'color', default: '#333333' },
+            ],
+            'logo-grid': [
+                { key: 'cols', label: 'Columns', type: 'select', default: 3, options: [
+                    { value: 2, label: '2 Columns' }, { value: 3, label: '3 Columns' }, { value: 4, label: '4 Columns' },
+                ]},
+                { key: 'grayscale', label: 'Grayscale', type: 'toggle', default: true },
+                { key: 'cell_padding', label: 'Cell Padding (px)', type: 'number', default: 16, min: 0, max: 40 },
             ],
             footer: [
                 { key: 'address', label: 'Address', type: 'textarea' },

@@ -61,7 +61,7 @@ class EmailTemplate extends Model
         $blocks = $this->blocks ?? [];
 
         $blocks = array_map(function (array $block) use ($variables) {
-            $block['props'] = $this->replaceVariables($block['props'] ?? [], $variables);
+            $block['props'] = $this->replaceVariables($block['props'], $variables);
 
             return $block;
         }, $blocks);

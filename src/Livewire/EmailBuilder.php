@@ -3,15 +3,21 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Livewire;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmailBuilder extends Component
 {
+    use WithFileUploads;
+
     public ?int $templateId = null;
 
     public string $name = '';
@@ -28,6 +34,15 @@ class EmailBuilder extends Component
 
     public string $previewClient = 'gmail';
 
+    /** @var TemporaryUploadedFile|null */
+    public $uploadedImage = null;
+
+    public string $testEmailAddress = '';
+
+    public array $testVariables = [];
+
+    public bool $previewWithVariables = false;
+
     public function mount(?int $templateId = null): void
     {
         $this->settings = config('filament-mail-editor.default_settings', []);
@@ -43,11 +58,14 @@ class EmailBuilder extends Component
             $this->blocks = $template->blocks ?? [];
             $this->settings = array_merge($this->settings, $template->settings ?? []);
         }
+
+        $this->detectVariables();
     }
 
     public function syncBlocks(array $blocks): void
     {
         $this->blocks = $blocks;
+        $this->detectVariables();
     }
 
     public function updateBlockProps(string $blockId, array $props): void
@@ -60,6 +78,8 @@ class EmailBuilder extends Component
             }
         }
         unset($block);
+
+        $this->detectVariables();
     }
 
     public function save(): void
@@ -100,10 +120,75 @@ class EmailBuilder extends Component
         );
     }
 
+    /** @return array{url: string, filename: string} */
+    public function uploadImage(): array
+    {
+        $this->validate(['uploadedImage' => 'image|max:2048']);
+
+        $disk = config('filament-mail-editor.storage_disk', 'public');
+        $path = config('filament-mail-editor.storage_path', 'email-images');
+
+        $storedPath = $this->uploadedImage->store($path, $disk);
+
+        $url = Storage::disk($disk)->url($storedPath);
+
+        $result = [
+            'url' => $url,
+            'filename' => $this->uploadedImage->getClientOriginalName(),
+        ];
+
+        $this->reset('uploadedImage');
+
+        return $result;
+    }
+
+    public function sendTestEmail(): void
+    {
+        $this->validate(['testEmailAddress' => 'required|email']);
+
+        $html = app(HtmlExporter::class)->export($this->blocks, $this->settings);
+
+        if ($this->previewWithVariables && ! empty($this->testVariables)) {
+            foreach ($this->testVariables as $var => $replacement) {
+                $html = str_replace('{{'.$var.'}}', (string) $replacement, $html);
+            }
+        }
+
+        $address = $this->testEmailAddress;
+        $emailSubject = '[TEST] '.($this->subject ?: 'Email Template');
+
+        Mail::html($html, function ($message) use ($address, $emailSubject) {
+            $message->to($address)->subject($emailSubject);
+        });
+
+        $this->dispatch('test-email-sent');
+        $this->dispatch('notify', type: 'success', message: 'Test email sent to '.$address);
+    }
+
+    /** @return list<string> */
+    public function getExportWarnings(): array
+    {
+        return app(HtmlExporter::class)->validate($this->blocks);
+    }
+
     public function render(): View
     {
         return view('filament-mail-editor::email-builder', [
             'availableBlocks' => app(BlockRegistry::class)->catalog(),
+            'detectedVariables' => HtmlExporter::extractVariables($this->blocks),
         ]);
+    }
+
+    protected function detectVariables(): void
+    {
+        $detected = HtmlExporter::extractVariables($this->blocks);
+
+        foreach ($detected as $var) {
+            if (! isset($this->testVariables[$var])) {
+                $this->testVariables[$var] = '';
+            }
+        }
+
+        $this->testVariables = array_intersect_key($this->testVariables, array_flip($detected));
     }
 }

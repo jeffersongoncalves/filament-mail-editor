@@ -17,4 +17,9 @@ abstract class AbstractEmailBlock implements EmailBlock
 
         return view('filament-mail-editor::blocks.'.static::type(), ['props' => $merged])->render();
     }
+
+    public function getMediaQueries(): string
+    {
+        return '';
+    }
 }
