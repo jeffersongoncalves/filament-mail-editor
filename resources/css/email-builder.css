@@ -1,0 +1,54 @@
+.email-builder {
+    min-height: 600px;
+}
+
+.email-builder__main {
+    height: calc(100vh - 280px);
+    min-height: 400px;
+}
+
+.email-builder__sidebar-left::-webkit-scrollbar,
+.email-builder__sidebar-right::-webkit-scrollbar,
+.email-builder__canvas::-webkit-scrollbar {
+    width: 6px;
+}
+
+.email-builder__sidebar-left::-webkit-scrollbar-thumb,
+.email-builder__sidebar-right::-webkit-scrollbar-thumb,
+.email-builder__canvas::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.4);
+    border-radius: 3px;
+}
+
+.email-builder__sidebar-left::-webkit-scrollbar-track,
+.email-builder__sidebar-right::-webkit-scrollbar-track,
+.email-builder__canvas::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.email-builder__block {
+    transition: border-color 150ms ease;
+}
+
+.email-builder__block.sortable-ghost {
+    opacity: 0.4;
+}
+
+.email-builder__block.sortable-chosen {
+    border-color: rgb(var(--primary-500));
+    background-color: rgba(var(--primary-50), 0.5);
+}
+
+.drag-handle {
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Preview iframe auto-height */
+#preview-iframe {
+    border: none;
+    transition: width 300ms ease;
+}
