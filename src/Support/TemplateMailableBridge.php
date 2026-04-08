@@ -19,13 +19,17 @@ class TemplateMailableBridge extends Mailable
 
     protected string $renderedPlaintext = '';
 
+    protected VariableEngine $variableEngine;
+
     /**
      * @param  array<string, mixed>  $variables
      */
     public function __construct(
         protected string $slug,
         protected array $variables = [],
-    ) {}
+    ) {
+        $this->variableEngine = new VariableEngine;
+    }
 
     public function envelope(): Envelope
     {
@@ -93,17 +97,6 @@ class TemplateMailableBridge extends Mailable
      */
     protected function replaceVariablesInProps(array $props): array
     {
-        foreach ($props as $key => $value) {
-            if (is_string($value)) {
-                foreach ($this->variables as $var => $replacement) {
-                    $value = str_replace('{{'.$var.'}}', (string) $replacement, $value);
-                }
-                $props[$key] = $value;
-            } elseif (is_array($value)) {
-                $props[$key] = $this->replaceVariablesInProps($value);
-            }
-        }
-
-        return $props;
+        return $this->variableEngine->processProps($props, $this->variables);
     }
 }

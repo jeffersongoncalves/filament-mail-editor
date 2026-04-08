@@ -54,10 +54,9 @@ class HtmlExporter
     /** @return list<string> */
     public static function extractVariables(array $blocks): array
     {
-        $html = collect($blocks)->map(fn (array $b) => json_encode($b['props'] ?? []))->join(' ');
-        preg_match_all('/\{\{(\w+)\}\}/', $html, $matches);
+        $text = collect($blocks)->map(fn (array $b) => json_encode($b['props'] ?? []))->join(' ');
 
-        return array_values(array_unique($matches[1]));
+        return VariableEngine::extractVariables($text);
     }
 
     /** @return list<string> */

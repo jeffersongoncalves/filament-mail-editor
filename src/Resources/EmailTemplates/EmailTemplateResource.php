@@ -7,6 +7,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas\EmailTemplateForm;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas\EmailTemplateInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Tables\EmailTemplatesTable;
 
 class EmailTemplateResource extends Resource
@@ -20,6 +21,11 @@ class EmailTemplateResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return EmailTemplateForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return EmailTemplateInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -37,6 +43,7 @@ class EmailTemplateResource extends Resource
         return [
             'index' => Pages\ListEmailTemplates::route('/'),
             'create' => Pages\CreateEmailTemplate::route('/create'),
+            'view' => Pages\ViewEmailTemplate::route('/{record}'),
             'edit' => Pages\EditEmailTemplate::route('/{record}/edit'),
         ];
     }

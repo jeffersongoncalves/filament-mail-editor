@@ -48,9 +48,12 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
+            ->hasMigration('create_email_template_categories_table')
             ->hasMigration('create_email_templates_table')
             ->hasMigration('create_saved_email_blocks_table')
             ->hasMigration('create_email_template_variants_table')
+            ->hasMigration('create_email_template_versions_table')
+            ->hasMigration('create_email_brand_kits_table')
             ->hasCommand(MakeTemplateCommand::class);
     }
 
