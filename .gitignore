@@ -7,5 +7,6 @@ composer.lock
 .idea
 .claude
 .ai
+docs
 CLAUDE.md
 PROJECT.md
