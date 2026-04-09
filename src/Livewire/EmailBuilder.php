@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
@@ -75,7 +76,9 @@ class EmailBuilder extends Component
             $this->name = $template->name;
             $this->subject = $template->subject;
             $this->preheader = $template->preheader ?? '';
-            $this->category = $template->category ?? 'transactional';
+            $this->category = $template->category instanceof TemplateCategory
+                ? $template->category->value
+                : ($template->category ?? 'transactional');
             $this->blocks = $template->blocks ?? [];
             $this->settings = array_merge($this->settings, $template->settings ?? []);
             $this->templateStatus = $template->status instanceof TemplateStatus
@@ -212,7 +215,9 @@ class EmailBuilder extends Component
             $this->name = $template->name;
             $this->subject = $template->subject;
             $this->preheader = $template->preheader ?? '';
-            $this->category = $template->category ?? 'transactional';
+            $this->category = $template->category instanceof TemplateCategory
+                ? $template->category->value
+                : ($template->category ?? 'transactional');
             $this->blocks = $template->blocks ?? [];
             $this->settings = array_merge($this->settings, $template->settings ?? []);
             $this->detectVariables();

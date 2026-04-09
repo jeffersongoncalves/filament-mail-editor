@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use JeffersonGoncalves\FilamentMailEditor\Enums\ActivityAction;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
 use JeffersonGoncalves\FilamentMailEditor\Support\VariableEngine;
@@ -23,7 +24,7 @@ use JeffersonGoncalves\FilamentMailEditor\Support\VariableEngine;
  * @property string|null $preheader
  * @property array<int, array{id: string, type: string, props: array<string, mixed>}> $blocks
  * @property array<string, mixed>|null $settings
- * @property string|null $category
+ * @property TemplateCategory|null $category
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -72,6 +73,7 @@ class EmailTemplate extends Model
         'blocks' => 'array',
         'settings' => 'array',
         'is_active' => 'boolean',
+        'category' => TemplateCategory::class,
         'status' => TemplateStatus::class,
         'locked_at' => 'datetime',
         'lock_expires_at' => 'datetime',

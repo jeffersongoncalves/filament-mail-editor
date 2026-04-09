@@ -5,6 +5,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas
 use Filament\Forms;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 
 class EmailTemplateForm
 {
@@ -31,11 +32,7 @@ class EmailTemplateForm
                 Section::make('Settings')
                     ->schema([
                         Forms\Components\Select::make('category')
-                            ->options([
-                                'transactional' => 'Transactional',
-                                'marketing' => 'Marketing',
-                                'notification' => 'Notification',
-                            ])
+                            ->options(TemplateCategory::class)
                             ->required(),
                         Forms\Components\Toggle::make('is_active')
                             ->default(true),

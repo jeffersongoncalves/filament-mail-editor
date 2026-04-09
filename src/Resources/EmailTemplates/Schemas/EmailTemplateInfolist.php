@@ -30,26 +30,14 @@ class EmailTemplateInfolist
                 Section::make('Status & Workflow')
                     ->schema([
                         TextEntry::make('category')
-                            ->badge()
-                            ->color(fn (string $state): string => match ($state) {
-                                'transactional' => 'info',
-                                'marketing' => 'success',
-                                'notification' => 'warning',
-                                default => 'gray',
-                            }),
+                            ->badge(),
                         TextEntry::make('templateCategory.name')
                             ->label('Category Folder')
                             ->placeholder('None'),
                         IconEntry::make('is_active')
                             ->boolean(),
                         TextEntry::make('status')
-                            ->badge()
-                            ->color(fn (string $state): string => match ($state) {
-                                'draft' => 'gray',
-                                'review' => 'warning',
-                                'approved' => 'success',
-                                default => 'gray',
-                            }),
+                            ->badge(),
                         TextEntry::make('approved_by')
                             ->placeholder('Not approved yet')
                             ->color('gray'),

@@ -6,6 +6,8 @@ use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
 use JeffersonGoncalves\FilamentMailEditor\Support\TemplateImportExport;
@@ -25,12 +27,6 @@ class EmailTemplatesTable
                     ->limit(50),
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'transactional' => 'info',
-                        'marketing' => 'success',
-                        'notification' => 'warning',
-                        default => 'gray',
-                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('blocks_count')
                     ->label('Blocks')
@@ -38,12 +34,6 @@ class EmailTemplatesTable
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'review' => 'warning',
-                        'approved' => 'success',
-                        default => 'gray',
-                    })
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean()
@@ -54,17 +44,9 @@ class EmailTemplatesTable
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
-                    ->options([
-                        'transactional' => 'Transactional',
-                        'marketing' => 'Marketing',
-                        'notification' => 'Notification',
-                    ]),
+                    ->options(TemplateCategory::class),
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'review' => 'In Review',
-                        'approved' => 'Approved',
-                    ]),
+                    ->options(TemplateStatus::class),
                 Tables\Filters\TernaryFilter::make('is_active'),
                 Tables\Filters\TrashedFilter::make(),
             ])
