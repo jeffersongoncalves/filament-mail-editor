@@ -5,11 +5,15 @@ namespace JeffersonGoncalves\FilamentMailEditor\Livewire;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\FilamentMailEditor\Events\TemplateExported;
+use JeffersonGoncalves\FilamentMailEditor\Events\TestEmailSent;
+use JeffersonGoncalves\FilamentMailEditor\Jobs\CheckLinksJob;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateVersion;
@@ -160,6 +164,14 @@ class EmailBuilder extends Component
     {
         $html = app(HtmlExporter::class)->export($this->blocks, $this->settings);
 
+        if ($this->templateId) {
+            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $template = $model::find($this->templateId);
+            if ($template) {
+                TemplateExported::dispatch($template, 'html');
+            }
+        }
+
         return response()->streamDownload(
             fn () => print ($html),
             Str::slug($this->name ?: 'email-template').'.html',
@@ -270,6 +282,14 @@ class EmailBuilder extends Component
             $message->to($address)->subject($emailSubject);
         });
 
+        if ($this->templateId) {
+            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $template = $model::find($this->templateId);
+            if ($template) {
+                TestEmailSent::dispatch($template, $address);
+            }
+        }
+
         $this->dispatch('test-email-sent');
         $this->dispatch('notify', type: 'success', message: 'Test email sent to '.$address);
     }
@@ -303,13 +323,56 @@ class EmailBuilder extends Component
     }
 
     /**
-     * Check all links in the template for broken URLs.
+     * Check all links in the template. Uses async job for 3+ URLs, sync for fewer.
      *
-     * @return list<array{url: string, status: string, message: string, block_type: string}>
+     * @return array{status: string, results: list<array{url: string, status: string, message: string, block_type: string}>}
      */
     public function checkLinks(): array
     {
-        return (new LinkChecker)->check($this->blocks);
+        $checker = new LinkChecker;
+        $urls = $checker->extractUrls($this->blocks);
+
+        if (count($urls) < 3) {
+            return ['status' => 'completed', 'results' => $checker->check($this->blocks)];
+        }
+
+        $cacheKey = CheckLinksJob::cacheKey($this->templateId ?? 0);
+        $cached = Cache::get($cacheKey);
+
+        if ($cached && $cached['status'] === 'completed') {
+            Cache::forget($cacheKey);
+
+            return $cached;
+        }
+
+        if ($cached && $cached['status'] === 'processing') {
+            return ['status' => 'processing', 'results' => []];
+        }
+
+        CheckLinksJob::dispatch($cacheKey, $this->blocks);
+
+        return ['status' => 'processing', 'results' => []];
+    }
+
+    /**
+     * Poll for async link check results.
+     *
+     * @return array{status: string, results: list<array{url: string, status: string, message: string, block_type: string}>}|null
+     */
+    public function pollLinkCheck(): ?array
+    {
+        $cacheKey = CheckLinksJob::cacheKey($this->templateId ?? 0);
+        $cached = Cache::get($cacheKey);
+
+        if (! $cached) {
+            return null;
+        }
+
+        if ($cached['status'] === 'completed') {
+            Cache::forget($cacheKey);
+        }
+
+        return $cached;
     }
 
     /**

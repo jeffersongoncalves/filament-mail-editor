@@ -30,6 +30,7 @@ use JeffersonGoncalves\FilamentMailEditor\Blocks\ThreeColumnsBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\TwoColumnsBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\VideoThumbBlock;
 use JeffersonGoncalves\FilamentMailEditor\Commands\MakeTemplateCommand;
+use JeffersonGoncalves\FilamentMailEditor\Commands\ReleaseLocksCommand;
 use JeffersonGoncalves\FilamentMailEditor\Http\Controllers\CountdownController;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
@@ -57,7 +58,8 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->hasMigration('create_email_template_activities_table')
             ->hasMigration('create_email_template_notifications_table')
             ->hasMigration('create_email_template_schedules_table')
-            ->hasCommand(MakeTemplateCommand::class);
+            ->hasCommand(MakeTemplateCommand::class)
+            ->hasCommand(ReleaseLocksCommand::class);
     }
 
     public function packageRegistered(): void

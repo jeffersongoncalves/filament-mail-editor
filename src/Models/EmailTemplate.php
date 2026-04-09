@@ -13,6 +13,11 @@ use Illuminate\Support\Carbon;
 use JeffersonGoncalves\FilamentMailEditor\Enums\ActivityAction;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\FilamentMailEditor\Events\TemplateLocked;
+use JeffersonGoncalves\FilamentMailEditor\Events\TemplateStatusChanged;
+use JeffersonGoncalves\FilamentMailEditor\Events\TemplateUnlocked;
+use JeffersonGoncalves\FilamentMailEditor\Events\VersionCreated;
+use JeffersonGoncalves\FilamentMailEditor\Events\VersionRestored;
 use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
 use JeffersonGoncalves\FilamentMailEditor\Support\VariableEngine;
 
@@ -143,7 +148,7 @@ class EmailTemplate extends Model
     {
         $latestVersion = $this->versions()->max('version_number') ?? 0;
 
-        return $this->versions()->create([
+        $version = $this->versions()->create([
             'version_number' => $latestVersion + 1,
             'blocks' => $this->blocks ?? [],
             'settings' => $this->settings,
@@ -153,6 +158,10 @@ class EmailTemplate extends Model
             'created_by' => $createdBy,
             'created_at' => now(),
         ]);
+
+        VersionCreated::dispatch($version);
+
+        return $version;
     }
 
     // ──── Workflow ────
@@ -191,8 +200,11 @@ class EmailTemplate extends Model
 
     protected function transitionTo(TemplateStatus $target): void
     {
+        $oldStatus = $this->status;
         $this->status->transitionTo($target);
         $this->update(['status' => $target]);
+
+        TemplateStatusChanged::dispatch($this, $oldStatus, $target);
     }
 
     // ──── Lock ────
@@ -200,12 +212,15 @@ class EmailTemplate extends Model
     public function lock(?string $lockedBy = null): void
     {
         $timeout = config('filament-mail-editor.lock_timeout', 30);
+        $lockedBy = $lockedBy ?? self::resolveCurrentUserName();
 
         $this->update([
-            'locked_by' => $lockedBy ?? self::resolveCurrentUserName(),
+            'locked_by' => $lockedBy,
             'locked_at' => now(),
             'lock_expires_at' => now()->addMinutes($timeout),
         ]);
+
+        TemplateLocked::dispatch($this, $lockedBy ?? '');
     }
 
     public function unlock(): void
@@ -215,6 +230,8 @@ class EmailTemplate extends Model
             'locked_at' => null,
             'lock_expires_at' => null,
         ]);
+
+        TemplateUnlocked::dispatch($this);
     }
 
     public function isLockExpired(): bool
@@ -265,6 +282,8 @@ class EmailTemplate extends Model
             'subject' => $version->subject,
             'preheader' => $version->preheader,
         ]);
+
+        VersionRestored::dispatch($this, $version);
     }
 
     protected static function resolveCurrentUserName(): ?string
