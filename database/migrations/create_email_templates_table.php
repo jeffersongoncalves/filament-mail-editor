@@ -16,19 +16,19 @@ return new class extends Migration
             $table->text('preheader')->nullable();
             $table->json('blocks');
             $table->json('settings')->nullable();
-            $table->string('category')->nullable();
-            $table->foreignId('category_id')->nullable()->constrained('email_template_categories')->nullOnDelete();
-            $table->boolean('is_active')->default(true);
-            $table->string('status')->default('draft');
-            $table->string('locked_by')->nullable();
+            $table->string('category', 20)->nullable()->index(); // Template type: transactional/marketing/notification
+            $table->foreignId('category_id')->nullable()->constrained('email_template_categories')->nullOnDelete(); // Organizational folder
+            $table->boolean('is_active')->default(true)->index();
+            $table->string('status', 20)->default('draft')->index();
+            $table->string('locked_by')->nullable(); // String, not FK — plugin cannot assume host users table
             $table->timestamp('locked_at')->nullable();
             $table->timestamp('lock_expires_at')->nullable();
-            $table->string('approved_by')->nullable();
+            $table->string('approved_by')->nullable(); // String, not FK — plugin cannot assume host users table
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('status');
+            $table->index('category_id');
         });
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()
                 ->constrained('email_template_categories')
                 ->nullOnDelete();
-            $table->integer('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
 

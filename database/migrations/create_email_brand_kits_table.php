@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('colors');
             $table->json('typography');
             $table->json('social_links')->nullable();
-            $table->string('footer_address')->nullable();
+            $table->text('footer_address')->nullable();
             $table->string('unsubscribe_url')->nullable();
             $table->timestamps();
             $table->softDeletes();

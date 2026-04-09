@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('recipients_type', 30);
             $table->json('recipients');
             $table->json('variables')->nullable();
-            $table->unsignedBigInteger('variant_id')->nullable();
+            $table->foreignId('variant_id')->nullable()->constrained('email_template_variants')->nullOnDelete();
             $table->string('scheduled_by')->nullable();
             $table->string('cancelled_by')->nullable();
             $table->timestamp('cancelled_at')->nullable();
@@ -29,11 +29,6 @@ return new class extends Migration
 
             $table->index(['status', 'scheduled_at']);
             $table->index('template_id');
-
-            $table->foreign('variant_id')
-                ->references('id')
-                ->on('email_template_variants')
-                ->nullOnDelete();
         });
     }
 
