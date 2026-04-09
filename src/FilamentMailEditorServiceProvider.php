@@ -54,6 +54,9 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->hasMigration('create_email_template_variants_table')
             ->hasMigration('create_email_template_versions_table')
             ->hasMigration('create_email_brand_kits_table')
+            ->hasMigration('create_email_template_activities_table')
+            ->hasMigration('create_email_template_notifications_table')
+            ->hasMigration('create_email_template_schedules_table')
             ->hasCommand(MakeTemplateCommand::class);
     }
 

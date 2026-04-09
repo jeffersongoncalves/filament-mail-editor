@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('status')->default('draft');
             $table->string('locked_by')->nullable();
             $table->timestamp('locked_at')->nullable();
+            $table->timestamp('lock_expires_at')->nullable();
             $table->string('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();

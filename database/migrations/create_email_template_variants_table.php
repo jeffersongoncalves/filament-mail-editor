@@ -18,6 +18,9 @@ return new class extends Migration
             $table->json('settings')->nullable();
             $table->unsignedTinyInteger('send_percentage')->default(50);
             $table->boolean('is_winner')->default(false);
+            $table->unsignedBigInteger('sends_count')->default(0);
+            $table->unsignedBigInteger('opens_count')->default(0);
+            $table->unsignedBigInteger('clicks_count')->default(0);
             $table->timestamps();
 
             $table->index('template_id');

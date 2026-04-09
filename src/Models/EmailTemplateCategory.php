@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -19,12 +20,15 @@ use Illuminate\Support\Carbon;
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read EmailTemplateCategory|null $parent
  * @property-read Collection<int, EmailTemplateCategory> $children
  * @property-read Collection<int, EmailTemplate> $templates
  */
 class EmailTemplateCategory extends Model
 {
+    use SoftDeletes;
+
     /** @var list<string> */
     protected $fillable = [
         'name',

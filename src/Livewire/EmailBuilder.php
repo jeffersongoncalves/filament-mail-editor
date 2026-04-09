@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateVersion;
@@ -77,7 +78,9 @@ class EmailBuilder extends Component
             $this->category = $template->category ?? 'transactional';
             $this->blocks = $template->blocks ?? [];
             $this->settings = array_merge($this->settings, $template->settings ?? []);
-            $this->templateStatus = $template->status ?? 'draft';
+            $this->templateStatus = $template->status instanceof TemplateStatus
+                ? $template->status->value
+                : ($template->status ?? 'draft');
 
             // Check lock status
             if ($template->isLockedByOther()) {
@@ -439,7 +442,7 @@ class EmailBuilder extends Component
         $model = config('filament-mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->submitForReview();
-        $this->templateStatus = EmailTemplate::STATUS_REVIEW;
+        $this->templateStatus = TemplateStatus::Review->value;
 
         $this->dispatch('notify', type: 'success', message: 'Template submitted for review.');
     }
@@ -456,7 +459,7 @@ class EmailBuilder extends Component
         $model = config('filament-mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->approve();
-        $this->templateStatus = EmailTemplate::STATUS_APPROVED;
+        $this->templateStatus = TemplateStatus::Approved->value;
 
         $this->dispatch('notify', type: 'success', message: 'Template approved.');
     }
@@ -473,7 +476,7 @@ class EmailBuilder extends Component
         $model = config('filament-mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->rejectToDraft();
-        $this->templateStatus = EmailTemplate::STATUS_DRAFT;
+        $this->templateStatus = TemplateStatus::Draft->value;
 
         $this->dispatch('notify', type: 'info', message: 'Template returned to draft.');
     }

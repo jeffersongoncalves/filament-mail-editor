@@ -4,6 +4,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -20,11 +21,14 @@ use Illuminate\Support\Carbon;
  * @property string|null $unsubscribe_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  *
  * @method static Builder<static> default()
  */
 class EmailBrandKit extends Model
 {
+    use SoftDeletes;
+
     /** @var list<string> */
     protected $fillable = [
         'name',

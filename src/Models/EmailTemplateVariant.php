@@ -14,6 +14,9 @@ use Illuminate\Support\Carbon;
  * @property array<string, mixed>|null $settings
  * @property int $send_percentage
  * @property bool $is_winner
+ * @property int $sends_count
+ * @property int $opens_count
+ * @property int $clicks_count
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -27,6 +30,9 @@ class EmailTemplateVariant extends Model
         'settings',
         'send_percentage',
         'is_winner',
+        'sends_count',
+        'opens_count',
+        'clicks_count',
     ];
 
     protected $casts = [
@@ -34,6 +40,9 @@ class EmailTemplateVariant extends Model
         'settings' => 'array',
         'send_percentage' => 'integer',
         'is_winner' => 'boolean',
+        'sends_count' => 'integer',
+        'opens_count' => 'integer',
+        'clicks_count' => 'integer',
     ];
 
     public function getTable(): string

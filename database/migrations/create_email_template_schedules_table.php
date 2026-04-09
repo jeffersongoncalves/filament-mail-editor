@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('email_template_schedules', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('template_id')
+                ->constrained(config('filament-mail-editor.table_name', 'email_templates'))
+                ->cascadeOnDelete();
+            $table->string('status', 20)->default('pending')->index();
+            $table->timestamp('scheduled_at');
+            $table->timestamp('sent_at')->nullable();
+            $table->string('recipients_type', 30);
+            $table->json('recipients');
+            $table->json('variables')->nullable();
+            $table->unsignedBigInteger('variant_id')->nullable();
+            $table->string('scheduled_by')->nullable();
+            $table->string('cancelled_by')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
+            $table->text('cancel_reason')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index(['status', 'scheduled_at']);
+            $table->index('template_id');
+
+            $table->foreign('variant_id')
+                ->references('id')
+                ->on('email_template_variants')
+                ->nullOnDelete();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('email_template_schedules');
+    }
+};

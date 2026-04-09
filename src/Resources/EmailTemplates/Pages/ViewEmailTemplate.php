@@ -5,6 +5,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Pages;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
 use JeffersonGoncalves\FilamentMailEditor\Support\TemplateImportExport;
@@ -27,7 +28,7 @@ class ViewEmailTemplate extends ViewRecord
                     $clone = $record->replicate();
                     $clone->name = $clone->name.' (copy)';
                     $clone->slug = Str::slug($clone->name).'-'.time();
-                    $clone->status = 'draft';
+                    $clone->status = TemplateStatus::Draft;
                     $clone->locked_by = null;
                     $clone->locked_at = null;
                     $clone->approved_by = null;
@@ -72,7 +73,12 @@ class ViewEmailTemplate extends ViewRecord
                     ->icon('heroicon-m-paper-airplane')
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->visible(fn () => ($this->record->status ?? 'draft') === 'draft')
+                    ->visible(function () {
+                        /** @var EmailTemplate $record */
+                        $record = $this->record;
+
+                        return $record->status === TemplateStatus::Draft;
+                    })
                     ->action(function () {
                         /** @var EmailTemplate $record */
                         $record = $this->record;
@@ -84,7 +90,12 @@ class ViewEmailTemplate extends ViewRecord
                     ->icon('heroicon-m-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn () => ($this->record->status ?? 'draft') === 'review')
+                    ->visible(function () {
+                        /** @var EmailTemplate $record */
+                        $record = $this->record;
+
+                        return $record->status === TemplateStatus::Review;
+                    })
                     ->action(function () {
                         /** @var EmailTemplate $record */
                         $record = $this->record;
@@ -97,7 +108,12 @@ class ViewEmailTemplate extends ViewRecord
                     ->icon('heroicon-m-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->visible(fn () => in_array($this->record->status ?? 'draft', ['review', 'approved']))
+                    ->visible(function () {
+                        /** @var EmailTemplate $record */
+                        $record = $this->record;
+
+                        return in_array($record->status, [TemplateStatus::Review, TemplateStatus::Approved]);
+                    })
                     ->action(function () {
                         /** @var EmailTemplate $record */
                         $record = $this->record;

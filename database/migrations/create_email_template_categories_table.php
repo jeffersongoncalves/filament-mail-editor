@@ -20,6 +20,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->integer('sort_order')->default(0);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('parent_id');
         });

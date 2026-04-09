@@ -80,6 +80,8 @@ return [
         ],
     ],
 
+    'lock_timeout' => 30,
+
     'preview_route_middleware' => ['web', 'auth'],
 
     'storage_disk' => 'public',

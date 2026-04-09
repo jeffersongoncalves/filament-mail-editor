@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('footer_address')->nullable();
             $table->string('unsubscribe_url')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
