@@ -16,13 +16,26 @@ class EmailTemplateCategoryResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-folder';
 
-    protected static string|\UnitEnum|null $navigationGroup = null;
-
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-mail-editor.navigation_group'));
+    }
 
     public static function getNavigationLabel(): string
     {
-        return 'Template Categories';
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template_category.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template_category.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template_category.plural_model_label');
     }
 
     public static function form(Schema $schema): Schema

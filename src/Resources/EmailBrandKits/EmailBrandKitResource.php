@@ -16,13 +16,26 @@ class EmailBrandKitResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-paint-brush';
 
-    protected static string|\UnitEnum|null $navigationGroup = null;
-
     protected static ?int $navigationSort = 3;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-mail-editor.navigation_group'));
+    }
 
     public static function getNavigationLabel(): string
     {
-        return 'Brand Kits';
+        return __('filament-mail-editor::filament-mail-editor.resource.email_brand_kit.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_brand_kit.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_brand_kit.plural_model_label');
     }
 
     public static function form(Schema $schema): Schema

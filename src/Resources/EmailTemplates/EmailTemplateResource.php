@@ -16,7 +16,27 @@ class EmailTemplateResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static string|\UnitEnum|null $navigationGroup = null;
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-mail-editor.navigation_group'));
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.email_template.plural_model_label');
+    }
 
     public static function form(Schema $schema): Schema
     {

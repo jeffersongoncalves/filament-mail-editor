@@ -9,6 +9,22 @@ return [
 
     'app_url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation
+    |--------------------------------------------------------------------------
+    |
+    | Group and sort order for every resource registered by the plugin.
+    | The group is passed through `__()`, so you may either use a literal
+    | string (that gets translated via the host app's language files) or
+    | a translation key like `filament-mail-editor::filament-mail-editor.navigation.group`.
+    |
+    */
+
+    'navigation_group' => 'filament-mail-editor::filament-mail-editor.navigation.group',
+
+    'navigation_sort' => null,
+
     'default_settings' => [
         'primary_color' => '#378ADD',
         'bg_color' => '#f8f9fa',

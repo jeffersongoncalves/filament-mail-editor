@@ -47,6 +47,7 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
+            ->hasTranslations()
             ->hasRoute('web')
             ->hasMigrations([
                 'create_email_template_categories_table',

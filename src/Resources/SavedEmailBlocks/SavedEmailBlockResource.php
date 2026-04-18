@@ -16,13 +16,26 @@ class SavedEmailBlockResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cube';
 
-    protected static string|\UnitEnum|null $navigationGroup = null;
-
     protected static ?int $navigationSort = 4;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-mail-editor.navigation_group'));
+    }
 
     public static function getNavigationLabel(): string
     {
-        return 'Saved Blocks';
+        return __('filament-mail-editor::filament-mail-editor.resource.saved_email_block.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.saved_email_block.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-mail-editor::filament-mail-editor.resource.saved_email_block.plural_model_label');
     }
 
     public static function form(Schema $schema): Schema
