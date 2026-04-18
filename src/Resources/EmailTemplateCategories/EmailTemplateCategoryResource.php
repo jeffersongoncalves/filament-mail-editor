@@ -2,8 +2,10 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories;
 
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Schemas\EmailTemplateCategoryForm;
@@ -14,13 +16,13 @@ class EmailTemplateCategoryResource extends Resource
 {
     protected static ?string $model = EmailTemplateCategory::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-folder';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolder;
 
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __(config('filament-mail-editor.navigation_group'));
+        return __('filament-mail-editor::filament-mail-editor.navigation.group');
     }
 
     public static function getNavigationLabel(): string

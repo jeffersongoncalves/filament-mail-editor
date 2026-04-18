@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Events\TemplateExported;
@@ -456,12 +457,16 @@ class EmailBuilder extends Component
         return EmailBrandKit::orderBy('name')->get();
     }
 
-    public function saveBlockAsComponent(string $blockId, string $name, string $description = '', string $componentCategory = ''): void
+    public function saveBlockAsComponent(string $blockId, string $name, string $description = '', ?string $componentCategory = null): void
     {
         $block = collect($this->blocks)->firstWhere('id', $blockId);
         if (! $block) {
             return;
         }
+
+        $category = BlockCategory::tryFrom($componentCategory ?? '')
+            ?? BlockCategory::tryFrom((string) (app(BlockRegistry::class)->find($block['type'])?->category() ?? ''))
+            ?? BlockCategory::Content;
 
         SavedEmailBlock::create([
             'name' => $name,
@@ -469,7 +474,7 @@ class EmailBuilder extends Component
             'type' => $block['type'],
             'props' => $block['props'],
             'is_global' => true,
-            'category' => $componentCategory ?: $block['type'],
+            'category' => $category,
         ]);
 
         $this->dispatch('notify', type: 'success', message: 'Block saved to library.');

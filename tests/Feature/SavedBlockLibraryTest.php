@@ -9,7 +9,7 @@ it('saves a block as component via builder', function () {
         ['id' => 'b_test', 'type' => 'button', 'props' => ['text' => 'CTA', 'url' => 'https://example.com', 'bg_color' => '#FF0000']],
     ];
 
-    $builder->saveBlockAsComponent('b_test', 'Red CTA Button', 'A red call-to-action button', 'cta');
+    $builder->saveBlockAsComponent('b_test', 'Red CTA Button', 'A red call-to-action button', 'content');
 
     $saved = SavedEmailBlock::first();
     expect($saved)->not->toBeNull();
@@ -25,7 +25,7 @@ it('adds a saved block back to the builder', function () {
         'type' => 'heading',
         'props' => ['text' => 'Saved Heading', 'color' => '#333'],
         'is_global' => true,
-        'category' => 'heading',
+        'category' => 'content',
     ]);
 
     $builder = new EmailBuilder;

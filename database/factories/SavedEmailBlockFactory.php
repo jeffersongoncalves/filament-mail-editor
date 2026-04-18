@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JeffersonGoncalves\FilamentMailEditor\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 
 /**
@@ -29,7 +30,7 @@ final class SavedEmailBlockFactory extends Factory
             'props' => $this->propsForType($type),
             'user_id' => null,
             'is_global' => false,
-            'category' => fake()->randomElement(['structure', 'content', 'marketing']),
+            'category' => fake()->randomElement(BlockCategory::cases()),
         ];
     }
 

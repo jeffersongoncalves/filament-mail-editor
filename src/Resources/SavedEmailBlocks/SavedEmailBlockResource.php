@@ -2,8 +2,10 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks;
 
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas\SavedEmailBlockForm;
@@ -14,13 +16,13 @@ class SavedEmailBlockResource extends Resource
 {
     protected static ?string $model = SavedEmailBlock::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cube';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __(config('filament-mail-editor.navigation_group'));
+        return __('filament-mail-editor::filament-mail-editor.navigation.group');
     }
 
     public static function getNavigationLabel(): string

@@ -14,11 +14,7 @@ enum NotificationType: string implements HasColor, HasIcon, HasLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::SubmittedForReview => 'Submitted for Review',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-        };
+        return __('filament-mail-editor::filament-mail-editor.notification_types.'.$this->value);
     }
 
     public function getColor(): string

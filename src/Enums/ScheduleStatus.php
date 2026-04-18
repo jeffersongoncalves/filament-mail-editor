@@ -16,13 +16,7 @@ enum ScheduleStatus: string implements HasColor, HasIcon, HasLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Processing => 'Processing',
-            self::Sent => 'Sent',
-            self::Failed => 'Failed',
-            self::Cancelled => 'Cancelled',
-        };
+        return __('filament-mail-editor::filament-mail-editor.schedule_statuses.'.$this->value);
     }
 
     public function getColor(): string

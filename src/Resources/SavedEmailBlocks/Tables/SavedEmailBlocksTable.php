@@ -5,6 +5,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Table
 use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
+use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 
 class SavedEmailBlocksTable
@@ -14,41 +15,39 @@ class SavedEmailBlocksTable
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.type'))
                     ->badge()
                     ->color('info')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                     ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
-                        'structure' => 'gray',
-                        'content' => 'info',
-                        'marketing' => 'success',
-                        default => 'gray',
-                    })
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_global')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global'))
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.updated_at'))
                     ->since()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.type'))
                     ->options(fn () => SavedEmailBlock::query()
                         ->distinct()
                         ->pluck('type', 'type')
                         ->toArray()),
                 Tables\Filters\SelectFilter::make('category')
-                    ->options([
-                        'structure' => 'Structure',
-                        'content' => 'Content',
-                        'marketing' => 'Marketing',
-                    ]),
-                Tables\Filters\TernaryFilter::make('is_global'),
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
+                    ->options(BlockCategory::class),
+                Tables\Filters\TernaryFilter::make('is_global')
+                    ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global')),
             ])
             ->recordActions([
                 Actions\ViewAction::make(),

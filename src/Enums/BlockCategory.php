@@ -6,32 +6,32 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum TemplateCategory: string implements HasColor, HasIcon, HasLabel
+enum BlockCategory: string implements HasColor, HasIcon, HasLabel
 {
-    case Transactional = 'transactional';
+    case Structure = 'structure';
+    case Content = 'content';
     case Marketing = 'marketing';
-    case Notification = 'notification';
 
     public function getLabel(): string
     {
-        return __('filament-mail-editor::filament-mail-editor.template_categories.'.$this->value);
+        return __('filament-mail-editor::filament-mail-editor.block_categories.'.$this->value);
     }
 
     public function getColor(): string
     {
         return match ($this) {
-            self::Transactional => 'info',
+            self::Structure => 'gray',
+            self::Content => 'info',
             self::Marketing => 'success',
-            self::Notification => 'warning',
         };
     }
 
     public function getIcon(): string
     {
         return match ($this) {
-            self::Transactional => 'heroicon-o-paper-airplane',
+            self::Structure => 'heroicon-o-rectangle-stack',
+            self::Content => 'heroicon-o-document-text',
             self::Marketing => 'heroicon-o-megaphone',
-            self::Notification => 'heroicon-o-bell',
         };
     }
 }

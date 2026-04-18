@@ -15,11 +15,7 @@ enum TemplateStatus: string implements HasColor, HasIcon, HasLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Draft => 'Draft',
-            self::Review => 'In Review',
-            self::Approved => 'Approved',
-        };
+        return __('filament-mail-editor::filament-mail-editor.template_status.'.$this->value);
     }
 
     public function getColor(): string

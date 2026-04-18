@@ -24,22 +24,7 @@ enum ActivityAction: string implements HasIcon, HasLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Created => 'Created',
-            self::Updated => 'Updated',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-            self::SubmittedForReview => 'Submitted for Review',
-            self::Exported => 'Exported',
-            self::Locked => 'Locked',
-            self::Unlocked => 'Unlocked',
-            self::VersionCreated => 'Version Created',
-            self::VersionRestored => 'Version Restored',
-            self::TestSent => 'Test Email Sent',
-            self::BrandKitApplied => 'Brand Kit Applied',
-            self::ThemeApplied => 'Theme Applied',
-            self::Imported => 'Imported',
-        };
+        return __('filament-mail-editor::filament-mail-editor.activity_actions.'.$this->value);
     }
 
     public function getIcon(): string

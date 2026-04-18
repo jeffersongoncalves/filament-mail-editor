@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use JeffersonGoncalves\FilamentMailEditor\Database\Factories\SavedEmailBlockFactory;
+use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 
 /**
  * @property int $id
@@ -19,7 +20,7 @@ use JeffersonGoncalves\FilamentMailEditor\Database\Factories\SavedEmailBlockFact
  * @property array<string, mixed> $props
  * @property int|null $user_id
  * @property bool $is_global
- * @property string|null $category
+ * @property BlockCategory|null $category
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -52,6 +53,7 @@ class SavedEmailBlock extends Model
     protected $casts = [
         'props' => 'array',
         'is_global' => 'boolean',
+        'category' => BlockCategory::class,
     ];
 
     public function getTable(): string
