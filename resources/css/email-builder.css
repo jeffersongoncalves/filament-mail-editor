@@ -53,11 +53,18 @@
 .fi-me-toolbar-select-group {
     display: flex;
     gap: 0.5rem;
+    min-width: 0;
+}
+
+.fi-me-toolbar-select-group > .fi-me-select {
+    flex: 1 1 0%;
+    min-width: 0;
+    width: auto;
 }
 
 .fi-me-toolbar-theme {
+    flex: 0 0 7rem;
     width: 7rem;
-    flex-shrink: 0;
 }
 
 .fi-me-toolbar-actions {
