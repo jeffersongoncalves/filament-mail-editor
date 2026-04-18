@@ -1,3 +1,12 @@
+@import "tailwindcss";
+
+@source "../views/email-builder.blade.php";
+@source "../views/blocks/**/*.blade.php";
+@source "../views/preview/**/*.blade.php";
+@source "../views/resources/**/*.blade.php";
+
+/* Custom styles (not Tailwind utilities) */
+
 .email-builder {
     min-height: 600px;
 }
@@ -47,7 +56,6 @@
     cursor: grabbing;
 }
 
-/* Preview iframe auto-height */
 #preview-iframe {
     border: none;
     transition: width 300ms ease;

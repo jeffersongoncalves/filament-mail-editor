@@ -2,17 +2,15 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build:styles": "postcss resources/css/email-builder.css -o resources/dist/email-builder.css",
+        "build:styles": "tailwindcss -i ./resources/css/email-builder.css -o ./resources/dist/email-builder.css --minify",
         "build:scripts": "node bin/build.js",
         "build": "npm-run-all build:*",
         "dev": "node bin/build.js --dev"
     },
     "devDependencies": {
-        "cssnano": "^7.1.3",
+        "@tailwindcss/cli": "^4.0.0",
         "esbuild": "^0.25.5",
         "npm-run-all2": "^7.0.2",
-        "postcss": "^8.5.8",
-        "postcss-cli": "^11.0.1",
-        "postcss-nesting": "^14.0.0"
+        "tailwindcss": "^4.0.0"
     }
 }
