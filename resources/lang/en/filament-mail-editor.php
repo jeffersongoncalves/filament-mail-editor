@@ -23,6 +23,7 @@ return [
     'builder' => [
         'heading' => 'Email Builder',
         'description' => 'Drag and drop blocks to build your email template.',
+        'back_to_edit' => 'Back to Edit',
     ],
 
     /*
@@ -39,6 +40,7 @@ return [
         'reject_to_draft' => 'Return to Draft',
         'workflow' => 'Workflow',
         'set_default' => 'Set as Default',
+        'open_builder' => 'Open Builder',
     ],
 
     /*

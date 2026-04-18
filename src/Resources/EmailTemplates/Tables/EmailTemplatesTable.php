@@ -10,6 +10,7 @@ use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportJsonAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\OpenBuilderAction;
 
 class EmailTemplatesTable
 {
@@ -59,6 +60,7 @@ class EmailTemplatesTable
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->recordActions([
+                OpenBuilderAction::make()->iconButton()->tooltip(__('filament-mail-editor::filament-mail-editor.actions.open_builder')),
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 DuplicateAction::make(),

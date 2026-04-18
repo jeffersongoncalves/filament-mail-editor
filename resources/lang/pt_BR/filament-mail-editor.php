@@ -23,6 +23,7 @@ return [
     'builder' => [
         'heading' => 'Construtor de E-mail',
         'description' => 'Arraste e solte blocos para montar seu modelo de e-mail.',
+        'back_to_edit' => 'Voltar para Edição',
     ],
 
     /*
@@ -39,6 +40,7 @@ return [
         'reject_to_draft' => 'Voltar para Rascunho',
         'workflow' => 'Fluxo',
         'set_default' => 'Definir como Padrão',
+        'open_builder' => 'Abrir Construtor',
     ],
 
     /*

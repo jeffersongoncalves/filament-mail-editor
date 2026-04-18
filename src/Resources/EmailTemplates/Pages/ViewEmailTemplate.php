@@ -9,6 +9,7 @@ use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\Appro
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportHtmlAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportJsonAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\OpenBuilderAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\RejectToDraftAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\SubmitForReviewAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
@@ -20,6 +21,7 @@ class ViewEmailTemplate extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            OpenBuilderAction::make(),
             Actions\EditAction::make(),
             DuplicateAction::make(),
             ExportJsonAction::make(),

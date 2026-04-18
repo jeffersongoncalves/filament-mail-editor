@@ -67,6 +67,7 @@ class EmailTemplateResource extends Resource
             'create' => Pages\CreateEmailTemplate::route('/create'),
             'view' => Pages\ViewEmailTemplate::route('/{record}'),
             'edit' => Pages\EditEmailTemplate::route('/{record}/edit'),
+            'build' => Pages\BuildEmailTemplate::route('/{record}/build'),
         ];
     }
 }
