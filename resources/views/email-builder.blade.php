@@ -24,9 +24,9 @@
             />
             <div class="fi-me-toolbar-select-group">
                 <select wire:model.live="category" class="fi-me-select">
-                    <option value="transactional">Transactional</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="notification">Notification</option>
+                    @foreach (\JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory::cases() as $case)
+                        <option value="{{ $case->value }}" @selected($this->category === $case->value)>{{ $case->getLabel() }}</option>
+                    @endforeach
                 </select>
                 <select
                     wire:model.live="activeTheme"
@@ -35,7 +35,7 @@
                     title="Apply Theme"
                 >
                     @foreach ($themes as $themeKey)
-                        <option value="{{ $themeKey }}">{{ ucfirst($themeKey) }}</option>
+                        <option value="{{ $themeKey }}" @selected($this->activeTheme === $themeKey)>{{ ucfirst($themeKey) }}</option>
                     @endforeach
                 </select>
             </div>

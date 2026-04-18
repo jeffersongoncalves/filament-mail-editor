@@ -36,8 +36,15 @@ document.addEventListener('alpine:init', () => {
                 this.updatePreview();
             });
 
+            // React to preview client / settings changes from Livewire
+            if (this.$wire) {
+                this.$wire.watch('previewClient', () => this.updatePreview());
+                this.$wire.watch('settings', () => this.updatePreview());
+            }
+
             this.$nextTick(() => {
                 this.initSortable();
+                this.updatePreview();
             });
 
             // Keyboard shortcuts
@@ -156,8 +163,9 @@ document.addEventListener('alpine:init', () => {
             this._sortable = Sortable.create(canvas, {
                 animation: 150,
                 handle: '.drag-handle',
-                ghostClass: 'opacity-40',
-                draggable: '.email-builder__block',
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                draggable: '.fi-me-block',
                 onEnd: (e) => {
                     if (e.oldIndex === e.newIndex) return;
                     this.pushHistory();
