@@ -215,6 +215,18 @@ return [
         'approved' => 'Aprovado',
         'rejected' => 'Rejeitado',
     ],
+    'notifications' => [
+        'template_saved' => 'Modelo salvo com sucesso.',
+        'template_imported' => 'Modelo importado com sucesso.',
+        'import_failed' => 'Falha ao importar',
+        'test_email_sent' => 'E-mail de teste enviado para :address',
+        'brand_kit_applied' => 'Kit de marca ":name" aplicado.',
+        'block_saved' => 'Bloco salvo na biblioteca.',
+        'template_submitted_for_review' => 'Modelo enviado para revisão.',
+        'template_approved' => 'Modelo aprovado.',
+        'template_returned_to_draft' => 'Modelo retornado para rascunho.',
+        'version_restored' => 'Modelo restaurado para a versão #:number',
+    ],
     'schedule_statuses' => [
         'pending' => 'Pendente',
         'processing' => 'Processando',

@@ -61,10 +61,14 @@ class CountdownBlock extends AbstractEmailBlock
                 ->label('End Date')
                 ->seconds(false)
                 ->required(),
-            TextInput::make('timezone')
+            Select::make('timezone')
                 ->label('Timezone')
-                ->placeholder('America/Sao_Paulo')
-                ->default('America/Sao_Paulo'),
+                ->searchable()
+                ->default('America/Sao_Paulo')
+                ->options(array_combine(
+                    timezone_identifiers_list(),
+                    timezone_identifiers_list(),
+                )),
             TextInput::make('label')
                 ->label('Label')
                 ->default('Offer ends in'),

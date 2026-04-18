@@ -2,6 +2,7 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Livewire;
 
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -160,7 +161,11 @@ class EmailBuilder extends Component
 
         $this->templateId = $template->id;
         $this->dispatch('template-saved', id: $template->id);
-        $this->dispatch('notify', type: 'success', message: 'Template saved successfully.');
+
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.template_saved'))
+            ->success()
+            ->send();
     }
 
     public function export(): StreamedResponse
@@ -238,9 +243,17 @@ class EmailBuilder extends Component
             $this->detectVariables();
 
             $this->dispatch('template-imported', id: $template->id);
-            $this->dispatch('notify', type: 'success', message: 'Template imported successfully.');
+
+            Notification::make()
+                ->title(__('filament-mail-editor::filament-mail-editor.notifications.template_imported'))
+                ->success()
+                ->send();
         } catch (\Throwable $e) {
-            $this->dispatch('notify', type: 'error', message: 'Import failed: '.$e->getMessage());
+            Notification::make()
+                ->title(__('filament-mail-editor::filament-mail-editor.notifications.import_failed'))
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
         }
     }
 
@@ -294,7 +307,11 @@ class EmailBuilder extends Component
         }
 
         $this->dispatch('test-email-sent');
-        $this->dispatch('notify', type: 'success', message: 'Test email sent to '.$address);
+
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.test_email_sent', ['address' => $address]))
+            ->success()
+            ->send();
     }
 
     /** @return list<string> */
@@ -447,7 +464,11 @@ class EmailBuilder extends Component
         unset($block);
 
         $this->dispatch('brand-kit-applied', brandKitId: $brandKitId);
-        $this->dispatch('notify', type: 'success', message: 'Brand kit "'.$brandKit->name.'" applied.');
+
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.brand_kit_applied', ['name' => $brandKit->name]))
+            ->success()
+            ->send();
     }
 
     /**
@@ -480,7 +501,10 @@ class EmailBuilder extends Component
             'category' => $category,
         ]);
 
-        $this->dispatch('notify', type: 'success', message: 'Block saved to library.');
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.block_saved'))
+            ->success()
+            ->send();
     }
 
     /** @return Collection<int, SavedEmailBlock> */
@@ -520,7 +544,10 @@ class EmailBuilder extends Component
         $template->submitForReview();
         $this->templateStatus = TemplateStatus::Review->value;
 
-        $this->dispatch('notify', type: 'success', message: 'Template submitted for review.');
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.template_submitted_for_review'))
+            ->success()
+            ->send();
     }
 
     /**
@@ -537,7 +564,10 @@ class EmailBuilder extends Component
         $template->approve();
         $this->templateStatus = TemplateStatus::Approved->value;
 
-        $this->dispatch('notify', type: 'success', message: 'Template approved.');
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.template_approved'))
+            ->success()
+            ->send();
     }
 
     /**
@@ -554,7 +584,10 @@ class EmailBuilder extends Component
         $template->rejectToDraft();
         $this->templateStatus = TemplateStatus::Draft->value;
 
-        $this->dispatch('notify', type: 'info', message: 'Template returned to draft.');
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.template_returned_to_draft'))
+            ->info()
+            ->send();
     }
 
     /**
@@ -625,7 +658,11 @@ class EmailBuilder extends Component
 
         $this->detectVariables();
         $this->dispatch('version-restored', versionId: $versionId);
-        $this->dispatch('notify', type: 'success', message: 'Template restored to version #'.$version->version_number);
+
+        Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.version_restored', ['number' => $version->version_number]))
+            ->success()
+            ->send();
     }
 
     public function render(): View

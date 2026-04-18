@@ -215,6 +215,18 @@ return [
         'approved' => 'Approved',
         'rejected' => 'Rejected',
     ],
+    'notifications' => [
+        'template_saved' => 'Template saved successfully.',
+        'template_imported' => 'Template imported successfully.',
+        'import_failed' => 'Import failed',
+        'test_email_sent' => 'Test email sent to :address',
+        'brand_kit_applied' => 'Brand kit ":name" applied.',
+        'block_saved' => 'Block saved to library.',
+        'template_submitted_for_review' => 'Template submitted for review.',
+        'template_approved' => 'Template approved.',
+        'template_returned_to_draft' => 'Template returned to draft.',
+        'version_restored' => 'Template restored to version #:number',
+    ],
     'schedule_statuses' => [
         'pending' => 'Pending',
         'processing' => 'Processing',
