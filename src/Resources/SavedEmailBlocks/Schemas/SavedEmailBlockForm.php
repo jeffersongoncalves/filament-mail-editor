@@ -3,7 +3,10 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas;
 
 use Filament\Forms;
+use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
@@ -26,7 +29,15 @@ class SavedEmailBlockForm
                             ->required()
                             ->options(fn () => collect(app(BlockRegistry::class)->catalog())
                                 ->mapWithKeys(fn (array $block): array => [$block['type'] => $block['label']]))
-                            ->searchable(),
+                            ->searchable()
+                            ->live()
+                            ->afterStateUpdated(function (?string $state, ?string $old, Set $set): void {
+                                if ($old === $state) {
+                                    return;
+                                }
+                                $block = app(BlockRegistry::class)->find((string) $state);
+                                $set('props', $block?->defaultProps() ?? []);
+                            }),
                         Forms\Components\Select::make('category')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                             ->options(BlockCategory::class),
@@ -35,7 +46,7 @@ class SavedEmailBlockForm
                             ->default(true),
                     ])->columns(2),
 
-                Section::make(__('filament-mail-editor::filament-mail-editor.fields.description'))
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.description'))
                     ->schema([
                         Forms\Components\Textarea::make('description')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.description'))
@@ -46,6 +57,24 @@ class SavedEmailBlockForm
                             ->url()
                             ->maxLength(2048),
                     ])->columns(2),
+
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.properties'))
+                    ->statePath('props')
+                    ->schema(fn (Get $get): array => self::propsSchemaFor($get('type')))
+                    ->columns(2)
+                    ->visible(fn (Get $get): bool => filled($get('type'))),
             ]);
+    }
+
+    /** @return array<int, Component> */
+    protected static function propsSchemaFor(mixed $type): array
+    {
+        if (! is_string($type) || $type === '') {
+            return [];
+        }
+
+        $block = app(BlockRegistry::class)->find($type);
+
+        return $block ? $block::propsSchema() : [];
     }
 }

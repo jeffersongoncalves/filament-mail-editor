@@ -14,14 +14,17 @@ class SavedEmailBlockInfolist
     {
         return $schema
             ->components([
-                Section::make('Block Details')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.block_details'))
                     ->schema([
                         TextEntry::make('name')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.name'))
                             ->weight('bold'),
                         TextEntry::make('type')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.type'))
                             ->badge()
                             ->color('info'),
                         TextEntry::make('category')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                             ->badge()
                             ->color(fn (?string $state): string => match ($state) {
                                 'structure' => 'gray',
@@ -29,38 +32,43 @@ class SavedEmailBlockInfolist
                                 'marketing' => 'success',
                                 default => 'gray',
                             })
-                            ->placeholder('No category'),
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_category')),
                         IconEntry::make('is_global')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global'))
                             ->boolean(),
                     ])->columns(4),
 
-                Section::make('Description')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.description'))
                     ->schema([
                         TextEntry::make('description')
-                            ->placeholder('No description')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.description'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_description'))
                             ->color('gray')
                             ->columnSpanFull(),
                         TextEntry::make('thumbnail')
-                            ->label('Thumbnail URL')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.thumbnail_url'))
                             ->copyable()
-                            ->placeholder('No thumbnail'),
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_thumbnail')),
                         TextEntry::make('user_id')
-                            ->label('Owner')
-                            ->placeholder('System / Global'),
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.owner'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.system_global')),
                     ])->columns(2),
 
-                Section::make('Properties')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.properties'))
                     ->schema([
                         KeyValueEntry::make('props')
-                            ->label(''),
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.props'))
+                            ->hiddenLabel(),
                     ])
                     ->collapsible(),
 
-                Section::make('Timestamps')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.timestamps'))
                     ->schema([
                         TextEntry::make('created_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.created_at'))
                             ->dateTime(),
                         TextEntry::make('updated_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.updated_at'))
                             ->dateTime(),
                     ])->columns(2),
             ]);

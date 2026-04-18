@@ -14,52 +14,63 @@ class EmailTemplateInfolist
     {
         return $schema
             ->components([
-                Section::make('Template Details')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.template_details'))
                     ->schema([
                         TextEntry::make('name')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.name'))
                             ->weight('bold'),
                         TextEntry::make('slug')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.slug'))
                             ->copyable()
                             ->color('gray'),
-                        TextEntry::make('subject'),
+                        TextEntry::make('subject')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.subject')),
                         TextEntry::make('preheader')
-                            ->placeholder('No preheader set')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.preheader'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_preheader'))
                             ->color('gray'),
                     ])->columns(2),
 
-                Section::make('Status & Workflow')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.status_workflow'))
                     ->schema([
                         TextEntry::make('category')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                             ->badge(),
                         TextEntry::make('templateCategory.name')
-                            ->label('Category Folder')
-                            ->placeholder('None'),
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.template_category'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.none')),
                         IconEntry::make('is_active')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active'))
                             ->boolean(),
                         TextEntry::make('status')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.status'))
                             ->badge(),
                         TextEntry::make('approved_by')
-                            ->placeholder('Not approved yet')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.approved_by'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.not_approved'))
                             ->color('gray'),
                         TextEntry::make('approved_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.approved_at'))
                             ->dateTime()
                             ->placeholder('—'),
                         TextEntry::make('locked_by')
-                            ->placeholder('Not locked')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.locked_by'))
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.not_locked'))
                             ->color('gray'),
                         TextEntry::make('locked_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.locked_at'))
                             ->dateTime()
                             ->placeholder('—'),
                     ])->columns(4),
 
-                Section::make('Content')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.content'))
                     ->schema([
                         TextEntry::make('blocks')
-                            ->label('Blocks')
-                            ->state(fn ($record): string => count($record->blocks ?? []).' block(s)')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.blocks'))
+                            ->state(fn ($record): string => __('filament-mail-editor::filament-mail-editor.fields.blocks_count_summary', ['count' => count($record->blocks ?? [])]))
                             ->icon('heroicon-o-cube'),
                         TextEntry::make('blocks_summary')
-                            ->label('Block Types')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.blocks_summary'))
                             ->state(fn ($record): string => collect($record->blocks ?? [])
                                 ->pluck('type')
                                 ->countBy()
@@ -68,24 +79,28 @@ class EmailTemplateInfolist
                             ->color('gray'),
                     ])->columns(2),
 
-                Section::make('Version History')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.version_history'))
                     ->schema([
                         TextEntry::make('versions_count')
-                            ->label('Total Versions')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.total_versions'))
                             ->state(fn ($record): string => (string) $record->versions()->count()),
                         RepeatableEntry::make('versions')
-                            ->label('')
+                            ->label(__('filament-mail-editor::filament-mail-editor.sections.version_history'))
+                            ->hiddenLabel()
                             ->schema([
                                 TextEntry::make('version_number')
-                                    ->label('Version')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.version'))
                                     ->prefix('#'),
                                 TextEntry::make('reason')
-                                    ->placeholder('No reason')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.reason'))
+                                    ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_reason'))
                                     ->color('gray'),
                                 TextEntry::make('created_by')
-                                    ->placeholder('System')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.created_by'))
+                                    ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.system'))
                                     ->color('gray'),
                                 TextEntry::make('created_at')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.created_at'))
                                     ->dateTime(),
                             ])
                             ->columns(4),
@@ -93,18 +108,22 @@ class EmailTemplateInfolist
                     ->collapsible()
                     ->collapsed(),
 
-                Section::make('Variants (A/B Testing)')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.variants'))
                     ->schema([
                         TextEntry::make('variants_count')
-                            ->label('Active Variants')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.active_variants'))
                             ->state(fn ($record): string => (string) $record->variants()->count()),
                         RepeatableEntry::make('variants')
-                            ->label('')
+                            ->label(__('filament-mail-editor::filament-mail-editor.sections.variants'))
+                            ->hiddenLabel()
                             ->schema([
-                                TextEntry::make('name'),
+                                TextEntry::make('name')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.name')),
                                 TextEntry::make('send_percentage')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.send_percentage'))
                                     ->suffix('%'),
                                 IconEntry::make('is_winner')
+                                    ->label(__('filament-mail-editor::filament-mail-editor.fields.is_winner'))
                                     ->boolean(),
                             ])
                             ->columns(3),
@@ -112,15 +131,18 @@ class EmailTemplateInfolist
                     ->collapsible()
                     ->collapsed(),
 
-                Section::make('Timestamps')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.timestamps'))
                     ->schema([
                         TextEntry::make('created_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.created_at'))
                             ->dateTime(),
                         TextEntry::make('updated_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.updated_at'))
                             ->dateTime(),
                         TextEntry::make('deleted_at')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.deleted_at'))
                             ->dateTime()
-                            ->placeholder('Not deleted'),
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.not_deleted')),
                     ])->columns(3),
             ]);
     }

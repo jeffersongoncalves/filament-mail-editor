@@ -4,7 +4,9 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas
 
 use Filament\Forms;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 
 class EmailTemplateForm
@@ -14,27 +16,47 @@ class EmailTemplateForm
         return $schema
             ->columns(null)
             ->components([
-                Section::make('Template Details')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.template_details'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.name'))
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (Set $set, ?string $state, ?string $old, ?string $context = null): void {
+                                if ($context === 'edit') {
+                                    return;
+                                }
+                                $set('slug', Str::slug($state ?? ''));
+                            }),
                         Forms\Components\TextInput::make('slug')
-                            ->disabled()
-                            ->maxLength(255),
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.slug'))
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('subject')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.subject'))
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Textarea::make('preheader')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.preheader'))
                             ->maxLength(90)
-                            ->helperText('Short preview text shown in email clients (max 90 characters).'),
+                            ->helperText(__('filament-mail-editor::filament-mail-editor.fields.preheader_helper')),
                     ])->columns(2),
-                Section::make('Settings')
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.settings'))
                     ->schema([
                         Forms\Components\Select::make('category')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                             ->options(TemplateCategory::class)
                             ->required(),
+                        Forms\Components\Select::make('category_id')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.template_category'))
+                            ->relationship('templateCategory', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.none')),
                         Forms\Components\Toggle::make('is_active')
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active'))
                             ->default(true),
                     ])->columns(2),
             ]);
