@@ -10,14 +10,21 @@ class CountdownController
 {
     public function __invoke(Request $request): Response
     {
-        $endDate = Carbon::parse($request->query('end'), $request->query('tz', 'America/Sao_Paulo'));
-        $now = now($request->query('tz', 'America/Sao_Paulo'));
+        $tz = (string) $request->query('tz', 'America/Sao_Paulo');
         $width = min((int) $request->query('w', '500'), 800);
         $height = min((int) $request->query('h', '80'), 200);
-        $style = $request->query('style', 'default');
-        $expiredText = $request->query('expired', 'Offer expired');
+        $style = (string) $request->query('style', 'default');
+        $expiredText = (string) $request->query('expired', 'Offer expired');
+        $now = now($tz);
 
-        if ($now >= $endDate) {
+        try {
+            $endRaw = (string) $request->query('end', '');
+            $endDate = $endRaw !== '' ? Carbon::parse($endRaw, $tz) : null;
+        } catch (\Throwable) {
+            $endDate = null;
+        }
+
+        if ($endDate === null || $now >= $endDate) {
             return $this->renderImage($expiredText, $width, $height, $style, true);
         }
 

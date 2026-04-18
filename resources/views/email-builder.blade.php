@@ -308,6 +308,26 @@
                                         <span class="fi-me-toggle-thumb"></span>
                                     </button>
                                 </template>
+
+                                <template x-if="field.type === 'datetime'">
+                                    <input
+                                        type="datetime-local"
+                                        :value="(selectedBlock.props[field.key] ?? field.default ?? '').slice(0, 16)"
+                                        x-on:change="updateProp(field.key, $event.target.value ? $event.target.value + ':00' : '')"
+                                        :min="field.min ?? undefined"
+                                        class="fi-me-input fi-me-input--sm"
+                                    />
+                                </template>
+
+                                <template x-if="field.type === 'date'">
+                                    <input
+                                        type="date"
+                                        :value="selectedBlock.props[field.key] ?? field.default ?? ''"
+                                        x-on:change="updateProp(field.key, $event.target.value)"
+                                        :min="field.min ?? undefined"
+                                        class="fi-me-input fi-me-input--sm"
+                                    />
+                                </template>
                             </div>
                         </template>
                     </div>

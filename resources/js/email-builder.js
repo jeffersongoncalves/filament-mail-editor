@@ -437,7 +437,7 @@ document.addEventListener('alpine:init', () => {
                 { key: 'cell_padding', label: 'Cell Padding (px)', type: 'number', default: 16, min: 0, max: 40 },
             ],
             countdown: [
-                { key: 'end_date', label: 'End Date (ISO 8601)', type: 'text', placeholder: '2025-12-31T23:59:59' },
+                { key: 'end_date', label: 'End Date', type: 'datetime' },
                 { key: 'timezone', label: 'Timezone', type: 'text', default: 'America/Sao_Paulo' },
                 { key: 'label', label: 'Label', type: 'text', default: 'Offer ends in' },
                 { key: 'style', label: 'Style', type: 'select', default: 'default', options: [
