@@ -75,7 +75,7 @@ public function panel(Panel $panel): Panel
 ### Seed demo data (optional)
 
 ```bash
-php artisan db:seed --class="JeffersonGoncalves\\FilamentMailEditor\\Database\\Seeders\\FilamentMailEditorSeeder"
+php artisan db:seed --class="JeffersonGoncalves\FilamentMailEditor\Database\Seeders\FilamentMailEditorSeeder"
 ```
 
 ## Usage
