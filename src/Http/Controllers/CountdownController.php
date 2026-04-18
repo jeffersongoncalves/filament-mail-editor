@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 
 class CountdownController
 {
-    public function generate(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         $endDate = Carbon::parse($request->query('end'), $request->query('tz', 'America/Sao_Paulo'));
         $now = now($request->query('tz', 'America/Sao_Paulo'));

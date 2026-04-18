@@ -6,7 +6,6 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\AlertBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\ButtonBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\CountdownBlock;
@@ -31,7 +30,6 @@ use JeffersonGoncalves\FilamentMailEditor\Blocks\TwoColumnsBlock;
 use JeffersonGoncalves\FilamentMailEditor\Blocks\VideoThumbBlock;
 use JeffersonGoncalves\FilamentMailEditor\Commands\MakeTemplateCommand;
 use JeffersonGoncalves\FilamentMailEditor\Commands\ReleaseLocksCommand;
-use JeffersonGoncalves\FilamentMailEditor\Http\Controllers\CountdownController;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 use JeffersonGoncalves\FilamentMailEditor\Support\TemplateMailableBridge;
@@ -49,6 +47,7 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
+            ->hasRoute('web')
             ->hasMigrations([
                 'create_email_template_categories_table',
                 'create_email_templates_table',
@@ -112,45 +111,7 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             Js::make('filament-mail-editor-scripts', __DIR__.'/../resources/dist/email-builder.js'),
         ], 'jeffersongoncalves/filament-mail-editor');
 
-        $this->registerRoutes();
         $this->registerMailMacro();
-    }
-
-    protected function registerRoutes(): void
-    {
-        Route::middleware(config('filament-mail-editor.preview_route_middleware', ['web', 'auth']))
-            ->prefix('filament-mail-editor')
-            ->group(function () {
-                Route::get('/preview', function () {
-                    $blocks = json_decode(request()->query('blocks', '[]'), true);
-                    $settings = json_decode(request()->query('settings', '{}'), true);
-                    $client = request()->query('client', 'gmail');
-
-                    $registry = app(BlockRegistry::class);
-
-                    $mediaQueries = collect($blocks)
-                        ->map(fn ($block) => $registry->find($block['type'] ?? '')?->getMediaQueries())
-                        ->filter()
-                        ->unique()
-                        ->join("\n");
-
-                    $blocksHtml = collect($blocks)->map(function ($block) use ($registry) {
-                        $instance = $registry->find($block['type'] ?? '');
-
-                        return $instance?->render($block['props'] ?? []) ?? '';
-                    })->join("\n");
-
-                    return view('filament-mail-editor::preview.frame', [
-                        'content' => $blocksHtml,
-                        'settings' => $settings,
-                        'client' => $client,
-                        'mediaQueries' => $mediaQueries,
-                    ]);
-                })->name('filament-mail-editor.preview');
-
-                Route::get('/countdown', [CountdownController::class, 'generate'])
-                    ->name('filament-mail-editor.countdown');
-            });
     }
 
     protected function registerMailMacro(): void
