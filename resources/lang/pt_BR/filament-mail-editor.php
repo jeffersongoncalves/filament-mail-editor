@@ -9,10 +9,12 @@ return [
     */
     'navigation' => [
         'group' => 'Editor de E-mail',
+        'themes_group' => 'Temas de E-mail',
         'email_templates' => 'Modelos de E-mail',
         'template_categories' => 'Categorias de Modelos',
         'brand_kits' => 'Kits de Marca',
         'saved_blocks' => 'Blocos Salvos',
+        'themes' => 'Temas',
     ],
 
     /*
@@ -69,6 +71,11 @@ return [
             'model_label' => 'Bloco Salvo',
             'plural_model_label' => 'Blocos Salvos',
         ],
+        'email_theme' => [
+            'navigation_label' => 'Temas',
+            'model_label' => 'Tema',
+            'plural_model_label' => 'Temas',
+        ],
     ],
 
     /*
@@ -85,6 +92,7 @@ return [
         'status' => 'Status',
         'is_active' => 'Ativo',
         'is_default' => 'Padrão',
+        'is_system' => 'Sistema',
         'is_global' => 'Global',
         'description' => 'Descrição',
         'color' => 'Cor',

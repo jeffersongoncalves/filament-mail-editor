@@ -38,8 +38,8 @@
                     class="fi-me-select fi-me-toolbar-theme"
                     title="Apply Theme"
                 >
-                    @foreach ($themes as $themeKey)
-                        <option value="{{ $themeKey }}">{{ ucfirst($themeKey) }}</option>
+                    @foreach ($themes as $themeSlug => $themeLabel)
+                        <option value="{{ $themeSlug }}">{{ $themeLabel }}</option>
                     @endforeach
                 </select>
             </div>

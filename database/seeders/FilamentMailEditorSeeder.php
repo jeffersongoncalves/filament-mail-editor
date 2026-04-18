@@ -16,6 +16,7 @@ final class FilamentMailEditorSeeder extends Seeder
     {
         $this->call([
             EmailTemplateCategorySeeder::class,
+            EmailThemeSeeder::class,
             EmailBrandKitSeeder::class,
             EmailTemplateSeeder::class,
         ]);

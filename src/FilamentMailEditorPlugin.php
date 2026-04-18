@@ -7,6 +7,7 @@ use Filament\Panel;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\EmailBrandKitResource;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\EmailTemplateCategoryResource;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\EmailThemeResource;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\SavedEmailBlockResource;
 
 class FilamentMailEditorPlugin implements Plugin
@@ -34,6 +35,7 @@ class FilamentMailEditorPlugin implements Plugin
             EmailTemplateCategoryResource::class,
             EmailBrandKitResource::class,
             SavedEmailBlockResource::class,
+            EmailThemeResource::class,
         ]);
     }
 

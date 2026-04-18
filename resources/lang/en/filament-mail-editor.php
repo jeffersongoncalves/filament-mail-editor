@@ -9,10 +9,12 @@ return [
     */
     'navigation' => [
         'group' => 'Mail Editor',
+        'themes_group' => 'Mail Themes',
         'email_templates' => 'Email Templates',
         'template_categories' => 'Template Categories',
         'brand_kits' => 'Brand Kits',
         'saved_blocks' => 'Saved Blocks',
+        'themes' => 'Themes',
     ],
 
     /*
@@ -69,6 +71,11 @@ return [
             'model_label' => 'Saved Block',
             'plural_model_label' => 'Saved Blocks',
         ],
+        'email_theme' => [
+            'navigation_label' => 'Themes',
+            'model_label' => 'Theme',
+            'plural_model_label' => 'Themes',
+        ],
     ],
 
     /*
@@ -85,6 +92,7 @@ return [
         'status' => 'Status',
         'is_active' => 'Active',
         'is_default' => 'Default',
+        'is_system' => 'System',
         'is_global' => 'Global',
         'description' => 'Description',
         'color' => 'Color',

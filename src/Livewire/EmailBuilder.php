@@ -18,6 +18,7 @@ use JeffersonGoncalves\FilamentMailEditor\Jobs\CheckLinksJob;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateVersion;
+use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
 use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Support\AccessibilityChecker;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
@@ -392,11 +393,12 @@ class EmailBuilder extends Component
 
     public function applyTheme(string $themeKey): void
     {
-        $theme = config("filament-mail-editor.themes.{$themeKey}");
-        if (! $theme) {
+        $themeModel = EmailTheme::where('slug', $themeKey)->first();
+        if (! $themeModel) {
             return;
         }
 
+        $theme = $themeModel->toThemeArray();
         $this->activeTheme = $themeKey;
         $this->settings = array_merge($this->settings, $theme);
 
@@ -630,7 +632,7 @@ class EmailBuilder extends Component
         return view('filament-mail-editor::email-builder', [
             'availableBlocks' => app(BlockRegistry::class)->catalog(),
             'detectedVariables' => HtmlExporter::extractVariables($this->blocks),
-            'themes' => array_keys(config('filament-mail-editor.themes', [])),
+            'themes' => EmailTheme::orderBy('name')->pluck('name', 'slug')->toArray(),
             'savedBlocks' => $this->getSavedBlocks(),
         ]);
     }

@@ -59,6 +59,7 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
                 'create_email_template_activities_table',
                 'create_email_template_notifications_table',
                 'create_email_template_schedules_table',
+                'create_email_themes_table',
             ])
             ->hasCommands([
                 MakeTemplateCommand::class,
