@@ -147,7 +147,7 @@
 
         {{-- Canvas --}}
         <div class="fi-me-canvas">
-            <div id="blocks-canvas" class="fi-me-canvas-frame">
+            <div id="blocks-canvas" class="fi-me-canvas-frame" wire:ignore>
                 <template x-if="blocks.length === 0">
                     <div class="fi-me-empty-state">
                         <x-filament::icon icon="heroicon-o-inbox" class="fi-me-empty-state-icon" />
