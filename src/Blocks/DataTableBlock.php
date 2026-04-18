@@ -3,6 +3,8 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
 
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 
@@ -52,12 +54,39 @@ class DataTableBlock extends AbstractEmailBlock
     public static function propsSchema(): array
     {
         return [
-            TextInput::make('headers_csv')
-                ->label('Headers (comma-separated)')
-                ->helperText('e.g.: Name, Price, Quantity'),
-            TextInput::make('rows_csv')
-                ->label('Rows (semicolon-separated rows, comma-separated cells)')
-                ->helperText('e.g.: Product A, $10, 5; Product B, $20, 3'),
+            TagsInput::make('headers')
+                ->label('Headers')
+                ->placeholder('Add column header')
+                ->helperText('Press Enter after each header: Name, Price, Quantity')
+                ->columnSpanFull(),
+            Textarea::make('rows')
+                ->label('Rows')
+                ->rows(8)
+                ->helperText('One row per line. Separate cells with pipes (|). E.g.: Product A | $10 | 5')
+                ->columnSpanFull()
+                ->formatStateUsing(static function (mixed $state): string {
+                    if (! is_array($state)) {
+                        return '';
+                    }
+
+                    return collect($state)
+                        ->map(static fn ($row): string => is_array($row)
+                            ? implode(' | ', array_map(static fn ($cell): string => (string) $cell, $row))
+                            : (string) $row)
+                        ->implode("\n");
+                })
+                ->dehydrateStateUsing(static function (mixed $state): array {
+                    if (! is_string($state) || trim($state) === '') {
+                        return [];
+                    }
+
+                    return collect(preg_split('/\r\n|\r|\n/', $state) ?: [])
+                        ->map(static fn (string $line): string => trim($line))
+                        ->filter()
+                        ->map(static fn (string $line): array => array_map('trim', explode('|', $line)))
+                        ->values()
+                        ->all();
+                }),
             Toggle::make('striped')
                 ->label('Striped Rows')
                 ->default(true),
