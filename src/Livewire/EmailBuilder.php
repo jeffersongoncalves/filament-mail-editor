@@ -87,6 +87,7 @@ class EmailBuilder extends Component
                 : ($template->category ?? 'transactional');
             $this->blocks = $template->blocks ?? [];
             $this->settings = array_merge($this->settings, $template->settings ?? []);
+            $this->activeTheme = $this->settings['theme_slug'] ?? 'default';
             $this->templateStatus = $template->status instanceof TemplateStatus
                 ? $template->status->value
                 : ($template->status ?? 'draft');
@@ -400,7 +401,7 @@ class EmailBuilder extends Component
 
         $theme = $themeModel->toThemeArray();
         $this->activeTheme = $themeKey;
-        $this->settings = array_merge($this->settings, $theme);
+        $this->settings = array_merge($this->settings, $theme, ['theme_slug' => $themeKey]);
 
         $applier = new ThemeApplier;
         $this->blocks = $applier->apply($this->blocks, $theme);
