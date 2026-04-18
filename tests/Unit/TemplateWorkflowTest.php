@@ -1,5 +1,6 @@
 <?php
 
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 
 beforeEach(function () {
@@ -8,18 +9,18 @@ beforeEach(function () {
         'slug' => 'workflow-test',
         'subject' => 'Subject',
         'blocks' => [],
-        'status' => 'draft',
+        'status' => TemplateStatus::Draft,
     ]);
 });
 
 it('starts in draft status', function () {
-    expect($this->template->status)->toBe('draft');
+    expect($this->template->status)->toBe(TemplateStatus::Draft);
 });
 
 it('can be submitted for review', function () {
     $this->template->submitForReview();
 
-    expect($this->template->fresh()->status)->toBe('review');
+    expect($this->template->fresh()->status)->toBe(TemplateStatus::Review);
 });
 
 it('can be approved', function () {
@@ -27,7 +28,7 @@ it('can be approved', function () {
     $this->template->approve('admin@test.com');
 
     $fresh = $this->template->fresh();
-    expect($fresh->status)->toBe('approved');
+    expect($fresh->status)->toBe(TemplateStatus::Approved);
     expect($fresh->approved_by)->toBe('admin@test.com');
     expect($fresh->approved_at)->not->toBeNull();
 });
@@ -38,7 +39,7 @@ it('can be rejected back to draft', function () {
     $this->template->rejectToDraft();
 
     $fresh = $this->template->fresh();
-    expect($fresh->status)->toBe('draft');
+    expect($fresh->status)->toBe(TemplateStatus::Draft);
     expect($fresh->approved_by)->toBeNull();
     expect($fresh->approved_at)->toBeNull();
 });
@@ -72,9 +73,10 @@ it('is editable when draft and unlocked', function () {
 });
 
 it('is not editable when approved', function () {
+    $this->template->submitForReview();
     $this->template->approve('admin@test.com');
 
-    expect($this->template->isEditable('user@test.com'))->toBeFalse();
+    expect($this->template->fresh()->isEditable('user@test.com'))->toBeFalse();
 });
 
 it('is not editable when locked by other', function () {

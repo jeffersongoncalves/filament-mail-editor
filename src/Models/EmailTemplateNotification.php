@@ -2,10 +2,13 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateNotificationFactory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\NotificationType;
 
 /**
@@ -20,9 +23,18 @@ use JeffersonGoncalves\FilamentMailEditor\Enums\NotificationType;
  * @property Carbon|null $updated_at
  * @property-read EmailTemplate $template
  * @property-read Model $notifiable
+ *
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateNotificationFactory factory($count = null, $state = [])
  */
 class EmailTemplateNotification extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateNotificationFactory::new();
+    }
+
     /** @var list<string> */
     protected $fillable = [
         'template_id',

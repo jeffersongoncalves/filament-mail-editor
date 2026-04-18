@@ -8,13 +8,3 @@ parameters:
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
-    ignoreErrors:
-        - identifier: argument.type
-          path: src/Support/HtmlExporter.php
-          message: '#view expects view-string#'
-        - identifier: argument.type
-          path: src/FilamentMailEditorServiceProvider.php
-          message: '#view expects view-string#'
-        - identifier: argument.type
-          path: src/Livewire/EmailBuilder.php
-          message: '#view expects view-string#'

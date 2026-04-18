@@ -29,6 +29,9 @@ class TestCase extends Orchestra
             'create_email_template_variants_table',
             'create_email_template_versions_table',
             'create_email_brand_kits_table',
+            'create_email_template_activities_table',
+            'create_email_template_notifications_table',
+            'create_email_template_schedules_table',
         ];
 
         foreach ($orderedMigrations as $migration) {

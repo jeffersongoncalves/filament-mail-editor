@@ -1,5 +1,6 @@
 <?php
 
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 
 it('creates a template via artisan command', function () {
@@ -10,7 +11,7 @@ it('creates a template via artisan command', function () {
 
     expect($template)->not->toBeNull();
     expect($template->name)->toBe('Welcome Email');
-    expect($template->category)->toBe('transactional');
+    expect($template->category)->toBe(TemplateCategory::Transactional);
     expect($template->blocks)->toBeArray();
     expect($template->blocks)->not->toBeEmpty();
 
@@ -29,7 +30,7 @@ it('creates a marketing template', function () {
     ])->assertExitCode(0);
 
     $template = EmailTemplate::where('slug', 'promo-campaign')->first();
-    expect($template->category)->toBe('marketing');
+    expect($template->category)->toBe(TemplateCategory::Marketing);
 });
 
 it('fails when slug already exists', function () {

@@ -3,9 +3,12 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\SavedEmailBlockFactory;
 
 /**
  * @property int $id
@@ -23,10 +26,16 @@ use Illuminate\Support\Carbon;
  *
  * @method static Builder<static> global()
  * @method static Builder<static> forUser(int $userId)
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\SavedEmailBlockFactory factory($count = null, $state = [])
  */
 class SavedEmailBlock extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return SavedEmailBlockFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [

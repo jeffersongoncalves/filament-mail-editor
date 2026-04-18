@@ -2,9 +2,12 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateVariantFactory;
 
 /**
  * @property int $id
@@ -19,9 +22,18 @@ use Illuminate\Support\Carbon;
  * @property int $clicks_count
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateVariantFactory factory($count = null, $state = [])
  */
 class EmailTemplateVariant extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateVariantFactory::new();
+    }
+
     /** @var list<string> */
     protected $fillable = [
         'template_id',

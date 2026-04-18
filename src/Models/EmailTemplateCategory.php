@@ -3,11 +3,14 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateCategoryFactory;
 
 /**
  * @property int $id
@@ -24,10 +27,17 @@ use Illuminate\Support\Carbon;
  * @property-read EmailTemplateCategory|null $parent
  * @property-read Collection<int, EmailTemplateCategory> $children
  * @property-read Collection<int, EmailTemplate> $templates
+ *
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateCategoryFactory factory($count = null, $state = [])
  */
 class EmailTemplateCategory extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateCategoryFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [

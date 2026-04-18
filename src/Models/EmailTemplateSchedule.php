@@ -3,10 +3,13 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateScheduleFactory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\ScheduleStatus;
 
 /**
@@ -31,10 +34,16 @@ use JeffersonGoncalves\FilamentMailEditor\Enums\ScheduleStatus;
  *
  * @method static Builder<static> pending()
  * @method static Builder<static> due()
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateScheduleFactory factory($count = null, $state = [])
  */
 class EmailTemplateSchedule extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateScheduleFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [

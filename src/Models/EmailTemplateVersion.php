@@ -2,9 +2,12 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateVersionFactory;
 
 /**
  * @property int $id
@@ -18,10 +21,19 @@ use Illuminate\Support\Carbon;
  * @property string|null $created_by
  * @property Carbon $created_at
  * @property-read EmailTemplate $template
+ *
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateVersionFactory factory($count = null, $state = [])
  */
 class EmailTemplateVersion extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateVersionFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [

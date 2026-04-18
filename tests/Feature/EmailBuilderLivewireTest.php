@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
@@ -85,7 +86,7 @@ it('can save a template via the builder', function () {
     expect($template->name)->toBe('Test Template');
     expect($template->slug)->toBe('test-template');
     expect($template->blocks)->toHaveCount(2);
-    expect($template->category)->toBe('marketing');
+    expect($template->category)->toBe(TemplateCategory::Marketing);
 });
 
 it('syncs blocks correctly', function () {

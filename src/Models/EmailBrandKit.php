@@ -3,9 +3,12 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailBrandKitFactory;
 
 /**
  * @property int $id
@@ -24,10 +27,16 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  *
  * @method static Builder<static> default()
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailBrandKitFactory factory($count = null, $state = [])
  */
 class EmailBrandKit extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailBrandKitFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [

@@ -5,11 +5,14 @@ namespace JeffersonGoncalves\FilamentMailEditor\Models;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateFactory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\ActivityAction;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
@@ -36,6 +39,7 @@ use JeffersonGoncalves\FilamentMailEditor\Support\VariableEngine;
  * @property Carbon|null $deleted_at
  *
  * @method static Builder<static> active()
+ * @method static \JeffersonGoncalves\FilamentMailEditor\Database\Factories\EmailTemplateFactory factory($count = null, $state = [])
  *
  * @property TemplateStatus $status
  * @property string|null $locked_by
@@ -53,7 +57,12 @@ use JeffersonGoncalves\FilamentMailEditor\Support\VariableEngine;
  */
 class EmailTemplate extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return EmailTemplateFactory::new();
+    }
 
     /** @var list<string> */
     protected $fillable = [
