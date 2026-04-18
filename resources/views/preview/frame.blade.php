@@ -28,12 +28,8 @@
         img { -ms-interpolation-mode: bicubic; }
         table { border-collapse: collapse; }
         @elseif ($client === 'apple')
-        body { background-color: #ffffff; }
+        body { background-color: #ffffff; color: #1a1a1a; }
         .email-wrapper { max-width: 600px; margin: 0 auto; }
-        @media (prefers-color-scheme: dark) {
-            body { background-color: #1a1a1a !important; color: #ffffff !important; }
-            .email-wrapper { background-color: #1a1a1a !important; }
-        }
         @elseif ($client === 'mobile')
         body { background-color: #ffffff; max-width: 375px; margin: 0 auto; }
         .email-wrapper { max-width: 375px; margin: 0 auto; }
