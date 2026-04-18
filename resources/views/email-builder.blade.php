@@ -23,19 +23,23 @@
                 class="fi-me-input"
             />
             <div class="fi-me-toolbar-select-group">
-                <select wire:model.live="category" class="fi-me-select">
+                <select
+                    :value="$wire.category"
+                    x-on:change="$wire.set('category', $event.target.value)"
+                    class="fi-me-select"
+                >
                     @foreach (\JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory::cases() as $case)
-                        <option value="{{ $case->value }}" @selected($this->category === $case->value)>{{ $case->getLabel() }}</option>
+                        <option value="{{ $case->value }}">{{ $case->getLabel() }}</option>
                     @endforeach
                 </select>
                 <select
-                    wire:model.live="activeTheme"
-                    x-on:change="$wire.applyTheme($event.target.value)"
+                    :value="$wire.activeTheme"
+                    x-on:change="$wire.set('activeTheme', $event.target.value); $wire.applyTheme($event.target.value)"
                     class="fi-me-select fi-me-toolbar-theme"
                     title="Apply Theme"
                 >
                     @foreach ($themes as $themeKey)
-                        <option value="{{ $themeKey }}" @selected($this->activeTheme === $themeKey)>{{ ucfirst($themeKey) }}</option>
+                        <option value="{{ $themeKey }}">{{ ucfirst($themeKey) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -395,6 +399,7 @@
             <div
                 class="fi-me-preview-frame"
                 :class="$wire.previewClient === 'mobile' ? 'fi-me-preview-frame--mobile' : 'fi-me-preview-frame--desktop'"
+                wire:ignore
             >
                 <iframe
                     id="preview-iframe"

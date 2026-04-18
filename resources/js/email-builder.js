@@ -171,6 +171,8 @@ document.addEventListener('alpine:init', () => {
                     this.pushHistory();
                     const moved = this.blocks.splice(e.oldIndex, 1)[0];
                     this.blocks.splice(e.newIndex, 0, moved);
+                    // Replace the array reference so Alpine's $watch fires
+                    this.blocks = [...this.blocks];
                     this.syncToLivewire();
                 },
             });
@@ -228,6 +230,7 @@ document.addEventListener('alpine:init', () => {
             if (this.$wire) {
                 this.$wire.syncBlocks(JSON.parse(JSON.stringify(this.blocks)));
             }
+            this.updatePreview();
         },
 
         updatePreview() {
