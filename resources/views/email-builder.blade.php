@@ -1,10 +1,9 @@
-<script id="block-catalog-data" type="application/json">@json($availableBlocks)</script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-
 <div
     x-data="emailBuilder()"
     class="email-builder flex flex-col h-full"
 >
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" wire:ignore></script>
+    <script id="block-catalog-data" type="application/json" wire:ignore>@json($availableBlocks)</script>
     {{-- Toolbar --}}
     <div class="email-builder__toolbar flex items-center gap-3 p-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div class="flex-1 grid grid-cols-3 gap-3">
