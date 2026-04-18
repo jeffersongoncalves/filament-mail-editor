@@ -49,17 +49,21 @@ class FilamentMailEditorServiceProvider extends PackageServiceProvider
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_email_template_categories_table')
-            ->hasMigration('create_email_templates_table')
-            ->hasMigration('create_saved_email_blocks_table')
-            ->hasMigration('create_email_template_variants_table')
-            ->hasMigration('create_email_template_versions_table')
-            ->hasMigration('create_email_brand_kits_table')
-            ->hasMigration('create_email_template_activities_table')
-            ->hasMigration('create_email_template_notifications_table')
-            ->hasMigration('create_email_template_schedules_table')
-            ->hasCommand(MakeTemplateCommand::class)
-            ->hasCommand(ReleaseLocksCommand::class);
+            ->hasMigrations([
+                'create_email_template_categories_table',
+                'create_email_templates_table',
+                'create_saved_email_blocks_table',
+                'create_email_template_variants_table',
+                'create_email_template_versions_table',
+                'create_email_brand_kits_table',
+                'create_email_template_activities_table',
+                'create_email_template_notifications_table',
+                'create_email_template_schedules_table',
+            ])
+            ->hasCommands([
+                MakeTemplateCommand::class,
+                ReleaseLocksCommand::class,
+            ]);
     }
 
     public function packageRegistered(): void

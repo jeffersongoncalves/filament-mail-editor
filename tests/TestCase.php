@@ -20,32 +20,37 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        // Load migrations in dependency order matching service provider registration
-        $migrationsPath = __DIR__.'/../database/migrations';
-        $orderedMigrations = [
-            'create_email_template_categories_table',
-            'create_email_templates_table',
-            'create_saved_email_blocks_table',
-            'create_email_template_variants_table',
-            'create_email_template_versions_table',
-            'create_email_brand_kits_table',
-            'create_email_template_activities_table',
-            'create_email_template_notifications_table',
-            'create_email_template_schedules_table',
-        ];
-
-        foreach ($orderedMigrations as $migration) {
-            $file = $migrationsPath.'/'.$migration.'.php';
-            if (file_exists($file)) {
-                $this->loadMigrationsFrom($file);
-            }
-        }
-
         // Livewire v4 requires errors to be shared with views
         $this->app['view']->share('errors', new ViewErrorBag);
 
         // Ensure config is available for tests
         config(['filament-mail-editor.app_url' => 'http://localhost']);
+    }
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $migrationPath = __DIR__.'/../database/migrations';
+        $files = glob($migrationPath.'/*.php.stub');
+
+        foreach ($files as $file) {
+            $migrationFile = $migrationPath.'/'.basename($file, '.stub');
+
+            if (! file_exists($migrationFile)) {
+                copy($file, $migrationFile);
+            }
+        }
+
+        $this->loadMigrationsFrom($migrationPath);
+
+        $this->beforeApplicationDestroyed(function () use ($migrationPath, $files) {
+            foreach ($files as $file) {
+                $migrationFile = $migrationPath.'/'.basename($file, '.stub');
+
+                if (file_exists($migrationFile)) {
+                    unlink($migrationFile);
+                }
+            }
+        });
     }
 
     protected function getPackageProviders($app): array
