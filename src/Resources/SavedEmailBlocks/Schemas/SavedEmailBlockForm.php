@@ -75,6 +75,13 @@ class SavedEmailBlockForm
 
         $block = app(BlockRegistry::class)->find($type);
 
-        return $block ? $block::propsSchema() : [];
+        if ($block === null) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            $block::propsSchema(),
+            static fn ($component): bool => $component instanceof Component,
+        ));
     }
 }

@@ -2,6 +2,10 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Blocks;
 
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+
 /**
  * Renders a countdown timer as a server-generated image.
  *
@@ -53,13 +57,42 @@ class CountdownBlock extends AbstractEmailBlock
     public static function propsSchema(): array
     {
         return [
-            'end_date' => ['type' => 'text', 'label' => 'End Date (ISO 8601)'],
-            'timezone' => ['type' => 'text', 'label' => 'Timezone'],
-            'label' => ['type' => 'text', 'label' => 'Label'],
-            'style' => ['type' => 'select', 'label' => 'Style', 'options' => ['default', 'dark', 'minimal']],
-            'width' => ['type' => 'number', 'label' => 'Width (px)'],
-            'height' => ['type' => 'number', 'label' => 'Height (px)'],
-            'expired_text' => ['type' => 'text', 'label' => 'Expired Text'],
+            DateTimePicker::make('end_date')
+                ->label('End Date')
+                ->seconds(false)
+                ->required(),
+            TextInput::make('timezone')
+                ->label('Timezone')
+                ->placeholder('America/Sao_Paulo')
+                ->default('America/Sao_Paulo'),
+            TextInput::make('label')
+                ->label('Label')
+                ->default('Offer ends in'),
+            Select::make('style')
+                ->label('Style')
+                ->options([
+                    'default' => 'Default',
+                    'dark' => 'Dark',
+                    'minimal' => 'Minimal',
+                ])
+                ->default('default'),
+            TextInput::make('width')
+                ->label('Width')
+                ->numeric()
+                ->suffix('px')
+                ->minValue(200)
+                ->maxValue(1200)
+                ->default(500),
+            TextInput::make('height')
+                ->label('Height')
+                ->numeric()
+                ->suffix('px')
+                ->minValue(40)
+                ->maxValue(400)
+                ->default(80),
+            TextInput::make('expired_text')
+                ->label('Expired Text')
+                ->default('Offer expired'),
         ];
     }
 }
