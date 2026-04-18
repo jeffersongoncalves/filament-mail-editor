@@ -1,5 +1,5 @@
 <div
-    x-data="emailBuilder()"
+    x-data="emailBuilder($wire)"
     class="email-builder flex flex-col h-full"
 >
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" wire:ignore></script>

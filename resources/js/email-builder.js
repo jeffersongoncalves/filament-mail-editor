@@ -1,10 +1,10 @@
 document.addEventListener('alpine:init', () => {
     window.blockDefaults = {};
 
-    Alpine.data('emailBuilder', () => ({
-        blocks: Alpine.$wire ? Alpine.$wire.entangle('blocks') : [],
-        name: Alpine.$wire ? Alpine.$wire.entangle('name') : '',
-        subject: Alpine.$wire ? Alpine.$wire.entangle('subject') : '',
+    Alpine.data('emailBuilder', ($wire) => ({
+        blocks: $wire?.entangle?.('blocks') ?? [],
+        name: $wire?.entangle?.('name') ?? '',
+        subject: $wire?.entangle?.('subject') ?? '',
         selectedId: null,
         blockCatalog: {},
         _sortable: null,
