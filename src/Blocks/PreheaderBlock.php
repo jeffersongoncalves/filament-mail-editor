@@ -47,7 +47,7 @@ class PreheaderBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('text')
-                ->label('Preheader Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.preview_text'))
                 ->maxLength(90)
                 ->required(),
         ];

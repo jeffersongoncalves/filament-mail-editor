@@ -58,34 +58,34 @@ class ProductCardBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('image_src')
-                ->label('Product Image URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.image_src'))
                 ->placeholder('https://...'),
             TextInput::make('image_alt')
-                ->label('Image Alt Text'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.image_alt')),
             TextInput::make('name')
-                ->label('Product Name')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.name'))
                 ->required(),
             TextInput::make('price')
-                ->label('Price')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.price'))
                 ->required(),
             TextInput::make('old_price')
-                ->label('Old Price (strikethrough)'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.old_price')),
             Textarea::make('description')
-                ->label('Description')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.description'))
                 ->rows(2),
             TextInput::make('cta_text')
-                ->label('CTA Button Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_text'))
                 ->default('Buy Now'),
             TextInput::make('cta_url')
-                ->label('CTA URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_url'))
                 ->placeholder('https://...'),
             ColorPicker::make('cta_bg_color')
-                ->label('CTA Background Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_bg_color'))
                 ->default('#378ADD'),
             TextInput::make('badge_text')
-                ->label('Badge Text (optional)'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.badge_text')),
             ColorPicker::make('badge_bg_color')
-                ->label('Badge Background Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.badge_bg_color'))
                 ->default('#e53e3e'),
         ];
     }

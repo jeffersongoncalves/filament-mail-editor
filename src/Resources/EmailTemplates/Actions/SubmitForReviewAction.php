@@ -20,6 +20,7 @@ class SubmitForReviewAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.submit_for_review'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.submit_for_review'))
             ->icon(Heroicon::OutlinedPaperAirplane)
             ->color('warning')
             ->requiresConfirmation()

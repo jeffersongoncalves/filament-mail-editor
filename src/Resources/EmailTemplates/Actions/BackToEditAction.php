@@ -20,6 +20,7 @@ class BackToEditAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.builder.back_to_edit'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.builder.back_to_edit'))
             ->icon(Heroicon::OutlinedArrowUturnLeft)
             ->color('gray')
             ->url(fn (EmailTemplate $record): string => EmailTemplateResource::getUrl('edit', ['record' => $record]));

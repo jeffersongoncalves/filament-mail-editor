@@ -52,29 +52,29 @@ class CouponBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('code')
-                ->label('Coupon Code')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.code'))
                 ->required(),
             TextInput::make('discount_text')
-                ->label('Discount Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.discount'))
                 ->placeholder('20% OFF'),
             TextInput::make('expires_text')
-                ->label('Expires Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.expires'))
                 ->placeholder('Valid until Dec 31'),
             ColorPicker::make('bg_color')
-                ->label('Background Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_color'))
                 ->default('#fff3cd'),
             ColorPicker::make('border_color')
-                ->label('Border Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.border_color'))
                 ->default('#EF9F27'),
             Select::make('border_style')
-                ->label('Border Style')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.border_style'))
                 ->options([
                     'dashed' => 'Dashed',
                     'solid' => 'Solid',
                 ])
                 ->default('dashed'),
             ColorPicker::make('text_color')
-                ->label('Text Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color'))
                 ->default('#333333'),
         ];
     }

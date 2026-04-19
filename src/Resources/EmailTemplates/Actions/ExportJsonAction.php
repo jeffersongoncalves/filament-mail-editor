@@ -22,6 +22,7 @@ class ExportJsonAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.export_json'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.export_json'))
             ->icon(Heroicon::OutlinedArrowDownTray)
             ->action(function (EmailTemplate $record): StreamedResponse {
                 $json = (new TemplateImportExport)->exportJson($record);

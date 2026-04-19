@@ -51,21 +51,21 @@ class ThreeColumnsBlock extends AbstractEmailBlock
     {
         return [
             RichEditor::make('col1_content')
-                ->label('Column 1 Content')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.left_column'))
                 ->columnSpanFull(),
             RichEditor::make('col2_content')
-                ->label('Column 2 Content')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.center_column'))
                 ->columnSpanFull(),
             RichEditor::make('col3_content')
-                ->label('Column 3 Content')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.right_column'))
                 ->columnSpanFull(),
             TextInput::make('gap')
-                ->label('Gap')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.gap'))
                 ->numeric()
                 ->suffix('px')
                 ->default(12),
             Toggle::make('stack_mobile')
-                ->label('Stack on Mobile')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.stack_on_mobile'))
                 ->default(true),
         ];
     }

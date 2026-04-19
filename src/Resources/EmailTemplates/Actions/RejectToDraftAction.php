@@ -20,6 +20,7 @@ class RejectToDraftAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.reject_to_draft'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.reject_to_draft'))
             ->icon(Heroicon::OutlinedXCircle)
             ->color('danger')
             ->requiresConfirmation()

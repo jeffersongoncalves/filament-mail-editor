@@ -50,16 +50,16 @@ class DividerBlock extends AbstractEmailBlock
     {
         return [
             ColorPicker::make('color')
-                ->label('Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.color')),
             TextInput::make('thickness')
-                ->label('Thickness')
+                ->label(__('filament-mail-editor::filament-mail-editor.fields.border_radius'))
                 ->numeric()
                 ->default(1),
             TextInput::make('width')
-                ->label('Width')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.width'))
                 ->default('100%'),
             Select::make('style')
-                ->label('Style')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.style'))
                 ->options([
                     'solid' => 'Solid',
                     'dashed' => 'Dashed',

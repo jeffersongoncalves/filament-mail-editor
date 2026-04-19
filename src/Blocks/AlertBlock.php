@@ -45,7 +45,7 @@ class AlertBlock extends AbstractEmailBlock
     {
         return [
             Select::make('type')
-                ->label('Alert Type')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.type'))
                 ->options([
                     'info' => 'Info',
                     'warning' => 'Warning',
@@ -54,18 +54,18 @@ class AlertBlock extends AbstractEmailBlock
                 ])
                 ->default('info'),
             Textarea::make('text')
-                ->label('Alert Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text'))
                 ->required()
                 ->rows(3)
                 ->columnSpanFull(),
             ColorPicker::make('bg_color')
-                ->label('Background Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_color'))
                 ->placeholder('Auto'),
             ColorPicker::make('text_color')
-                ->label('Text Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color'))
                 ->placeholder('Auto'),
             ColorPicker::make('border_color')
-                ->label('Border Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.border_color'))
                 ->placeholder('Auto'),
         ];
     }

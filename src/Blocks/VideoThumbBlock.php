@@ -52,21 +52,21 @@ class VideoThumbBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('thumb_src')
-                ->label('Thumbnail Image URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.thumb_src'))
                 ->placeholder('https://...')
                 ->required(),
             TextInput::make('video_url')
-                ->label('Video URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.video_url'))
                 ->placeholder('https://youtube.com/...')
                 ->required(),
             TextInput::make('alt')
-                ->label('Alt Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.alt'))
                 ->default('Watch video'),
             TextInput::make('width')
-                ->label('Width')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.width'))
                 ->default('100%'),
             ColorPicker::make('play_icon_color')
-                ->label('Play Icon Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.play_icon_color')),
         ];
     }
 }

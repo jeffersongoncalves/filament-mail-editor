@@ -50,7 +50,7 @@ class RatingBlock extends AbstractEmailBlock
     {
         return [
             Select::make('stars')
-                ->label('Stars')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.rating'))
                 ->options([
                     1 => '1 Star',
                     2 => '2 Stars',
@@ -60,12 +60,12 @@ class RatingBlock extends AbstractEmailBlock
                 ])
                 ->default(5),
             Textarea::make('text')
-                ->label('Review Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.review_text'))
                 ->rows(3),
             TextInput::make('author')
-                ->label('Author'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.author')),
             ColorPicker::make('star_color')
-                ->label('Star Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.star_color'))
                 ->default('#EF9F27'),
         ];
     }

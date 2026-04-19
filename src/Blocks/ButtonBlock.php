@@ -52,22 +52,22 @@ class ButtonBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('text')
-                ->label('Button Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text'))
                 ->required(),
             TextInput::make('url')
-                ->label('URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.url'))
                 ->url()
                 ->required(),
             ColorPicker::make('bg_color')
-                ->label('Background Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_color')),
             ColorPicker::make('text_color')
-                ->label('Text Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color')),
             TextInput::make('border_radius')
-                ->label('Border Radius')
+                ->label(__('filament-mail-editor::filament-mail-editor.fields.border_radius'))
                 ->numeric()
                 ->default(4),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',
@@ -75,14 +75,14 @@ class ButtonBlock extends AbstractEmailBlock
                 ])
                 ->default('center'),
             TextInput::make('width')
-                ->label('Width')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.width'))
                 ->default('auto'),
             TextInput::make('font_size')
-                ->label('Font Size')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_size'))
                 ->numeric()
                 ->default(14),
             TextInput::make('padding')
-                ->label('Padding')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.padding'))
                 ->default('12px 28px'),
         ];
     }

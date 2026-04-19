@@ -47,20 +47,20 @@ class ImageBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('src')
-                ->label('Image URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.src'))
                 ->url()
                 ->required(),
             TextInput::make('alt')
-                ->label('Alt Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.alt'))
                 ->required(),
             TextInput::make('link')
-                ->label('Link URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.link'))
                 ->url(),
             TextInput::make('width')
-                ->label('Width')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.width'))
                 ->default('100%'),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',
@@ -68,7 +68,7 @@ class ImageBlock extends AbstractEmailBlock
                 ])
                 ->default('center'),
             TextInput::make('border_radius')
-                ->label('Border Radius')
+                ->label(__('filament-mail-editor::filament-mail-editor.fields.border_radius'))
                 ->numeric()
                 ->default(0),
         ];

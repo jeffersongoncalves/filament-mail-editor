@@ -55,40 +55,40 @@ class ListBlock extends AbstractEmailBlock
     {
         return [
             Repeater::make('items')
-                ->label('List Items')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.items'))
                 ->schema([
                     TextInput::make('text')
-                        ->label('Text')
+                        ->label(__('filament-mail-editor::filament-mail-editor.props.text'))
                         ->required(),
                     TextInput::make('link')
-                        ->label('Link URL')
+                        ->label(__('filament-mail-editor::filament-mail-editor.props.link'))
                         ->url(),
                 ])
                 ->defaultItems(1)
                 ->columnSpanFull(),
             Select::make('type')
-                ->label('List Type')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.type'))
                 ->options([
                     'unordered' => 'Unordered',
                     'ordered' => 'Ordered',
                 ])
                 ->default('unordered'),
             TextInput::make('bullet_char')
-                ->label('Bullet Character')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bullet_char'))
                 ->default("\u{2022}"),
             ColorPicker::make('bullet_color')
-                ->label('Bullet Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bullet_color'))
                 ->default('#378ADD'),
             TextInput::make('indent')
-                ->label('Indent')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.indent'))
                 ->numeric()
                 ->suffix('px')
                 ->default(0),
             ColorPicker::make('color')
-                ->label('Text Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color'))
                 ->default('#333333'),
             TextInput::make('font_size')
-                ->label('Font Size')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_size'))
                 ->numeric()
                 ->suffix('px')
                 ->default(14),

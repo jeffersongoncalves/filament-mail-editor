@@ -58,32 +58,32 @@ class HeroBlock extends AbstractEmailBlock
     {
         return [
             ColorPicker::make('bg_color')
-                ->label('Background Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_color')),
             TextInput::make('bg_image')
-                ->label('Background Image URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_image'))
                 ->url(),
             TextInput::make('overlay_opacity')
-                ->label('Overlay Opacity')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.overlay_opacity'))
                 ->numeric()
                 ->minValue(0)
                 ->maxValue(1)
                 ->step(0.1),
             TextInput::make('title')
-                ->label('Title')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.title'))
                 ->required(),
             TextInput::make('subtitle')
-                ->label('Subtitle'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.subtitle')),
             TextInput::make('cta_text')
-                ->label('CTA Text'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_text')),
             TextInput::make('cta_url')
-                ->label('CTA URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_url'))
                 ->url(),
             ColorPicker::make('cta_bg_color')
-                ->label('CTA Background Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_bg_color')),
             ColorPicker::make('cta_text_color')
-                ->label('CTA Text Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cta_text_color')),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',

@@ -2,11 +2,15 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas;
 
+use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
+use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 
 class SavedEmailBlockInfolist
 {
@@ -15,6 +19,12 @@ class SavedEmailBlockInfolist
         return $schema
             ->columns(1)
             ->components([
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.preview'))
+                    ->schema([
+                        View::make('filament-mail-editor::resources.saved-email-blocks.preview'),
+                    ])
+                    ->collapsible(),
+
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.block_details'))
                     ->schema([
                         TextEntry::make('name')
@@ -27,7 +37,7 @@ class SavedEmailBlockInfolist
                         TextEntry::make('category')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
                             ->badge()
-                            ->color(fn (?string $state): string => match ($state) {
+                            ->color(fn (BlockCategory|string|null $state): string => match ($state instanceof BlockCategory ? $state->value : $state) {
                                 'structure' => 'gray',
                                 'content' => 'info',
                                 'marketing' => 'success',
@@ -56,14 +66,13 @@ class SavedEmailBlockInfolist
                     ])->columns(2),
 
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.properties'))
-                    ->schema([
-                        KeyValueEntry::make('props')
-                            ->label(__('filament-mail-editor::filament-mail-editor.fields.props'))
-                            ->hiddenLabel(),
-                    ])
-                    ->collapsible(),
+                    ->schema(fn (Get $get): array => self::propsEntriesFor($get('type')))
+                    ->columns(2)
+                    ->collapsible()
+                    ->visible(fn (Get $get): bool => filled($get('type'))),
 
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.timestamps'))
+
                     ->schema([
                         TextEntry::make('created_at')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.created_at'))
@@ -73,5 +82,47 @@ class SavedEmailBlockInfolist
                             ->dateTime(),
                     ])->columns(2),
             ]);
+    }
+
+    /** @return array<int, TextEntry> */
+    protected static function propsEntriesFor(mixed $type): array
+    {
+        if (! is_string($type) || $type === '') {
+            return [];
+        }
+
+        $block = app(BlockRegistry::class)->find($type);
+        if ($block === null) {
+            return [];
+        }
+
+        $entries = [];
+        foreach ($block::propsSchema() as $component) {
+            if (! $component instanceof Field) {
+                continue;
+            }
+
+            $name = $component->getName();
+            $label = $component->getLabel();
+
+            $entries[] = TextEntry::make("props.{$name}")
+                ->label($label ?: $name)
+                ->formatStateUsing(static function (mixed $state): string {
+                    if ($state === null || $state === '') {
+                        return '—';
+                    }
+                    if (is_bool($state)) {
+                        return $state ? '✓' : '✗';
+                    }
+                    if (is_array($state)) {
+                        return json_encode($state, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '—';
+                    }
+
+                    return (string) $state;
+                })
+                ->placeholder('—');
+        }
+
+        return $entries;
     }
 }

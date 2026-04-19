@@ -50,20 +50,20 @@ class TestimonialBlock extends AbstractEmailBlock
     {
         return [
             Textarea::make('quote')
-                ->label('Quote')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.quote'))
                 ->required()
                 ->rows(3)
                 ->columnSpanFull(),
             TextInput::make('author')
-                ->label('Author')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.author'))
                 ->required(),
             TextInput::make('role')
-                ->label('Role'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.role')),
             TextInput::make('avatar_src')
-                ->label('Avatar URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.avatar_src'))
                 ->url(),
             ColorPicker::make('accent_color')
-                ->label('Accent Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.accent_color')),
         ];
     }
 }

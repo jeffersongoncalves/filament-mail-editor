@@ -19,6 +19,7 @@ class SetDefaultAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.set_default'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.set_default'))
             ->icon(Heroicon::OutlinedStar)
             ->color('warning')
             ->requiresConfirmation()

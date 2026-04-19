@@ -22,6 +22,7 @@ class DuplicateAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.duplicate'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.duplicate'))
             ->icon(Heroicon::OutlinedDocumentDuplicate)
             ->requiresConfirmation()
             ->action(function (EmailTemplate $record) {

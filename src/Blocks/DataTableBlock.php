@@ -55,14 +55,14 @@ class DataTableBlock extends AbstractEmailBlock
     {
         return [
             TagsInput::make('headers')
-                ->label('Headers')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.headers'))
                 ->placeholder('Add column header')
-                ->helperText('Press Enter after each header: Name, Price, Quantity')
+                ->helperText(__('filament-mail-editor::filament-mail-editor.props.headers_hint'))
                 ->columnSpanFull(),
             Textarea::make('rows')
-                ->label('Rows')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.rows'))
                 ->rows(8)
-                ->helperText('One row per line. Separate cells with pipes (|). E.g.: Product A | $10 | 5')
+                ->helperText(__('filament-mail-editor::filament-mail-editor.props.rows_hint'))
                 ->columnSpanFull()
                 ->formatStateUsing(static function (mixed $state): string {
                     if (! is_array($state)) {
@@ -88,24 +88,24 @@ class DataTableBlock extends AbstractEmailBlock
                         ->all();
                 }),
             Toggle::make('striped')
-                ->label('Striped Rows')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.striped'))
                 ->default(true),
             ColorPicker::make('header_bg_color')
-                ->label('Header Background')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.header_bg_color'))
                 ->default('#378ADD'),
             ColorPicker::make('header_text_color')
-                ->label('Header Text Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.header_text_color'))
                 ->default('#ffffff'),
             ColorPicker::make('stripe_color')
-                ->label('Stripe Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.stripe_color'))
                 ->default('#f8f9fa'),
             TextInput::make('font_size')
-                ->label('Font Size')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_size'))
                 ->numeric()
                 ->suffix('px')
                 ->default(13),
             ColorPicker::make('border_color')
-                ->label('Border Color')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.border_color'))
                 ->default('#e8e8e8'),
         ];
     }

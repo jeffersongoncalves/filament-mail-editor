@@ -46,12 +46,12 @@ class SpacerBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('height')
-                ->label('Height')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.height'))
                 ->numeric()
                 ->suffix('px')
                 ->default(24),
             TextInput::make('mobile_height')
-                ->label('Mobile Height')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.mobile_height'))
                 ->numeric()
                 ->suffix('px')
                 ->default(12),

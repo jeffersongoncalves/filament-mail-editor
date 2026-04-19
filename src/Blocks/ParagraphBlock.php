@@ -48,22 +48,22 @@ class ParagraphBlock extends AbstractEmailBlock
     {
         return [
             RichEditor::make('html')
-                ->label('Content')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.html'))
                 ->required()
                 ->columnSpanFull(),
             ColorPicker::make('color')
-                ->label('Text Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color')),
             TextInput::make('font_size')
-                ->label('Font Size')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_size'))
                 ->numeric()
                 ->default(14),
             TextInput::make('line_height')
-                ->label('Line Height')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.line_height'))
                 ->numeric()
                 ->step(0.1)
                 ->default(1.7),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',

@@ -52,20 +52,20 @@ class LogoGridBlock extends AbstractEmailBlock
     {
         return [
             Repeater::make('logos')
-                ->label('Logos')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.logos'))
                 ->schema([
                     TextInput::make('src')
-                        ->label('Image URL')
+                        ->label(__('filament-mail-editor::filament-mail-editor.props.src'))
                         ->required(),
                     TextInput::make('alt')
-                        ->label('Alt Text'),
+                        ->label(__('filament-mail-editor::filament-mail-editor.props.alt')),
                     TextInput::make('link')
-                        ->label('Link URL'),
+                        ->label(__('filament-mail-editor::filament-mail-editor.props.link')),
                 ])
                 ->defaultItems(1)
                 ->columnSpanFull(),
             Select::make('cols')
-                ->label('Columns')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.columns'))
                 ->options([
                     2 => '2 Columns',
                     3 => '3 Columns',
@@ -73,10 +73,10 @@ class LogoGridBlock extends AbstractEmailBlock
                 ])
                 ->default(3),
             Toggle::make('grayscale')
-                ->label('Grayscale')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.grayscale'))
                 ->default(true),
             TextInput::make('cell_padding')
-                ->label('Cell Padding')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.cell_padding'))
                 ->numeric()
                 ->suffix('px')
                 ->default(16),

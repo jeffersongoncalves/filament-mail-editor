@@ -58,11 +58,11 @@ class CountdownBlock extends AbstractEmailBlock
     {
         return [
             DateTimePicker::make('end_date')
-                ->label('End Date')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.end_date'))
                 ->seconds(false)
                 ->required(),
             Select::make('timezone')
-                ->label('Timezone')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.timezone'))
                 ->searchable()
                 ->default('America/Sao_Paulo')
                 ->options(array_combine(
@@ -70,10 +70,10 @@ class CountdownBlock extends AbstractEmailBlock
                     timezone_identifiers_list(),
                 )),
             TextInput::make('label')
-                ->label('Label')
+                ->label(__('filament-mail-editor::filament-mail-editor.fields.name'))
                 ->default('Offer ends in'),
             Select::make('style')
-                ->label('Style')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.style'))
                 ->options([
                     'default' => 'Default',
                     'dark' => 'Dark',
@@ -81,21 +81,21 @@ class CountdownBlock extends AbstractEmailBlock
                 ])
                 ->default('default'),
             TextInput::make('width')
-                ->label('Width')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.width'))
                 ->numeric()
                 ->suffix('px')
                 ->minValue(200)
                 ->maxValue(1200)
                 ->default(500),
             TextInput::make('height')
-                ->label('Height')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.height'))
                 ->numeric()
                 ->suffix('px')
                 ->minValue(40)
                 ->maxValue(400)
                 ->default(80),
             TextInput::make('expired_text')
-                ->label('Expired Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.expired_text'))
                 ->default('Offer expired'),
         ];
     }

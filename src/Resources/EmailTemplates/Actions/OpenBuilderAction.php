@@ -20,6 +20,7 @@ class OpenBuilderAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.open_builder'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.open_builder'))
             ->icon(Heroicon::OutlinedSquares2x2)
             ->color('primary')
             ->url(fn (EmailTemplate $record): string => EmailTemplateResource::getUrl('build', ['record' => $record]));

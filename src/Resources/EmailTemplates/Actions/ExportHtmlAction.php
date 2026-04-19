@@ -21,6 +21,7 @@ class ExportHtmlAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.export_html'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.export_html'))
             ->icon(Heroicon::OutlinedCodeBracket)
             ->action(function (EmailTemplate $record): StreamedResponse {
                 $html = $record->render();

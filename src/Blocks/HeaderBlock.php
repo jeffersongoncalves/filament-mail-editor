@@ -52,17 +52,17 @@ class HeaderBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('logo_src')
-                ->label('Logo URL')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.logo_src'))
                 ->url(),
             TextInput::make('logo_alt')
-                ->label('Logo Alt Text'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.logo_alt')),
             ColorPicker::make('bg_color')
-                ->label('Background Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.bg_color')),
             TextInput::make('web_link')
-                ->label('Web Version Link')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.web_link'))
                 ->url(),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',

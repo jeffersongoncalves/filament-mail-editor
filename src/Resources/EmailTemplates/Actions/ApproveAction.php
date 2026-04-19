@@ -20,6 +20,7 @@ class ApproveAction extends Action
 
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.approve'))
+            ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.approve'))
             ->icon(Heroicon::OutlinedCheckCircle)
             ->color('success')
             ->requiresConfirmation()

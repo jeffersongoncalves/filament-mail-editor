@@ -47,10 +47,10 @@ class HeadingBlock extends AbstractEmailBlock
     {
         return [
             TextInput::make('text')
-                ->label('Heading Text')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text'))
                 ->required(),
             Select::make('level')
-                ->label('Heading Level')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.level'))
                 ->options([
                     'h1' => 'H1',
                     'h2' => 'H2',
@@ -59,13 +59,13 @@ class HeadingBlock extends AbstractEmailBlock
                 ])
                 ->default('h2'),
             ColorPicker::make('color')
-                ->label('Text Color'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.text_color')),
             TextInput::make('font_size')
-                ->label('Font Size')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_size'))
                 ->numeric()
                 ->placeholder('Auto'),
             Select::make('align')
-                ->label('Alignment')
+                ->label(__('filament-mail-editor::filament-mail-editor.props.align'))
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',
@@ -73,7 +73,7 @@ class HeadingBlock extends AbstractEmailBlock
                 ])
                 ->default('left'),
             TextInput::make('font_family')
-                ->label('Font Family'),
+                ->label(__('filament-mail-editor::filament-mail-editor.props.font_family')),
         ];
     }
 }
