@@ -6,6 +6,7 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 
 class EmailTemplateInfolist
@@ -14,6 +15,12 @@ class EmailTemplateInfolist
     {
         return $schema
             ->components([
+                Section::make(__('filament-mail-editor::filament-mail-editor.sections.preview'))
+                    ->schema([
+                        View::make('filament-mail-editor::resources.email-templates.preview'),
+                    ])
+                    ->collapsible(),
+
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.template_details'))
                     ->schema([
                         TextEntry::make('name')

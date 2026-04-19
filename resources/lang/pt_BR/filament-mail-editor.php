@@ -275,6 +275,7 @@ return [
         'version_history' => 'Histórico de Versões',
         'variants' => 'Variantes (Teste A/B)',
         'social_links' => 'Links Sociais',
+        'preview' => 'Prévia do E-mail',
     ],
 
 ];
