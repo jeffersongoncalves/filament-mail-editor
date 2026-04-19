@@ -14,7 +14,7 @@ class EmailTemplateForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(null)
+            ->columns(1)
             ->components([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.template_details'))
                     ->schema([
