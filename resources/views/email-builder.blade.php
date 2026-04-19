@@ -429,4 +429,68 @@
             </div>
         </div>
     </div>
+
+    {{-- Quality Check Modal --}}
+    <div
+        x-cloak
+        x-show="$wire.qualityModalOpen"
+        x-on:keydown.escape.window="$wire.closeQualityModal()"
+        class="fi-me-modal-backdrop"
+    >
+        <div class="fi-me-modal" x-on:click.outside="$wire.closeQualityModal()">
+            <div class="fi-me-modal-header">
+                <div>
+                    <h2 class="fi-me-modal-title">
+                        {{ __('filament-mail-editor::filament-mail-editor.quality.modal_heading') }}
+                    </h2>
+                    <p class="fi-me-modal-description">
+                        {{ __('filament-mail-editor::filament-mail-editor.quality.modal_description') }}
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    wire:click="closeQualityModal"
+                    class="fi-me-btn-icon"
+                    title="{{ __('filament-mail-editor::filament-mail-editor.quality.close') }}"
+                >
+                    <x-filament::icon icon="heroicon-m-x-mark" />
+                </button>
+            </div>
+
+            <div class="fi-me-modal-body">
+                @forelse ($qualityResults as $result)
+                    <div class="fi-me-quality-item fi-me-quality-item--{{ $result['status'] }}">
+                        <div class="fi-me-quality-item-icon">
+                            @if ($result['status'] === 'ok')
+                                <x-filament::icon icon="heroicon-m-check-circle" />
+                            @elseif ($result['status'] === 'warning')
+                                <x-filament::icon icon="heroicon-m-exclamation-triangle" />
+                            @else
+                                <x-filament::icon icon="heroicon-m-x-circle" />
+                            @endif
+                        </div>
+                        <div class="fi-me-quality-item-body">
+                            <div class="fi-me-quality-item-label">{{ $result['label'] }}</div>
+                            <div class="fi-me-quality-item-message">{{ $result['message'] }}</div>
+                        </div>
+                        <span class="fi-me-quality-badge fi-me-quality-badge--{{ $result['status'] }}">
+                            {{ __('filament-mail-editor::filament-mail-editor.quality.status_' . $result['status']) }}
+                        </span>
+                    </div>
+                @empty
+                    <div class="fi-me-quality-empty">—</div>
+                @endforelse
+            </div>
+
+            <div class="fi-me-modal-footer">
+                <button
+                    type="button"
+                    wire:click="closeQualityModal"
+                    class="fi-me-btn fi-me-btn--secondary"
+                >
+                    {{ __('filament-mail-editor::filament-mail-editor.quality.close') }}
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

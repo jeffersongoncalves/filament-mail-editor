@@ -72,6 +72,11 @@ class EmailBuilder extends Component
 
     public string $templateStatus = 'draft';
 
+    /** @var list<array{label: string, status: string, message: string}> */
+    public array $qualityResults = [];
+
+    public bool $qualityModalOpen = false;
+
     public function mount(?int $templateId = null): void
     {
         $this->settings = config('filament-mail-editor.default_settings', []);
@@ -320,16 +325,40 @@ class EmailBuilder extends Component
         return app(HtmlExporter::class)->validate($this->blocks);
     }
 
-    /**
-     * @return list<array{label: string, status: string, message: string}>
-     */
-    public function runQualityCheck(): array
+    public function runQualityCheck(): void
     {
         $template = new EmailTemplate;
         $template->blocks = $this->blocks;
         $template->subject = $this->subject;
 
-        return (new QualityChecker)->check($template);
+        $this->qualityResults = (new QualityChecker)->check($template);
+        $this->qualityModalOpen = true;
+
+        $counts = array_count_values(array_column($this->qualityResults, 'status'));
+        $errors = $counts['error'] ?? 0;
+        $warnings = $counts['warning'] ?? 0;
+        $ok = $counts['ok'] ?? 0;
+
+        $notification = Notification::make()
+            ->title(__('filament-mail-editor::filament-mail-editor.notifications.quality_check_summary'))
+            ->body(__('filament-mail-editor::filament-mail-editor.notifications.quality_check_body', [
+                'ok' => $ok,
+                'warnings' => $warnings,
+                'errors' => $errors,
+            ]));
+
+        match (true) {
+            $errors > 0 => $notification->danger(),
+            $warnings > 0 => $notification->warning(),
+            default => $notification->success(),
+        };
+
+        $notification->send();
+    }
+
+    public function closeQualityModal(): void
+    {
+        $this->qualityModalOpen = false;
     }
 
     /**

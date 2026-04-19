@@ -226,6 +226,16 @@ return [
         'template_approved' => 'Modelo aprovado.',
         'template_returned_to_draft' => 'Modelo retornado para rascunho.',
         'version_restored' => 'Modelo restaurado para a versão #:number',
+        'quality_check_summary' => 'Verificação de qualidade concluída',
+        'quality_check_body' => ':ok aprovadas · :warnings avisos · :errors erros',
+    ],
+    'quality' => [
+        'modal_heading' => 'Verificação de Qualidade',
+        'modal_description' => 'Revise as verificações automáticas de entregabilidade, acessibilidade e conformidade legal.',
+        'close' => 'Fechar',
+        'status_ok' => 'OK',
+        'status_warning' => 'Aviso',
+        'status_error' => 'Erro',
     ],
     'schedule_statuses' => [
         'pending' => 'Pendente',

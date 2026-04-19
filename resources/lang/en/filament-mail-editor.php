@@ -226,6 +226,16 @@ return [
         'template_approved' => 'Template approved.',
         'template_returned_to_draft' => 'Template returned to draft.',
         'version_restored' => 'Template restored to version #:number',
+        'quality_check_summary' => 'Quality check completed',
+        'quality_check_body' => ':ok passed · :warnings warnings · :errors errors',
+    ],
+    'quality' => [
+        'modal_heading' => 'Quality Check',
+        'modal_description' => 'Review automatic checks for deliverability, accessibility and legal compliance.',
+        'close' => 'Close',
+        'status_ok' => 'OK',
+        'status_warning' => 'Warning',
+        'status_error' => 'Error',
     ],
     'schedule_statuses' => [
         'pending' => 'Pending',
