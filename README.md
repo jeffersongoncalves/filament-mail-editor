@@ -1,6 +1,6 @@
 <div class="filament-hidden">
 
-![Filament Mail Editor](https://raw.githubusercontent.com/jeffersongoncalves/filament-mail-editor/3.x/art/jeffersongoncalves-filament-mail-editor.jpg)
+![Filament Mail Editor](https://raw.githubusercontent.com/jeffersongoncalves/filament-mail-editor/3.x/art/jeffersongoncalves-filament-mail-editor.png)
 
 </div>
 
