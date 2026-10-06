@@ -5,11 +5,10 @@ use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use Livewire\Mechanisms\ComponentRegistry;
 
 it('registers the email builder livewire component', function () {
-    expect(app('livewire')->isDiscoverable(EmailBuilder::class)
-        || app('livewire')->getComponentAliases()['email-builder'] ?? null
-    )->not->toBeNull();
+    expect(app(ComponentRegistry::class)->getClass('email-builder'))->toBe(EmailBuilder::class);
 });
 
 it('registers all 22 blocks in the registry', function () {
