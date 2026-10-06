@@ -6,8 +6,11 @@
 
 # Filament Mail Editor
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jeffersongoncalves/filament-mail-editor.svg?style=flat-square)](https://packagist.org/packages/jeffersongoncalves/filament-mail-editor)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jeffersongoncalves/filament-mail-editor/tests.yml?branch=3.x&label=tests&style=flat-square)](https://github.com/jeffersongoncalves/filament-mail-editor/actions?query=workflow%3Atests+branch%3A3.x)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jeffersongoncalves/filament-mail-editor/fix-php-code-style-issues.yml?branch=3.x&label=code%20style&style=flat-square)](https://github.com/jeffersongoncalves/filament-mail-editor/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3A3.x)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeffersongoncalves/filament-mail-editor.svg?style=flat-square)](https://packagist.org/packages/jeffersongoncalves/filament-mail-editor)
 [![License](https://img.shields.io/packagist/l/jeffersongoncalves/filament-mail-editor.svg?style=flat-square)](LICENSE.md)
 
@@ -15,9 +18,11 @@ Visual email template builder for Filament v5. A drag-and-drop Livewire editor t
 
 ## Version Compatibility
 
-| Plugin Version | Filament | Laravel | PHP |
-|---------------|----------|---------|-----|
-| 3.x | ^5.0 | ^12.0 \| ^13.0 | ^8.3 |
+| Plugin Version | Filament |
+|----------------|----------|
+| 1.x | v3 |
+| 2.x | v4 |
+| 3.x | v5 |
 
 ## Features
 
@@ -36,7 +41,6 @@ Visual email template builder for Filament v5. A drag-and-drop Livewire editor t
 ## Requirements
 
 - PHP `^8.3`
-- Laravel `^12.0` or `^13.0`
 - Filament `^5.0`
 - `ext-gd` (for countdown image rendering)
 
