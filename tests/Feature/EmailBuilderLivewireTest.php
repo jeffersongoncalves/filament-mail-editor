@@ -7,9 +7,8 @@ use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 
 it('registers the email builder livewire component', function () {
-    expect(app('livewire')->isDiscoverable(EmailBuilder::class)
-        || app('livewire')->getComponentAliases()['email-builder'] ?? null
-    )->not->toBeNull();
+    expect(app('livewire')->exists('email-builder'))->toBeTrue()
+        ->and(app('livewire')->exists('not-an-email-builder'))->toBeFalse();
 });
 
 it('registers all 22 blocks in the registry', function () {
