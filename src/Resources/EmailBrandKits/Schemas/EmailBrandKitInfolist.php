@@ -5,17 +5,17 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
+use Filament\Infolists\Infolist;
 
 class EmailBrandKitInfolist
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Infolist $infolist): Infolist
     {
-        return $schema
+        return $infolist
             ->columns(1)
-            ->components([
+            ->schema([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.general'))
                     ->schema([
                         TextEntry::make('name')

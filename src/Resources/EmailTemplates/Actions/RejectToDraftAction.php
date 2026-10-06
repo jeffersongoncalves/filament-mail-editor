@@ -3,7 +3,6 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions;
 
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 
@@ -21,7 +20,7 @@ class RejectToDraftAction extends Action
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.reject_to_draft'))
             ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.reject_to_draft'))
-            ->icon(Heroicon::OutlinedXCircle)
+            ->icon('heroicon-o-x-circle')
             ->color('danger')
             ->requiresConfirmation()
             ->visible(fn (EmailTemplate $record): bool => in_array(

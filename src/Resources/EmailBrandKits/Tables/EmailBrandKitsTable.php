@@ -2,11 +2,11 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Tables;
 
-use Filament\Actions;
 use Filament\Tables;
+use Filament\Tables\Actions;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
-use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Actions\SetDefaultAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Actions\SetDefaultTableAction;
 
 class EmailBrandKitsTable
 {
@@ -39,12 +39,12 @@ class EmailBrandKitsTable
                     ->since()
                     ->sortable(),
             ])
-            ->recordActions([
+            ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
-                SetDefaultAction::make(),
+                SetDefaultTableAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),

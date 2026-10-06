@@ -13,7 +13,7 @@ class BuildEmailTemplate extends Page
 
     protected static string $resource = EmailTemplateResource::class;
 
-    protected string $view = 'filament-mail-editor::resources.email-templates.pages.build-email-template';
+    protected static string $view = 'filament-mail-editor::resources.email-templates.pages.build-email-template';
 
     public function mount(int|string $record): void
     {

@@ -2,10 +2,9 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates;
 
-use BackedEnum;
+use Filament\Forms\Form;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas\EmailTemplateForm;
@@ -16,7 +15,7 @@ class EmailTemplateResource extends Resource
 {
     protected static ?string $model = EmailTemplate::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
+    protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?int $navigationSort = 1;
 
@@ -40,14 +39,14 @@ class EmailTemplateResource extends Resource
         return __('filament-mail-editor::filament-mail-editor.resource.email_template.plural_model_label');
     }
 
-    public static function form(Schema $schema): Schema
+    public static function form(Form $form): Form
     {
-        return EmailTemplateForm::configure($schema);
+        return EmailTemplateForm::configure($form);
     }
 
-    public static function infolist(Schema $schema): Schema
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return EmailTemplateInfolist::configure($schema);
+        return EmailTemplateInfolist::configure($infolist);
     }
 
     public static function table(Table $table): Table

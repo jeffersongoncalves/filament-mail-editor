@@ -3,7 +3,6 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions;
 
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 
@@ -21,7 +20,7 @@ class ApproveAction extends Action
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.approve'))
             ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.approve'))
-            ->icon(Heroicon::OutlinedCheckCircle)
+            ->icon('heroicon-o-check-circle')
             ->color('success')
             ->requiresConfirmation()
             ->visible(fn (EmailTemplate $record): bool => $record->status === TemplateStatus::Review)

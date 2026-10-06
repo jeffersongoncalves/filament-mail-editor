@@ -3,7 +3,7 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions;
 
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
+use Filament\Actions\MountableAction;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Support\TemplateImportExport;
@@ -20,10 +20,16 @@ class ExportJsonAction extends Action
     {
         parent::setUp();
 
-        $this
+        static::configureAction($this);
+    }
+
+    /** Shared with {@see ExportJsonTableAction}: Filament 3 tables need Filament\Tables\Actions\Action. */
+    public static function configureAction(MountableAction $action): void
+    {
+        $action
             ->label(__('filament-mail-editor::filament-mail-editor.actions.export_json'))
             ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.export_json'))
-            ->icon(Heroicon::OutlinedArrowDownTray)
+            ->icon('heroicon-o-arrow-down-tray')
             ->action(function (EmailTemplate $record): StreamedResponse {
                 $json = (new TemplateImportExport)->exportJson($record);
 

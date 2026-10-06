@@ -2,15 +2,15 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Tables;
 
-use Filament\Actions;
 use Filament\Tables;
+use Filament\Tables\Actions;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateAction;
-use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportJsonAction;
-use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\OpenBuilderAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateTableAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportJsonTableAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\OpenBuilderTableAction;
 
 class EmailTemplatesTable
 {
@@ -59,14 +59,14 @@ class EmailTemplatesTable
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active')),
                 Tables\Filters\TrashedFilter::make(),
             ])
-            ->recordActions([
-                OpenBuilderAction::make()->iconButton()->tooltip(__('filament-mail-editor::filament-mail-editor.actions.open_builder')),
+            ->actions([
+                OpenBuilderTableAction::make()->iconButton()->tooltip(__('filament-mail-editor::filament-mail-editor.actions.open_builder')),
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
-                DuplicateAction::make(),
-                ExportJsonAction::make(),
+                DuplicateTableAction::make(),
+                ExportJsonTableAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                     Actions\RestoreBulkAction::make(),

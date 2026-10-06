@@ -2,8 +2,8 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Tables;
 
-use Filament\Actions;
 use Filament\Tables;
+use Filament\Tables\Actions;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
 use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
@@ -49,11 +49,11 @@ class SavedEmailBlocksTable
                 Tables\Filters\TernaryFilter::make('is_global')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global')),
             ])
-            ->recordActions([
+            ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),

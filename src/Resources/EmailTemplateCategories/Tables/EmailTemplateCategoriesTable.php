@@ -2,8 +2,8 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Tables;
 
-use Filament\Actions;
 use Filament\Tables;
+use Filament\Tables\Actions;
 use Filament\Tables\Table;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateCategory;
 
@@ -47,11 +47,11 @@ class EmailTemplateCategoriesTable
                     ->relationship('parent', 'name')
                     ->placeholder('—'),
             ])
-            ->recordActions([
+            ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),

@@ -3,18 +3,18 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas;
 
 use Filament\Forms;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Schema;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Illuminate\Support\Str;
 
 class EmailBrandKitForm
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Form $form): Form
     {
-        return $schema
+        return $form
             ->columns(1)
-            ->components([
+            ->schema([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.general'))
                     ->schema([
                         Forms\Components\TextInput::make('name')

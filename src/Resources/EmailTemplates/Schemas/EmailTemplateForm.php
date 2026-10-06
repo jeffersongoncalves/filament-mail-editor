@@ -3,19 +3,19 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Schemas;
 
 use Filament\Forms;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Schema;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 
 class EmailTemplateForm
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Form $form): Form
     {
-        return $schema
+        return $form
             ->columns(1)
-            ->components([
+            ->schema([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.template_details'))
                     ->schema([
                         Forms\Components\TextInput::make('name')

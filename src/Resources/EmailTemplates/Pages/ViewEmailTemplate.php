@@ -4,7 +4,6 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Support\Icons\Heroicon;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ApproveAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportHtmlAction;
@@ -33,7 +32,7 @@ class ViewEmailTemplate extends ViewRecord
                 RejectToDraftAction::make(),
             ])
                 ->label(__('filament-mail-editor::filament-mail-editor.actions.workflow'))
-                ->icon(Heroicon::OutlinedArrowPath),
+                ->icon('heroicon-o-arrow-path'),
 
             Actions\DeleteAction::make(),
         ];

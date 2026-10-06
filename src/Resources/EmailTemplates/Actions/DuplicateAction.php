@@ -3,7 +3,7 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions;
 
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
+use Filament\Actions\MountableAction;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
@@ -20,10 +20,16 @@ class DuplicateAction extends Action
     {
         parent::setUp();
 
-        $this
+        static::configureAction($this);
+    }
+
+    /** Shared with {@see DuplicateTableAction}: Filament 3 tables need Filament\Tables\Actions\Action. */
+    public static function configureAction(MountableAction $action): void
+    {
+        $action
             ->label(__('filament-mail-editor::filament-mail-editor.actions.duplicate'))
             ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.duplicate'))
-            ->icon(Heroicon::OutlinedDocumentDuplicate)
+            ->icon('heroicon-o-document-duplicate')
             ->requiresConfirmation()
             ->action(function (EmailTemplate $record) {
                 $clone = $record->replicate();

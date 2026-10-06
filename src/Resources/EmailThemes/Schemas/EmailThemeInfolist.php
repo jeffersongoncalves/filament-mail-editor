@@ -3,16 +3,16 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Schemas;
 
 use Filament\Infolists;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Infolist;
 
 class EmailThemeInfolist
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Infolist $infolist): Infolist
     {
-        return $schema
+        return $infolist
             ->columns(1)
-            ->components([
+            ->schema([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.identification'))
                     ->schema([
                         Infolists\Components\TextEntry::make('name')

@@ -4,21 +4,21 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schem
 
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\View;
-use Filament\Schemas\Schema;
+use Filament\Infolists\Components\View;
+use Filament\Infolists\Infolist;
 use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
+use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
 
 class SavedEmailBlockInfolist
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Infolist $infolist): Infolist
     {
-        return $schema
+        return $infolist
             ->columns(1)
-            ->components([
+            ->schema([
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.preview'))
                     ->schema([
                         View::make('filament-mail-editor::resources.saved-email-blocks.preview'),
@@ -66,10 +66,11 @@ class SavedEmailBlockInfolist
                     ])->columns(2),
 
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.properties'))
-                    ->schema(fn (Get $get): array => self::propsEntriesFor($get('type')))
+                    // Filament 3 infolists have no Get utility: read the type from the record
+                    ->schema(fn (SavedEmailBlock $record): array => self::propsEntriesFor($record->type))
                     ->columns(2)
                     ->collapsible()
-                    ->visible(fn (Get $get): bool => filled($get('type'))),
+                    ->visible(fn (SavedEmailBlock $record): bool => filled($record->type)),
 
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.timestamps'))
 

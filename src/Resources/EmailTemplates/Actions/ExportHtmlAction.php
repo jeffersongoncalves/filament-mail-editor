@@ -3,7 +3,6 @@
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions;
 
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -22,7 +21,7 @@ class ExportHtmlAction extends Action
         $this
             ->label(__('filament-mail-editor::filament-mail-editor.actions.export_html'))
             ->tooltip(__('filament-mail-editor::filament-mail-editor.actions.export_html'))
-            ->icon(Heroicon::OutlinedCodeBracket)
+            ->icon('heroicon-o-code-bracket')
             ->action(function (EmailTemplate $record): StreamedResponse {
                 $html = $record->render();
 

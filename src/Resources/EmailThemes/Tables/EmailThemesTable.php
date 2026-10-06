@@ -2,10 +2,10 @@
 
 namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Tables;
 
-use Filament\Actions;
 use Filament\Tables;
+use Filament\Tables\Actions;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Actions\SetDefaultAction;
+use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Actions\SetDefaultTableAction;
 
 class EmailThemesTable
 {
@@ -40,12 +40,12 @@ class EmailThemesTable
                     ->since()
                     ->sortable(),
             ])
-            ->recordActions([
+            ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
-                SetDefaultAction::make(),
+                SetDefaultTableAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),
