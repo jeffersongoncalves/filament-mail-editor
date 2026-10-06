@@ -29,6 +29,20 @@ it('passes when all images have alt text', function () {
     expect($imageCheck['status'])->toBe('ok');
 });
 
+it('checks the alt text of header logos and product card images', function () {
+    $blocks = [
+        ['type' => 'header', 'props' => ['logo_src' => 'https://example.com/logo.png', 'logo_alt' => '']],
+        ['type' => 'product-card', 'props' => ['image_src' => 'https://example.com/p.jpg', 'image_alt' => '']],
+        ['type' => 'product-card', 'props' => ['image_src' => '', 'image_alt' => '']],
+        ['type' => 'paragraph', 'props' => ['text' => 'No image here']],
+    ];
+
+    $imageCheck = collect($this->checker->check($blocks))->firstWhere('label', 'Image Alt Text');
+
+    expect($imageCheck['status'])->toBe('error')
+        ->and($imageCheck['message'])->toStartWith('2 image(s)');
+});
+
 it('detects low color contrast', function () {
     $blocks = [
         ['type' => 'paragraph', 'props' => ['color' => '#cccccc', 'bg_color' => '#ffffff']],

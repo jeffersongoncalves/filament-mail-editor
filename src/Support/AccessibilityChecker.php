@@ -30,30 +30,25 @@ class AccessibilityChecker
     protected function checkImageAlts(array $blocks): array
     {
         $missing = 0;
-        $decorativeWithoutEmpty = 0;
+
+        // block type => [image src prop, alt text prop]
+        $imageProps = [
+            'image' => ['src', 'alt'],
+            'product-card' => ['image_src', 'image_alt'],
+            'header' => ['logo_src', 'logo_alt'],
+        ];
 
         foreach ($blocks as $block) {
-            $type = $block['type'] ?? '';
+            [$srcKey, $altKey] = $imageProps[$block['type'] ?? ''] ?? [null, null];
+
+            if ($srcKey === null) {
+                continue;
+            }
+
             $props = $block['props'] ?? [];
 
-            $imageKeys = match ($type) {
-                'image' => ['alt'],
-                'product-card' => ['image_alt'],
-                'header' => ['logo_alt'],
-                default => [],
-            };
-
-            foreach ($imageKeys as $key) {
-                $src = match ($type) {
-                    'image' => $props['src'] ?? '',
-                    'product-card' => $props['image_src'] ?? '',
-                    'header' => $props['logo_src'] ?? '',
-                    default => '',
-                };
-
-                if (! empty($src) && empty($props[$key] ?? '')) {
-                    $missing++;
-                }
+            if (! empty($props[$srcKey] ?? '') && empty($props[$altKey] ?? '')) {
+                $missing++;
             }
         }
 
