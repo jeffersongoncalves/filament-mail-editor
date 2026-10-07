@@ -5,8 +5,8 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions
 use Filament\Actions\Action;
 use Filament\Actions\MountableAction;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-use JeffersonGoncalves\FilamentMailEditor\Support\TemplateImportExport;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Support\TemplateImportExport;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportJsonAction extends Action

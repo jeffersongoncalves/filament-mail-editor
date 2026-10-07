@@ -21,10 +21,9 @@
     ],
     "require": {
         "php": "^8.3",
-        "ext-gd": "*",
         "filament/filament": "^3.3",
-        "spatie/laravel-package-tools": "^1.16",
-        "tijsverkoyen/css-to-inline-styles": "^2.2"
+        "jeffersongoncalves/laravel-mail-editor": "^1.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
@@ -38,9 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JeffersonGoncalves\\FilamentMailEditor\\": "src/",
-            "JeffersonGoncalves\\FilamentMailEditor\\Database\\Factories\\": "database/factories/",
-            "JeffersonGoncalves\\FilamentMailEditor\\Database\\Seeders\\": "database/seeders/"
+            "JeffersonGoncalves\\FilamentMailEditor\\": "src/"
         }
     },
     "autoload-dev": {

@@ -4,7 +4,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Actions
 
 use Filament\Actions\Action;
 use Filament\Actions\MountableAction;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
 
 class SetDefaultAction extends Action
 {

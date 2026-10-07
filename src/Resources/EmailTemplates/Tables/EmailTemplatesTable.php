@@ -5,12 +5,13 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Tables;
 use Filament\Tables;
 use Filament\Tables\Actions;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\DuplicateTableAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\ExportJsonTableAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions\OpenBuilderTableAction;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
+use JeffersonGoncalves\MailEditor\Enums\TemplateCategory;
+use JeffersonGoncalves\MailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 
 class EmailTemplatesTable
 {
@@ -27,17 +28,15 @@ class EmailTemplatesTable
                     ->searchable()
                     ->sortable()
                     ->limit(50),
-                Tables\Columns\TextColumn::make('category')
+                EnumPresenter::badge(Tables\Columns\TextColumn::make('category'))
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('blocks_count')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.blocks_count'))
                     ->state(fn (EmailTemplate $record): string => count($record->blocks ?? []).' blocks')
                     ->sortable(false),
-                Tables\Columns\TextColumn::make('status')
+                EnumPresenter::badge(Tables\Columns\TextColumn::make('status'))
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.status'))
-                    ->badge()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active'))
@@ -51,10 +50,10 @@ class EmailTemplatesTable
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                    ->options(TemplateCategory::class),
+                    ->options(EnumPresenter::options(TemplateCategory::class)),
                 Tables\Filters\SelectFilter::make('status')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.status'))
-                    ->options(TemplateStatus::class),
+                    ->options(EnumPresenter::options(TemplateStatus::class)),
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active')),
                 Tables\Filters\TrashedFilter::make(),

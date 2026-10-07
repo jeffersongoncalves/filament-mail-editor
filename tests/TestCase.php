@@ -14,8 +14,10 @@ use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Support\ViewErrorBag;
 use JeffersonGoncalves\FilamentMailEditor\FilamentMailEditorServiceProvider;
+use JeffersonGoncalves\MailEditor\MailEditorServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use ReflectionClass;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
 class TestCase extends Orchestra
@@ -28,34 +30,20 @@ class TestCase extends Orchestra
         $this->app['view']->share('errors', new ViewErrorBag);
 
         // Ensure config is available for tests
-        config(['filament-mail-editor.app_url' => 'http://localhost']);
+        config(['mail-editor.app_url' => 'http://localhost']);
     }
 
     protected function defineDatabaseMigrations(): void
     {
-        $migrationPath = __DIR__.'/../database/migrations';
-        $files = glob($migrationPath.'/*.php.stub');
-
-        foreach ($files as $file) {
-            $migrationFile = $migrationPath.'/'.basename($file, '.stub');
-
-            if (! file_exists($migrationFile)) {
-                copy($file, $migrationFile);
-            }
-        }
-
-        $this->loadMigrationsFrom($migrationPath);
         $this->loadLaravelMigrations();
 
-        $this->beforeApplicationDestroyed(function () use ($migrationPath, $files) {
-            foreach ($files as $file) {
-                $migrationFile = $migrationPath.'/'.basename($file, '.stub');
+        // migrations ship as publishable stubs in jeffersongoncalves/laravel-mail-editor; run them in place
+        $stubs = glob(dirname((string) (new ReflectionClass(MailEditorServiceProvider::class))->getFileName(), 2).'/database/migrations/*.php.stub');
+        sort($stubs);
 
-                if (file_exists($migrationFile)) {
-                    unlink($migrationFile);
-                }
-            }
-        });
+        foreach ($stubs as $stub) {
+            (include $stub)->up();
+        }
     }
 
     protected function getPackageProviders($app): array
@@ -73,6 +61,7 @@ class TestCase extends Orchestra
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
             FilamentServiceProvider::class,
+            MailEditorServiceProvider::class,
             FilamentMailEditorServiceProvider::class,
             TestPanelProvider::class,
         ];

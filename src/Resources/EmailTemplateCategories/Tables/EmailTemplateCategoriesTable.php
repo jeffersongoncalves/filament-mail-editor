@@ -5,7 +5,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategorie
 use Filament\Tables;
 use Filament\Tables\Actions;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateCategory;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplateCategory;
 
 class EmailTemplateCategoriesTable
 {

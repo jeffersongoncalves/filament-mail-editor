@@ -1,6 +1,6 @@
 @php
     $record = $getRecord();
-    $registry = app(\JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry::class);
+    $registry = app(\JeffersonGoncalves\MailEditor\Support\BlockRegistry::class);
     $instance = $registry->find($record->type);
     $html = $instance?->render($record->props ?? []) ?? '';
 @endphp

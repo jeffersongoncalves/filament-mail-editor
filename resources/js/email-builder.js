@@ -240,7 +240,7 @@ document.addEventListener('alpine:init', () => {
             const client = this.$wire?.previewClient ?? 'gmail';
             const blocks = encodeURIComponent(JSON.stringify(this.blocks));
             const settings = encodeURIComponent(JSON.stringify(this.$wire?.settings ?? {}));
-            const url = `/filament-mail-editor/preview?blocks=${blocks}&settings=${settings}&client=${client}`;
+            const url = `/mail-editor/preview?blocks=${blocks}&settings=${settings}&client=${client}`;
 
             iframe.src = url;
         },

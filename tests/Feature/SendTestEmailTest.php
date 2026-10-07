@@ -2,7 +2,7 @@
 
 use Illuminate\Validation\ValidationException;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
-use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
+use JeffersonGoncalves\MailEditor\Support\HtmlExporter;
 
 it('generates export warnings when no footer is present', function () {
     $builder = new EmailBuilder;

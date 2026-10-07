@@ -5,9 +5,9 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions
 use Filament\Actions\Action;
 use Filament\Actions\MountableAction;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
+use JeffersonGoncalves\MailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 
 class DuplicateAction extends Action
 {

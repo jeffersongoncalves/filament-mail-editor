@@ -6,10 +6,10 @@ use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Schemas\EmailTemplateCategoryForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Schemas\EmailTemplateCategoryInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Tables\EmailTemplateCategoriesTable;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplateCategory;
 
 class EmailTemplateCategoryResource extends Resource
 {

@@ -7,10 +7,10 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Schemas\EmailThemeForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Schemas\EmailThemeInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Tables\EmailThemesTable;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
 
 class EmailThemeResource extends Resource
 {

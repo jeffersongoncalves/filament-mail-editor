@@ -6,10 +6,10 @@ use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas\SavedEmailBlockForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas\SavedEmailBlockInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Tables\SavedEmailBlocksTable;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
 
 class SavedEmailBlockResource extends Resource
 {

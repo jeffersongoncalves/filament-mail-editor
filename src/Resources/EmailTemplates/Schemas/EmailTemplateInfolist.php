@@ -8,6 +8,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\View;
 use Filament\Infolists\Infolist;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
 
 class EmailTemplateInfolist
 {
@@ -41,18 +42,16 @@ class EmailTemplateInfolist
 
                 Section::make(__('filament-mail-editor::filament-mail-editor.sections.status_workflow'))
                     ->schema([
-                        TextEntry::make('category')
-                            ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                            ->badge(),
+                        EnumPresenter::badge(TextEntry::make('category'))
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.category')),
                         TextEntry::make('templateCategory.name')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.template_category'))
                             ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.none')),
                         IconEntry::make('is_active')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.is_active'))
                             ->boolean(),
-                        TextEntry::make('status')
-                            ->label(__('filament-mail-editor::filament-mail-editor.fields.status'))
-                            ->badge(),
+                        EnumPresenter::badge(TextEntry::make('status'))
+                            ->label(__('filament-mail-editor::filament-mail-editor.fields.status')),
                         TextEntry::make('approved_by')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.approved_by'))
                             ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.not_approved'))

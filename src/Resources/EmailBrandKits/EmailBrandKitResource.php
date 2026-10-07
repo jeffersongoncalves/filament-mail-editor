@@ -6,10 +6,10 @@ use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas\EmailBrandKitForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas\EmailBrandKitInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Tables\EmailBrandKitsTable;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
 
 class EmailBrandKitResource extends Resource
 {
