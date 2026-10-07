@@ -37,9 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JeffersonGoncalves\\FilamentMailEditor\\": "src/",
-            "JeffersonGoncalves\\FilamentMailEditor\\Database\\Factories\\": "database/factories/",
-            "JeffersonGoncalves\\FilamentMailEditor\\Database\\Seeders\\": "database/seeders/"
+            "JeffersonGoncalves\\FilamentMailEditor\\": "src/"
         }
     },
     "autoload-dev": {
