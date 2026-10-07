@@ -2,7 +2,7 @@
     $record = $getRecord();
     $blocksJson = rawurlencode(json_encode($record->blocks ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $settingsJson = rawurlencode(json_encode($record->settings ?? (object) [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $baseUrl = route('filament-mail-editor.preview');
+    $baseUrl = route('mail-editor.preview');
     $clients = [
         'gmail' => 'Gmail',
         'outlook' => 'Outlook',

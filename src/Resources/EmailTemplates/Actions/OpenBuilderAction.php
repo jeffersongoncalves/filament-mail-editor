@@ -4,8 +4,8 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions
 
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\EmailTemplateResource;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 
 class OpenBuilderAction extends Action
 {

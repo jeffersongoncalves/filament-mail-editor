@@ -1,7 +1,7 @@
 <?php
 
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
 
 it('saves a block as component via builder', function () {
     $builder = new EmailBuilder;

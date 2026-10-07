@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
 use JeffersonGoncalves\FilamentMailEditor\Livewire\EmailBuilder;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\MailEditor\Enums\TemplateCategory;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Support\BlockRegistry;
 
 it('registers the email builder livewire component', function () {
     expect(app('livewire')->exists('email-builder'))->toBeTrue()

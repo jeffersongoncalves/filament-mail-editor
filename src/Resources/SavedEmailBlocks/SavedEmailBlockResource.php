@@ -7,10 +7,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas\SavedEmailBlockForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Schemas\SavedEmailBlockInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Tables\SavedEmailBlocksTable;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
 
 class SavedEmailBlockResource extends Resource
 {

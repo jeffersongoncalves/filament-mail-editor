@@ -5,8 +5,9 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Table
 use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
+use JeffersonGoncalves\MailEditor\Enums\BlockCategory;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
 
 class SavedEmailBlocksTable
 {
@@ -23,9 +24,8 @@ class SavedEmailBlocksTable
                     ->badge()
                     ->color('info')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category')
+                EnumPresenter::badge(Tables\Columns\TextColumn::make('category'))
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                    ->badge()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_global')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global'))
@@ -45,7 +45,7 @@ class SavedEmailBlocksTable
                         ->toArray()),
                 Tables\Filters\SelectFilter::make('category')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                    ->options(BlockCategory::class),
+                    ->options(EnumPresenter::options(BlockCategory::class)),
                 Tables\Filters\TernaryFilter::make('is_global')
                     ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global')),
             ])

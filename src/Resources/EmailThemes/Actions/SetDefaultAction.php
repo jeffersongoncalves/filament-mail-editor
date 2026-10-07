@@ -4,7 +4,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Actions;
 
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
 
 class SetDefaultAction extends Action
 {

@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
-use JeffersonGoncalves\FilamentMailEditor\Events\TemplateExported;
-use JeffersonGoncalves\FilamentMailEditor\Events\TestEmailSent;
-use JeffersonGoncalves\FilamentMailEditor\Jobs\CheckLinksJob;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateVersion;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
-use JeffersonGoncalves\FilamentMailEditor\Support\AccessibilityChecker;
-use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
-use JeffersonGoncalves\FilamentMailEditor\Support\HtmlExporter;
-use JeffersonGoncalves\FilamentMailEditor\Support\LinkChecker;
-use JeffersonGoncalves\FilamentMailEditor\Support\PlaintextGenerator;
-use JeffersonGoncalves\FilamentMailEditor\Support\QualityChecker;
-use JeffersonGoncalves\FilamentMailEditor\Support\SpamScoreAnalyzer;
-use JeffersonGoncalves\FilamentMailEditor\Support\TemplateImportExport;
-use JeffersonGoncalves\FilamentMailEditor\Support\ThemeApplier;
+use JeffersonGoncalves\MailEditor\Enums\BlockCategory;
+use JeffersonGoncalves\MailEditor\Enums\TemplateCategory;
+use JeffersonGoncalves\MailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\MailEditor\Events\TemplateExported;
+use JeffersonGoncalves\MailEditor\Events\TestEmailSent;
+use JeffersonGoncalves\MailEditor\Jobs\CheckLinksJob;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplateVersion;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
+use JeffersonGoncalves\MailEditor\Support\AccessibilityChecker;
+use JeffersonGoncalves\MailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\MailEditor\Support\HtmlExporter;
+use JeffersonGoncalves\MailEditor\Support\LinkChecker;
+use JeffersonGoncalves\MailEditor\Support\PlaintextGenerator;
+use JeffersonGoncalves\MailEditor\Support\QualityChecker;
+use JeffersonGoncalves\MailEditor\Support\SpamScoreAnalyzer;
+use JeffersonGoncalves\MailEditor\Support\TemplateImportExport;
+use JeffersonGoncalves\MailEditor\Support\ThemeApplier;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -79,11 +79,11 @@ class EmailBuilder extends Component
 
     public function mount(?int $templateId = null): void
     {
-        $this->settings = config('filament-mail-editor.default_settings', []);
+        $this->settings = config('mail-editor.default_settings', []);
 
         if ($templateId) {
             $this->templateId = $templateId;
-            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $model = config('mail-editor.model', EmailTemplate::class);
             $template = $model::findOrFail($templateId);
             $this->name = $template->name;
             $this->subject = $template->subject;
@@ -138,7 +138,7 @@ class EmailBuilder extends Component
             'subject' => 'required|string|max:255',
         ]);
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
 
         // Create version snapshot before updating existing template
         if ($this->templateId) {
@@ -178,7 +178,7 @@ class EmailBuilder extends Component
         $html = app(HtmlExporter::class)->export($this->blocks, $this->settings);
 
         if ($this->templateId) {
-            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $model = config('mail-editor.model', EmailTemplate::class);
             $template = $model::find($this->templateId);
             if ($template) {
                 TemplateExported::dispatch($template, 'html');
@@ -208,7 +208,7 @@ class EmailBuilder extends Component
      */
     public function exportJson(): StreamedResponse
     {
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
         $template = new $model;
         $template->name = $this->name;
         $template->subject = $this->subject;
@@ -267,8 +267,8 @@ class EmailBuilder extends Component
     {
         $this->validate(['uploadedImage' => 'image|max:2048']);
 
-        $disk = config('filament-mail-editor.storage_disk', 'public');
-        $path = config('filament-mail-editor.storage_path', 'email-images');
+        $disk = config('mail-editor.storage_disk', 'public');
+        $path = config('mail-editor.storage_path', 'email-images');
 
         $storedPath = $this->uploadedImage->store($path, $disk);
 
@@ -304,7 +304,7 @@ class EmailBuilder extends Component
         });
 
         if ($this->templateId) {
-            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $model = config('mail-editor.model', EmailTemplate::class);
             $template = $model::find($this->templateId);
             if ($template) {
                 TestEmailSent::dispatch($template, $address);
@@ -568,7 +568,7 @@ class EmailBuilder extends Component
             return;
         }
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->submitForReview();
         $this->templateStatus = TemplateStatus::Review->value;
@@ -588,7 +588,7 @@ class EmailBuilder extends Component
             return;
         }
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->approve();
         $this->templateStatus = TemplateStatus::Approved->value;
@@ -608,7 +608,7 @@ class EmailBuilder extends Component
             return;
         }
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
         $template->rejectToDraft();
         $this->templateStatus = TemplateStatus::Draft->value;
@@ -626,7 +626,7 @@ class EmailBuilder extends Component
     {
         // Unlock template when component is dehydrated (user leaving page)
         if ($this->templateId && ! $this->isLocked) {
-            $model = config('filament-mail-editor.model', EmailTemplate::class);
+            $model = config('mail-editor.model', EmailTemplate::class);
             $template = $model::find($this->templateId);
             $template?->unlock();
         }
@@ -643,7 +643,7 @@ class EmailBuilder extends Component
             return collect();
         }
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
 
         return $model::find($this->templateId)
             ?->versions()
@@ -661,7 +661,7 @@ class EmailBuilder extends Component
             return;
         }
 
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
         $template = $model::findOrFail($this->templateId);
 
         // Save current state as a version before restoring

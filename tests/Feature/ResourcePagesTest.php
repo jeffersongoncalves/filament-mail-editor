@@ -2,16 +2,17 @@
 
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Auth\User;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplateCategory;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
-use JeffersonGoncalves\FilamentMailEditor\Models\SavedEmailBlock;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Pages as BrandKitPages;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplateCategories\Pages as CategoryPages;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Pages as TemplatePages;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Pages as ThemePages;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Pages as SavedBlockPages;
+use JeffersonGoncalves\MailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplateCategory;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
+use JeffersonGoncalves\MailEditor\Models\SavedEmailBlock;
 
 use function Pest\Livewire\livewire;
 
@@ -78,6 +79,15 @@ it('duplicates a template from the table', function () {
         ->callTableAction('duplicate', $template);
 
     expect(EmailTemplate::where('name', 'Welcome (copy)')->exists())->toBeTrue();
+});
+
+it('shows translated enum labels instead of raw values', function () {
+    app()->setLocale('pt_BR');
+    EmailTemplate::factory()->create(['status' => TemplateStatus::Review]);
+
+    livewire(TemplatePages\ListEmailTemplates::class)
+        ->assertSee(TemplateStatus::Review->getLabel())
+        ->assertDontSee('>review<', escape: false);
 });
 
 it('sets a theme and a brand kit as default from the table', function () {

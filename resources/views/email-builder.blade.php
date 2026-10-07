@@ -28,7 +28,7 @@
                     x-on:change="$wire.set('category', $event.target.value)"
                     class="fi-me-select"
                 >
-                    @foreach (\JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory::cases() as $case)
+                    @foreach (\JeffersonGoncalves\MailEditor\Enums\TemplateCategory::cases() as $case)
                         <option value="{{ $case->value }}">{{ $case->getLabel() }}</option>
                     @endforeach
                 </select>

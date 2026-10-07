@@ -8,8 +8,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
-use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\FilamentMailEditor\Blocks\Contracts\HasPropsSchema;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
+use JeffersonGoncalves\MailEditor\Enums\BlockCategory;
+use JeffersonGoncalves\MailEditor\Support\BlockRegistry;
 
 class SavedEmailBlockForm
 {
@@ -40,7 +42,7 @@ class SavedEmailBlockForm
                             }),
                         Forms\Components\Select::make('category')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                            ->options(BlockCategory::class),
+                            ->options(EnumPresenter::options(BlockCategory::class)),
                         Forms\Components\Toggle::make('is_global')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global'))
                             ->default(true),
@@ -75,7 +77,8 @@ class SavedEmailBlockForm
 
         $block = app(BlockRegistry::class)->find($type);
 
-        if ($block === null) {
+        // custom blocks registered only in laravel-mail-editor have no Filament form
+        if (! $block instanceof HasPropsSchema) {
             return [];
         }
 

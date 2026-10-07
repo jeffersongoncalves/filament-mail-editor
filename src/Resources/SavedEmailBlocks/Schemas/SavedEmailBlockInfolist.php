@@ -9,8 +9,9 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
-use JeffersonGoncalves\FilamentMailEditor\Enums\BlockCategory;
-use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\FilamentMailEditor\Blocks\Contracts\HasPropsSchema;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
+use JeffersonGoncalves\MailEditor\Support\BlockRegistry;
 
 class SavedEmailBlockInfolist
 {
@@ -34,15 +35,8 @@ class SavedEmailBlockInfolist
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.type'))
                             ->badge()
                             ->color('info'),
-                        TextEntry::make('category')
+                        EnumPresenter::badge(TextEntry::make('category'))
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                            ->badge()
-                            ->color(fn (BlockCategory|string|null $state): string => match ($state instanceof BlockCategory ? $state->value : $state) {
-                                'structure' => 'gray',
-                                'content' => 'info',
-                                'marketing' => 'success',
-                                default => 'gray',
-                            })
                             ->placeholder(__('filament-mail-editor::filament-mail-editor.fields.no_category')),
                         IconEntry::make('is_global')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.is_global'))
@@ -92,7 +86,7 @@ class SavedEmailBlockInfolist
         }
 
         $block = app(BlockRegistry::class)->find($type);
-        if ($block === null) {
+        if (! $block instanceof HasPropsSchema) {
             return [];
         }
 
