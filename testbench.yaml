@@ -1,2 +1,3 @@
 providers:
+  - JeffersonGoncalves\MailEditor\MailEditorServiceProvider
   - JeffersonGoncalves\FilamentMailEditor\FilamentMailEditorServiceProvider

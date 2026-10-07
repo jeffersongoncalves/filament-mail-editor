@@ -4,7 +4,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\Pages
 
 use Filament\Resources\Pages\CreateRecord;
 use JeffersonGoncalves\FilamentMailEditor\Resources\SavedEmailBlocks\SavedEmailBlockResource;
-use JeffersonGoncalves\FilamentMailEditor\Support\BlockRegistry;
+use JeffersonGoncalves\MailEditor\Support\BlockRegistry;
 
 class CreateSavedEmailBlock extends CreateRecord
 {

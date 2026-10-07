@@ -4,8 +4,8 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions
 
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateStatus;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Enums\TemplateStatus;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 
 class ApproveAction extends Action
 {

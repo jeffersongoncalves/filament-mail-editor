@@ -7,7 +7,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Enums\TemplateCategory;
+use JeffersonGoncalves\FilamentMailEditor\Support\EnumPresenter;
+use JeffersonGoncalves\MailEditor\Enums\TemplateCategory;
 
 class EmailTemplateForm
 {
@@ -47,7 +48,7 @@ class EmailTemplateForm
                     ->schema([
                         Forms\Components\Select::make('category')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.category'))
-                            ->options(TemplateCategory::class)
+                            ->options(EnumPresenter::options(TemplateCategory::class))
                             ->required(),
                         Forms\Components\Select::make('category_id')
                             ->label(__('filament-mail-editor::filament-mail-editor.fields.template_category'))

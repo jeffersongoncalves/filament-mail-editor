@@ -4,9 +4,9 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\Actions\SetDefaultAction;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailThemes\EmailThemeResource;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
 
 class EditEmailTheme extends EditRecord
 {

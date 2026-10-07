@@ -4,7 +4,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Widgets;
 
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 
 class EmailMetricsWidget extends StatsOverviewWidget
 {
@@ -12,7 +12,7 @@ class EmailMetricsWidget extends StatsOverviewWidget
 
     protected function getStats(): array
     {
-        $model = config('filament-mail-editor.model', EmailTemplate::class);
+        $model = config('mail-editor.model', EmailTemplate::class);
 
         return [
             Stat::make('Total Templates', $model::count())

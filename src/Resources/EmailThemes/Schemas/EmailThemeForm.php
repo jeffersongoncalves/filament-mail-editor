@@ -6,7 +6,7 @@ use Filament\Forms;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTheme;
+use JeffersonGoncalves\MailEditor\Models\EmailTheme;
 
 class EmailThemeForm
 {

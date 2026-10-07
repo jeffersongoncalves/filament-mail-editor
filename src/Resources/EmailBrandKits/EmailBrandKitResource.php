@@ -7,10 +7,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas\EmailBrandKitForm;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Schemas\EmailBrandKitInfolist;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Tables\EmailBrandKitsTable;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
 
 class EmailBrandKitResource extends Resource
 {

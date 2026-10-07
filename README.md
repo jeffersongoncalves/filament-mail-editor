@@ -16,6 +16,8 @@
 
 Visual email template builder for Filament v4. A drag-and-drop Livewire editor that outputs table-based, inline-CSS HTML compatible with every major email client (Gmail, Outlook, Apple Mail).
 
+The templates, blocks, rendering, workflow and `Mail::template()` integration live in [jeffersongoncalves/laravel-mail-editor](https://github.com/jeffersongoncalves/laravel-mail-editor), which is installed automatically. This plugin adds the Filament admin: resources, the drag-and-drop builder and the block forms.
+
 ## Version Compatibility
 
 | Plugin Version | Filament |
@@ -26,17 +28,12 @@ Visual email template builder for Filament v4. A drag-and-drop Livewire editor t
 
 ## Features
 
-- **22 ready-to-use blocks** across three categories: structure, content, marketing
-- **Drag-and-drop builder** with live iframe preview (desktop/mobile/dark-mode)
-- **Table-based HTML export** with inline CSS via `CssToInlineStyles`
-- **Template variables** — `{{var}}`, fallbacks `{{var|default}}`, conditionals `{{#if}}`, loops `{{#each}}`
-- **Workflow** — draft → review → approved, with concurrent editing lock
-- **Version history** — immutable snapshots with one-click restore
-- **A/B testing** — multiple variants with send percentage split and winner flag
-- **Brand kits** — reusable logo, colors, typography, social links
-- **Saved block library** — per-user or global reusable blocks
-- **Quality checks** — accessibility (WCAG), spam score, link validation, preheader/alt text
-- **Laravel Mail integration** — `Mail::template($slug, $variables)->to(...)->send()`
+- **Drag-and-drop builder** with live iframe preview (desktop/mobile/dark-mode), undo/redo and keyboard shortcuts
+- **Filament resources** for templates, categories, brand kits, themes and the saved block library
+- **Review workflow** actions (submit, approve, reject) with concurrent editing lock
+- **Quality panel** — accessibility (WCAG), spam score, link validation, preheader/alt text
+- **Metrics widget** for the dashboard
+- Everything from [laravel-mail-editor](https://github.com/jeffersongoncalves/laravel-mail-editor): 22 email-safe blocks, inline-CSS HTML and plain-text export, template variables, version history, A/B variants
 
 ## Requirements
 
@@ -50,17 +47,17 @@ Visual email template builder for Filament v4. A drag-and-drop Livewire editor t
 composer require jeffersongoncalves/filament-mail-editor:^2.0
 ```
 
-### Publish config
-
-```bash
-php artisan vendor:publish --tag="filament-mail-editor-config"
-```
-
 ### Publish and run migrations
 
 ```bash
-php artisan vendor:publish --tag="filament-mail-editor-migrations"
+php artisan vendor:publish --tag="mail-editor-migrations"
 php artisan migrate
+```
+
+### Publish config (optional)
+
+```bash
+php artisan vendor:publish --tag="mail-editor-config"
 ```
 
 ### Register the plugin in your Filament panel
@@ -79,76 +76,49 @@ public function panel(Panel $panel): Panel
 ### Seed demo data (optional)
 
 ```bash
-php artisan db:seed --class="JeffersonGoncalves\FilamentMailEditor\Database\Seeders\FilamentMailEditorSeeder"
+php artisan db:seed --class="JeffersonGoncalves\MailEditor\Database\Seeders\MailEditorSeeder"
 ```
 
 ## Usage
 
-### Send a template email
+Sending, rendering, variables and Artisan commands come from laravel-mail-editor — see [its README](https://github.com/jeffersongoncalves/laravel-mail-editor#usage). For example:
 
 ```php
 use Illuminate\Support\Facades\Mail;
 
-Mail::template('welcome-email', [
-    'user_name' => $user->name,
-    'app_url' => config('app.url'),
-])->to($user->email)->send();
+Mail::template('welcome-email', ['user_name' => $user->name])->to($user->email)->send();
 ```
-
-### Render a template to HTML
-
-```php
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
-
-$html = EmailTemplate::where('slug', 'welcome-email')
-    ->first()
-    ->render(['user_name' => 'Alice']);
-```
-
-### Generate a template via Artisan
-
-```bash
-php artisan mail-editor:make-template "Welcome Email"
-```
-
-### Release stale editing locks
-
-```bash
-php artisan mail-editor:release-locks
-```
-
-## Block Catalog
-
-**Structure:** Preheader · Header · Footer · Spacer
-**Content:** Heading · Paragraph · Button · Image · Divider · List · Alert · TwoColumns · ThreeColumns
-**Marketing:** Hero · ProductCard · Coupon · Testimonial · Rating · VideoThumb · DataTable · Countdown · LogoGrid
 
 ### Register a custom block
 
+Register the block in `config/mail-editor.php` as described in [laravel-mail-editor](https://github.com/jeffersongoncalves/laravel-mail-editor#register-a-custom-block). To edit its props in the Filament block library, also implement `JeffersonGoncalves\FilamentMailEditor\Blocks\Contracts\HasPropsSchema`:
+
 ```php
-// config/filament-mail-editor.php
-'blocks' => [
-    \App\Mail\Blocks\MyCustomBlock::class,
-],
+use Filament\Forms\Components\TextInput;
+use JeffersonGoncalves\FilamentMailEditor\Blocks\Contracts\HasPropsSchema;
+use JeffersonGoncalves\MailEditor\Blocks\AbstractEmailBlock;
+
+class MyCustomBlock extends AbstractEmailBlock implements HasPropsSchema
+{
+    // type(), label(), icon(), defaultProps() ...
+
+    public static function propsSchema(): array
+    {
+        return [
+            TextInput::make('title')->required(),
+        ];
+    }
+}
 ```
 
-Your block must implement `JeffersonGoncalves\FilamentMailEditor\Blocks\Contracts\EmailBlock` (or extend `AbstractEmailBlock`).
+## Upgrading from 2.0
 
-## Template Variables
+2.1 moved the Laravel core into [jeffersongoncalves/laravel-mail-editor](https://github.com/jeffersongoncalves/laravel-mail-editor):
 
-```
-Hello {{user_name|there}}!
-
-{{#if is_premium}}
-  You have premium access.
-{{#else}}
-  Upgrade anytime.
-{{/if}}
-
-{{#each items}}
-  - {{this.name}}: {{this.price}}
-{{/each}}
-```
+- Models, enums, events, support classes and the seeder moved from `JeffersonGoncalves\FilamentMailEditor\…` to `JeffersonGoncalves\MailEditor\…`.
+- Config, migrations and translations of the core use the `mail-editor` key: `config/mail-editor.php`, `--tag="mail-editor-migrations"`, `--tag="mail-editor-config"`.
+- The preview and countdown routes moved from `/filament-mail-editor/*` to `/mail-editor/*` (names `mail-editor.preview` / `mail-editor.countdown`).
+- JSON exports use the `mail-editor` format id; files exported with the old `filament-mail-editor` id still import.
 
 ## Testing
 

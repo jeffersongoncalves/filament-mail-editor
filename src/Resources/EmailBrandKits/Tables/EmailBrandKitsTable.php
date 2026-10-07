@@ -5,8 +5,8 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Tables;
 use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailBrandKit;
 use JeffersonGoncalves\FilamentMailEditor\Resources\EmailBrandKits\Actions\SetDefaultAction;
+use JeffersonGoncalves\MailEditor\Models\EmailBrandKit;
 
 class EmailBrandKitsTable
 {

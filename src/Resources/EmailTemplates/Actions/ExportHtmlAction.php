@@ -5,7 +5,7 @@ namespace JeffersonGoncalves\FilamentMailEditor\Resources\EmailTemplates\Actions
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
-use JeffersonGoncalves\FilamentMailEditor\Models\EmailTemplate;
+use JeffersonGoncalves\MailEditor\Models\EmailTemplate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportHtmlAction extends Action
