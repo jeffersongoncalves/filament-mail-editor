@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.0 - 2026-10-06
+
+The Laravel core of this plugin now lives in [jeffersongoncalves/laravel-mail-editor](https://github.com/jeffersongoncalves/laravel-mail-editor), which is installed automatically. This plugin keeps the Filament layer: resources, the drag-and-drop builder, the metrics widget and the block forms.
+
+### Breaking changes
+
+- Models, enums, events, support classes and the seeder moved from `JeffersonGoncalves\FilamentMailEditor\…` to `JeffersonGoncalves\MailEditor\…`.
+- Core config, migrations and translations use the `mail-editor` key: `config/mail-editor.php`, `--tag="mail-editor-migrations"`, `--tag="mail-editor-config"`.
+- Preview and countdown routes moved from `/filament-mail-editor/*` to `/mail-editor/*` (`mail-editor.preview` / `mail-editor.countdown`).
+- JSON exports use the `mail-editor` format id; files exported with `filament-mail-editor` still import.
+
+### Added
+
+- `HasPropsSchema` contract to give custom blocks a Filament form in the block library.
+- Smoke tests for every resource page and the custom table actions.
+
 ## 1.0.0 - 2026-10-06
 
 First release for **Filament v3**.
@@ -10,5 +26,6 @@ Visual email template builder: drag-and-drop editor with 22 blocks, live preview
 
 ```bash
 composer require jeffersongoncalves/filament-mail-editor:^1.0
+
 
 ```
