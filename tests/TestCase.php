@@ -16,13 +16,15 @@ use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Support\ViewErrorBag;
 use JeffersonGoncalves\FilamentMailEditor\FilamentMailEditorServiceProvider;
 use JeffersonGoncalves\MailEditor\MailEditorServiceProvider;
+use JeffersonGoncalves\PestPluginDatabaseMigrations\LoadsPackageMigrations;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ReflectionClass;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
 class TestCase extends Orchestra
 {
+    use LoadsPackageMigrations;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,14 +39,7 @@ class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
-
-        // migrations ship as publishable stubs in jeffersongoncalves/laravel-mail-editor; run them in place
-        $stubs = glob(dirname((string) (new ReflectionClass(MailEditorServiceProvider::class))->getFileName(), 2).'/database/migrations/*.php.stub');
-        sort($stubs);
-
-        foreach ($stubs as $stub) {
-            (include $stub)->up();
-        }
+        $this->loadPackageMigrations(MailEditorServiceProvider::class);
     }
 
     protected function getPackageProviders($app): array
